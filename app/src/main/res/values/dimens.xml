@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Global-->
+    <dimen name="padding_small">10dp</dimen>
+    <dimen name="padding_medium">20dp</dimen>
+    <dimen name="padding_large">30dp</dimen>
+
+    <dimen name="text_small">18sp</dimen>
+    <dimen name="text_medium">22sp</dimen>
+    <dimen name="text_large">33sp</dimen>
+
+    <!--Nav menu-->
+    <dimen name="margin_top_toolbar">20dp</dimen>
+    <dimen name="margin_start_toolbar">10dp</dimen>
+    <dimen name="padding_start_item_menu">0dp</dimen>
+    <dimen name="padding_end_item_menu">5dp</dimen>
+
+    <!--Header layout-->
+    <dimen name="size_header_image">50dp</dimen>
+    <dimen name="height_header">150dp</dimen>
+
+
+</resources>

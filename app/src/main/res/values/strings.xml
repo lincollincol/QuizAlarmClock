@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">AlarmClockForProgrammers</string>
+    <string name="app_name">AlarmClock for programmers</string>
+
+    <!--Navigation drawer menu-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--Menu items-->
+    <string name="item_menu_alarms">Alarms</string>
+    <string name="item_menu_timer">Timer</string>
+    <string name="item_menu_stopwatch">Stopwatch</string>
+    <string name="item_menu_achievements">Achievements</string>
+    <string name="item_menu_settings">Settings</string>
+    <string name="item_menu_about">About</string>
+
+
 </resources>

@@ -3,4 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <!--Nav menu item color-->
+    <color name="nav_menu_shape">#7500FF</color>
+    <color name="nav_menu_shape_opacity">#4D000000</color>
+    <color name="nav_menu_item">#8D8D8D</color>
+    <color name="nav_menu_item_checked">#4A00AC</color>
+    <color name="nav_menu_icon">#4A00AC</color>
+
 </resources>
