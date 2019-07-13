@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/layout_alarm_height"
+    android:elevation="@dimen/elevation_default"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginEnd="@dimen/margin_small"
+    android:layout_marginTop="@dimen/margin_small"
+    android:layout_marginBottom="@dimen/margin_small"
+    app:cardCornerRadius="@dimen/corners_default"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/item_alarm__programming_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Java"
+            android:textSize="@dimen/text_medium"
+            android:layout_gravity="center_horizontal|top"/>
+        <TextView
+            android:id="@+id/item_alarm__time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9:00"
+            android:textSize="@dimen/text_large"
+            android:fontFamily="sans-serif-black"
+            android:layout_gravity="center_horizontal|center"/>
+        <TextView
+            android:id="@+id/item_alarm__days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="weekdays"
+            android:textSize="@dimen/text_medium"
+            android:layout_gravity="center_horizontal|bottom"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

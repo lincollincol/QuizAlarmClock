@@ -10,6 +10,13 @@
     <dimen name="text_medium">22sp</dimen>
     <dimen name="text_large">33sp</dimen>
 
+    <dimen name="margin_small">10dp</dimen>
+    <dimen name="margin_medium">20dp</dimen>
+    <dimen name="margin_large">30dp</dimen>
+
+    <dimen name="elevation_default">10dp</dimen>
+    <dimen name="corners_default">20dp</dimen>
+
     <!--Nav menu-->
     <dimen name="margin_top_toolbar">20dp</dimen>
     <dimen name="margin_start_toolbar">10dp</dimen>
@@ -19,6 +26,14 @@
     <!--Header layout-->
     <dimen name="size_header_image">50dp</dimen>
     <dimen name="height_header">150dp</dimen>
+
+    <!--Alarm recycler view item-->
+    <dimen name="layout_alarm_height">200dp</dimen>
+
+    <!--Alarm layout-->
+    <dimen name="card_editor_height">400dp</dimen>
+    <dimen name="button_size_medium">30dp</dimen>
+    <dimen name="button_size_large">60dp</dimen>
 
 
 </resources>
