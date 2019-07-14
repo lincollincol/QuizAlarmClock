@@ -20,8 +20,10 @@
     <color name="toggle_alarms">#470D9D</color>
     <color name="button_day">#7126EE</color>
     <color name="button_day_active">#470D9D</color>
-
+    <color name="screen_block_dark">#944A4A4A</color>
 
 
     <color name="NONAME">#907FFC</color>
+    <color name="NONAME_2">#4D907FFC</color>
+    <color name="NONAME_3">#66E2E5FF</color>
 </resources>

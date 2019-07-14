@@ -4,8 +4,14 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.transition.Explode;
+import android.support.transition.Fade;
+import android.support.transition.Transition;
+import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +21,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -94,7 +106,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    //todo param diff transitions
     private void replaceFragment(Fragment fragment) {
+        Transition exitAnim = new TransitionSet()
+                .addTransition(new Explode())
+                .setInterpolator(new DecelerateInterpolator())
+                .setDuration(1000);
+
+        Transition reenterAnim = new TransitionSet()
+                .addTransition(new Fade(Fade.IN))
+                .addTransition(new Explode())
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .setStartDelay(500)
+                .setDuration(1000);
+
+        fragment.setExitTransition(exitAnim);
+        fragment.setReenterTransition(reenterAnim);
+
+        // Clear back stack
+        FragmentManager fm = getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
+
+        // Start new fragment
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();

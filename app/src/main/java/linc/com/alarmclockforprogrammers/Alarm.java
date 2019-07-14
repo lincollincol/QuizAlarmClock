@@ -6,11 +6,13 @@ public class Alarm {
     private String time;
     private String language;
     private String day;
+    private boolean enable;
 
-    public Alarm(String time, String language, String day) {
+    public Alarm(String time, String language, String day, boolean enable) {
         this.time = time;
         this.language = language;
         this.day = day;
+        this.enable = enable;
     }
 
     public int getId() {
@@ -43,5 +45,13 @@ public class Alarm {
 
     public void setDay(String day) {
         this.day = day;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 }
