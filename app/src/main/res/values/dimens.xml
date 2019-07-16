@@ -14,6 +14,7 @@
     <dimen name="margin_medium">20dp</dimen>
     <dimen name="margin_large">30dp</dimen>
 
+    <dimen name="elevation_card">5dp</dimen>
     <dimen name="elevation_default">10dp</dimen>
     <dimen name="corners_default">20dp</dimen>
 
@@ -31,7 +32,7 @@
     <dimen name="layout_alarm_height">200dp</dimen>
 
     <!--Alarm layout-->
-    <dimen name="card_editor_height">400dp</dimen>
+    <dimen name="card_editor_height">200dp</dimen>
     <dimen name="button_size_medium">30dp</dimen>
     <dimen name="button_size_large">60dp</dimen>
 

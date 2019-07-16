@@ -20,4 +20,25 @@
         <item name="color">@color/nav_menu_icon</item>
     </style>
 
+    <!--Alert dialog style-->
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Dialog">
+        <item name="dialogCornerRadius">@dimen/corners_default</item>
+        <item name="textColorAlertDialogListItem">@color/text_dark</item>
+        <item name="colorControlActivated">@color/dialog_check_active</item>
+        <item name="colorControlNormal">@color/dialog_check_normal</item>
+        <item name="colorBackgroundFloating">@color/dialog_style_light</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/dialog_button_negative</item>
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/dialog_button_positive</item>
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
 </resources>

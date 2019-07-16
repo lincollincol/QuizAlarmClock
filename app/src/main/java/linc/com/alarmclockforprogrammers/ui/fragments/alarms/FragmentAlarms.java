@@ -1,27 +1,18 @@
-package linc.com.alarmclockforprogrammers;
+package linc.com.alarmclockforprogrammers.ui.fragments.alarms;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.design.widget.FloatingActionButton;
-import android.support.transition.AutoTransition;
-import android.support.transition.Fade;
-import android.support.transition.Slide;
+import android.support.transition.Explode;
 import android.support.transition.Transition;
-import android.support.transition.TransitionManager;
 import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +21,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
+import linc.com.alarmclockforprogrammers.model.data.Alarm;
+import linc.com.alarmclockforprogrammers.R;
+import linc.com.alarmclockforprogrammers.ui.fragments.alarms.adapters.AdapterAlarms;
+
 
 public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmSelected,
-        View.OnClickListener {
+        View.OnClickListener, FragmentBottomDialog.BottomDialogClickListener {
 
     private RecyclerView alarmsListRV;
     private AdapterAlarms adapterAlarms;
@@ -80,15 +74,14 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmSel
                 FragmentAlarmSettings alarmSettings = new FragmentAlarmSettings();
 
                 Transition enterAnimation = new TransitionSet()
-                        .addTransition(new Slide(Gravity.BOTTOM))
+                        .addTransition(new Explode())
                         .setInterpolator(new FastOutSlowInInterpolator())
-                        .setStartDelay(1000)
+                        .setStartDelay(500)
                         .setDuration(1000);
 
                 Transition returnAnim = new TransitionSet()
-                        .addTransition(new Slide(Gravity.TOP))
+                        .addTransition(new Explode())
                         .setInterpolator(new FastOutSlowInInterpolator())
-                        .addTransition(new Fade(Fade.OUT))
                         .setDuration(1000);
 
 
@@ -109,20 +102,20 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmSel
         FragmentAlarmSettings alarmSettings = new FragmentAlarmSettings();
 
         Transition enterAnimation = new TransitionSet()
-                .addTransition(new Slide(Gravity.BOTTOM))
+                .addTransition(new Explode())
                 .setInterpolator(new FastOutSlowInInterpolator())
-                .setStartDelay(1000)
+                .setStartDelay(500)
                 .setDuration(1000);
 
         Transition returnAnim = new TransitionSet()
-                .addTransition(new Slide(Gravity.TOP))
+                .addTransition(new Explode())
                 .setInterpolator(new FastOutSlowInInterpolator())
-                .addTransition(new Fade(Fade.OUT))
                 .setDuration(1000);
 
 
         alarmSettings.setEnterTransition(enterAnimation);
         alarmSettings.setReturnTransition(returnAnim);
+
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, alarmSettings)
@@ -132,7 +125,20 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmSel
 
     @Override
     public void onHold(int position) {
-        alarmList.get(position).setEnable(true);
-        adapterAlarms.setAlarms(alarmList);
+        FragmentBottomDialog bottomDialog = new FragmentBottomDialog();
+        bottomDialog.setBottomDialogClickListener(this);
+        bottomDialog.setAlarm(alarmList.get(position));
+        bottomDialog.show(getFragmentManager(), "DIALOG");
+    }
+
+    @Override
+    public void onSwitchClicked(boolean isChecked) {
+        // Implement turn off/on alarm
+        Toast.makeText(getActivity(), ""+isChecked, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDeleteClicked() {
+        // Implement deleting alarm
     }
 }

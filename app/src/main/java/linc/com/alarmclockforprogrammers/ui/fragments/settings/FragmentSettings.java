@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers;
+package linc.com.alarmclockforprogrammers.ui.fragments.settings;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import linc.com.alarmclockforprogrammers.R;
 
 public class FragmentSettings extends Fragment {
 

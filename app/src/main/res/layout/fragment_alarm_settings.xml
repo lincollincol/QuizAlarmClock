@@ -1,209 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:fillViewport="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:id="@+id/alarm_settings__confirm"
-        android:layout_width="@dimen/button_size_medium"
-        android:layout_height="@dimen/button_size_medium"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_large"
-        android:src="@drawable/ic_check"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/alarm_settings__close"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"/>
-
-    <ImageView
-        android:id="@+id/alarm_settings__close"
-        android:layout_width="@dimen/button_size_medium"
-        android:layout_height="@dimen/button_size_medium"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_large"
-        android:src="@drawable/ic_close"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/alarm_settings__confirm"/>
-
-    <android.support.constraint.Barrier
-        android:id="@+id/alarm_settings__panel_barrier"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="alarm_settings__close,
-             alarm_settings__confirm"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
-    <TimePicker
-        android:id="@+id/alarm_settings__timePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:timePickerMode="spinner"
-        app:layout_constraintTop_toBottomOf="@id/alarm_settings__panel_barrier"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
-    <!--https://www.zoftino.com/android-timepicker-example-->
-
-    <!--Alarm turn on/off-->
-    <android.support.constraint.Barrier
-        android:id="@+id/alarm_settings__alarm_enable_barrier"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="alarm_settings__alarm_enable_title,
-        alarm_settings__toggle_alarm_enable"
-        app:layout_constraintTop_toBottomOf="@id/alarm_settings__timePicker"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
-    <TextView
-        android:id="@+id/alarm_settings__alarm_enable_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Alarm enable"
-        android:textSize="@dimen/text_medium"
-        android:layout_marginStart="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginBottom="@dimen/margin_medium"
-        app:layout_constraintTop_toBottomOf="@id/alarm_settings__timePicker"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/alarm_settings__toggle_alarm_enable"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"/>
-
-    <Switch
-        android:id="@+id/alarm_settings__toggle_alarm_enable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:thumbTint="@color/toggle_alarms"
-        android:layout_marginEnd="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginBottom="@dimen/margin_medium"
-        app:layout_constraintTop_toBottomOf="@id/alarm_settings__timePicker"
-        app:layout_constraintLeft_toRightOf="@id/alarm_settings__alarm_enable_title"
-        app:layout_constraintRight_toRightOf="parent"/>
-
-
-    <!--Task enable-->
-    <android.support.constraint.Barrier
-        android:id="@+id/alarm_settings__task_barrier"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="alarm_settings__task_enable_title,
-            alarm_settings__toggle_task_enable"
-        app:layout_constraintTop_toBottomOf="@id/alarm_settings__alarm_enable_barrier"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
-    <TextView
-        android:id="@+id/alarm_settings__task_enable_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Task"
-        android:textSize="@dimen/text_medium"
-        android:layout_marginStart="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginBottom="@dimen/margin_medium"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/alarm_settings__toggle_task_enable"
-        app:layout_constraintTop_toBottomOf="@id/alarm_settings__alarm_enable_barrier"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"/>
-
-    <Switch
-        android:id="@+id/alarm_settings__toggle_task_enable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:thumbTint="@color/toggle_alarms"
-        android:layout_marginEnd="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginBottom="@dimen/margin_medium"
-        app:layout_constraintLeft_toRightOf="@id/alarm_settings__task_enable_title"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/alarm_settings__alarm_enable_barrier" />
-
-
-    <!--Expand task settings-->
-    <android.support.constraint.Group
-        android:id="@+id/alarm_settings__task_expand"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:constraint_referenced_ids="alarm_settings_task_expand__difficult_layout,
-                alarm_settings_task_expand__language_layout"
-        app:layout_constraintTop_toBottomOf="@id/alarm_settings__task_barrier"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
-
-    <!--Difficult-->
-    <LinearLayout
-        android:id="@+id/alarm_settings_task_expand__difficult_layout"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/alarm_settings__task_barrier"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/alarm_settings_task_expand__difficult_title"
-            android:layout_width="0dp"
+        <TimePicker
+            android:id="@+id/alarm_settings__timePicker"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="60"
-            android:text="Difficult"
-            android:textSize="@dimen/text_medium"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_medium"/>
+            android:layout_marginTop="@dimen/margin_large"
+            android:timePickerMode="spinner"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/alarm_settings_task_expand__difficult"
+        <!--https://www.zoftino.com/android-timepicker-example-->
+
+        <!--Alarm name-->
+        <EditText
+            android:id="@+id/alarm_settings__alarm_name"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="40"
-            android:text="medium"
+            android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:gravity="center"
+            android:hint="LABEL"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/alarm_settings__timePicker" />
+
+        <!--Alarm days-->
+        <TextView
+            android:id="@+id/alarm_settings__days"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="Mn-Fr"
             android:textSize="@dimen/text_medium"
+            android:gravity="center"
+            android:background="?attr/selectableItemBackground"
             android:fontFamily="sans-serif-black"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_medium" />
-    </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@id/alarm_settings__alarm_name"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-
-    <!--Programming language-->
-    <LinearLayout
-        android:id="@+id/alarm_settings_task_expand__language_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/alarm_settings_task_expand__difficult_layout"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
-
-        <TextView
-            android:id="@+id/alarm_settings_task_expand__language_title"
+        <!--Song layout-->
+        <LinearLayout
+            android:id="@+id/alarm_settings__song_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="60"
-            android:text="Language"
-            android:textSize="@dimen/text_medium"
+            android:orientation="horizontal"
+            android:background="?attr/selectableItemBackground"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alarm_settings__days">
+
+            <TextView
+                android:id="@+id/alarm_settings__song_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center|start"
+                android:layout_weight="60"
+                android:text="Song"
+                android:textSize="@dimen/text_medium" />
+
+            <TextView
+                android:id="@+id/alarm_settings__song"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center|end"
+                android:layout_weight="40"
+                android:fontFamily="sans-serif-black"
+                android:text="default"
+                android:maxLines="1"
+                android:textSize="@dimen/text_medium" />
+        </LinearLayout>
+
+        <!--Alarm turn on/off-->
+        <TextView
+            android:id="@+id/alarm_settings__alarm_enable_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_medium"/>
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:text="Alarm enable"
+            android:textSize="@dimen/text_medium"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/alarm_settings__toggle_alarm_enable"
+            app:layout_constraintTop_toBottomOf="@id/alarm_settings__song_layout" />
 
+        <Switch
+            android:id="@+id/alarm_settings__toggle_alarm_enable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:thumbTint="@color/toggle_alarms"
+            app:layout_constraintLeft_toRightOf="@id/alarm_settings__alarm_enable_title"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/alarm_settings__alarm_enable_title"
+            app:layout_constraintBottom_toBottomOf="@+id/alarm_settings__alarm_enable_title"/>
+
+        <!--Task enable-->
         <TextView
-            android:id="@+id/alarm_settings_task_expand__language"
+            android:id="@+id/alarm_settings__task_enable_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:text="Task"
+            android:textSize="@dimen/text_medium"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/alarm_settings__toggle_task_enable"
+            app:layout_constraintTop_toBottomOf="@id/alarm_settings__alarm_enable_title" />
+
+        <Switch
+            android:id="@+id/alarm_settings__toggle_task_enable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:thumbTint="@color/toggle_alarms"
+            app:layout_constraintLeft_toRightOf="@id/alarm_settings__task_enable_title"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/alarm_settings__task_enable_title"
+            app:layout_constraintBottom_toBottomOf="@id/alarm_settings__task_enable_title"/>
+
+
+        <!--Expand task settings-->
+        <android.support.constraint.Group
+            android:id="@+id/alarm_settings__task_expand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="alarm_settings_task_expand__difficult_layout,
+                alarm_settings_task_expand__language_layout" />
+
+
+        <!--Difficult-->
+        <LinearLayout
+            android:id="@+id/alarm_settings_task_expand__difficult_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="40"
-            android:text="Javascript"
-            android:textSize="@dimen/text_medium"
-            android:fontFamily="sans-serif-black"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_medium" />
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:background="?attr/selectableItemBackground"
+            app:layout_constraintTop_toBottomOf="@id/alarm_settings__task_enable_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
 
-</android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/alarm_settings_task_expand__difficult_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center|start"
+                android:layout_weight="60"
+                android:text="Difficult"
+                android:textSize="@dimen/text_medium" />
+
+            <TextView
+                android:id="@+id/alarm_settings_task_expand__difficult"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center|end"
+                android:layout_weight="40"
+                android:fontFamily="sans-serif-black"
+                android:text="medium"
+                android:textSize="@dimen/text_medium" />
+        </LinearLayout>
+
+
+        <!--Programming language-->
+        <LinearLayout
+            android:id="@+id/alarm_settings_task_expand__language_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="?attr/selectableItemBackground"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/alarm_settings_task_expand__difficult_layout">
+
+            <TextView
+                android:id="@+id/alarm_settings_task_expand__language_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center|start"
+                android:layout_weight="60"
+                android:text="Language"
+                android:textSize="@dimen/text_medium" />
+
+            <TextView
+                android:id="@+id/alarm_settings_task_expand__language"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center|end"
+                android:layout_weight="40"
+                android:fontFamily="sans-serif-black"
+                android:text="Javascript"
+                android:maxLines="1"
+                android:textSize="@dimen/text_medium" />
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/alarm_settings__close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:src="@drawable/ic_close"
+            app:backgroundTint="@color/fab_button"
+            app:elevation="@dimen/elevation_default"
+            app:fabSize="normal"
+            app:layout_constraintTop_toBottomOf="@+id/alarm_settings_task_expand__language_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/alarm_settings__save"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintVertical_bias="1"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/alarm_settings__save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:src="@drawable/ic_check"
+            app:backgroundTint="@color/fab_button"
+            app:elevation="@dimen/elevation_default"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/alarm_settings__close"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/alarm_settings_task_expand__language_layout"
+            app:layout_constraintVertical_bias="1" />
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

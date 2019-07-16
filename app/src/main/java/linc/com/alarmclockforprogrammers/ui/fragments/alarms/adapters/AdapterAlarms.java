@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers;
+package linc.com.alarmclockforprogrammers.ui.fragments.alarms.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import linc.com.alarmclockforprogrammers.model.data.Alarm;
+import linc.com.alarmclockforprogrammers.R;
 
 public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHolder> {
 

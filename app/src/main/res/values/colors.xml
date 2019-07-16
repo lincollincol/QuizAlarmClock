@@ -8,6 +8,13 @@
     <color name="text_light">#E2E5FF</color>
     <color name="text_dark">#1A023B</color>
 
+    <!--Alert dialog day picker-->
+    <color name="dialog_style_light">#E2E5FF</color>
+    <color name="dialog_button_positive">#470D9D</color>
+    <color name="dialog_button_negative">#7126EE</color>
+    <color name="dialog_check_active">#470D9D</color>
+    <color name="dialog_check_normal">#7126EE</color>
+
     <!--Nav menu item color-->
     <color name="nav_menu_shape">#7126EE</color>
     <color name="nav_menu_shape_opacity">#4D000000</color>
@@ -22,6 +29,12 @@
     <color name="button_day_active">#470D9D</color>
     <color name="screen_block_dark">#944A4A4A</color>
 
+    <!--Dialog(fragment) alarm editor-->
+    <color name="button_delete">#470D9D</color>
+
+    <!--Fragment alarm settings-->
+    <color name="fab_button">#470D9D</color>
+    <color name="fab_button_day_passive">#907FFC</color>
 
     <color name="NONAME">#907FFC</color>
     <color name="NONAME_2">#4D907FFC</color>

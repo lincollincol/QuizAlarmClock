@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers;
+package linc.com.alarmclockforprogrammers.model.data;
 
 public class Alarm {
 
