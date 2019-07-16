@@ -24,6 +24,7 @@ import java.util.List;
 import linc.com.alarmclockforprogrammers.model.data.Alarm;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarms.adapters.AdapterAlarms;
+import linc.com.alarmclockforprogrammers.ui.fragments.alarmsettings.FragmentAlarmSettings;
 
 
 public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmSelected,

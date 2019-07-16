@@ -13,5 +13,20 @@
     <string name="item_menu_settings">Settings</string>
     <string name="item_menu_about">About</string>
 
+    <!--Alert dialogs-->
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_confirm">Confirm</string>
+
+    <string name="dialog_day_monday">Monday</string>
+    <string name="dialog_day_tuesday">Tuesday</string>
+    <string name="dialog_day_wednesday">Wednesday</string>
+    <string name="dialog_day_thursday">Thursday</string>
+    <string name="dialog_day_friday">Friday</string>
+    <string name="dialog_day_saturday">Saturday</string>
+    <string name="dialog_day_sunday">Sunday</string>
+
+    <string name="dialog_difficult_easy">easy</string>
+    <string name="dialog_difficult_medium">medium</string>
+    <string name="dialog_difficult_hard">hard</string>
 
 </resources>

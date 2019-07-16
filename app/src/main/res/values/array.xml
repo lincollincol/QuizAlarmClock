@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="week_days">
+        <item>@string/dialog_day_monday</item>
+        <item>@string/dialog_day_tuesday</item>
+        <item>@string/dialog_day_wednesday</item>
+        <item>@string/dialog_day_thursday</item>
+        <item>@string/dialog_day_friday</item>
+        <item>@string/dialog_day_saturday</item>
+        <item>@string/dialog_day_sunday</item>
+    </array>
+
+    <array name="difficult_modes">
+        <item>@string/dialog_difficult_easy</item>
+        <item>@string/dialog_difficult_medium</item>
+        <item>@string/dialog_difficult_hard</item>
+    </array>
+
+    <array name="programming_languages">
+        <item>Java</item>
+        <item>C++</item>
+    </array>
+
+</resources>
