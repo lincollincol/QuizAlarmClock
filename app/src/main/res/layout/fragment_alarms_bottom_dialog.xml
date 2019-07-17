@@ -52,14 +52,15 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/alarms_dialog__toggle_alarm_enable" />
 
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:id="@+id/alarms_dialog__toggle_alarm_enable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_large"
             android:layout_marginTop="@dimen/margin_large"
             android:layout_marginBottom="@dimen/margin_large"
-            android:thumbTint="@color/toggle_alarms"
+            app:trackTint="@drawable/switch_toggle_track"
+            app:thumbTint="@drawable/switch_toggle_thumb"
             app:layout_constraintBottom_toBottomOf="@+id/alarms_dialog__alarm_enable_title"
             app:layout_constraintLeft_toRightOf="@id/alarms_dialog__alarm_enable_title"
             app:layout_constraintRight_toRightOf="parent"

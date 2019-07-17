@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.SwitchCompat;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import linc.com.alarmclockforprogrammers.R;
+import linc.com.alarmclockforprogrammers.model.data.Alarm;
 import linc.com.alarmclockforprogrammers.presentation.alarmsettings.PresenterAlarmSettings;
 import linc.com.alarmclockforprogrammers.presentation.alarmsettings.ViewAlarmSettings;
 
@@ -35,31 +37,43 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
 
     private ViewGroup container;
     private Group taskExpand;
-    private EditText alarmLabel;
+    private View view;
     private TimePicker timePicker;
+    private EditText alarmLabel;
+    private SwitchCompat taskEnable;
+    private SwitchCompat alarmEnable;
+    private TextView dayPicker;
+    private LinearLayout difficultPicker;
+    private LinearLayout languagePicker;
+    private LinearLayout songPicker;
+
     private PresenterAlarmSettings presenter;
+    private Alarm alarm;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new PresenterAlarmSettings(this);
+
+        // todo get by id from room
+
     }
 
-        @Nullable
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_alarm_settings, container, false);
+        view = inflater.inflate(R.layout.fragment_alarm_settings, container, false);
         this.container = container;
 
         taskExpand = view.findViewById(R.id.alarm_settings__task_expand);
         alarmLabel = view.findViewById(R.id.alarm_settings__alarm_name);
         timePicker = view.findViewById(R.id.alarm_settings__timePicker);
-        Switch taskEnable = view.findViewById(R.id.alarm_settings__toggle_task_enable);
-        Switch alarmEnable = view.findViewById(R.id.alarm_settings__toggle_alarm_enable);
-        TextView dayPicker = view.findViewById(R.id.alarm_settings__days);
-        LinearLayout difficultPicker = view.findViewById(R.id.alarm_settings_task_expand__difficult_layout);
-        LinearLayout languagePicker = view.findViewById(R.id.alarm_settings_task_expand__language_layout);
-        LinearLayout songPicker = view.findViewById(R.id.alarm_settings__song_layout);
+        taskEnable = view.findViewById(R.id.alarm_settings__toggle_task_enable);
+        alarmEnable = view.findViewById(R.id.alarm_settings__toggle_alarm_enable);
+        dayPicker = view.findViewById(R.id.alarm_settings__days);
+        difficultPicker = view.findViewById(R.id.alarm_settings_task_expand__difficult_layout);
+        languagePicker = view.findViewById(R.id.alarm_settings_task_expand__language_layout);
+        songPicker = view.findViewById(R.id.alarm_settings__song_layout);
         FloatingActionButton saveAlarmButton = view.findViewById(R.id.alarm_settings__save);
         FloatingActionButton cancelButton = view.findViewById(R.id.alarm_settings__cancel);
 
@@ -71,6 +85,8 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
         cancelButton.setOnClickListener(this);
         taskEnable.setOnCheckedChangeListener(this);
         alarmEnable.setOnCheckedChangeListener(this);
+
+        presenter.setAlarmData(this.alarm);
 
         return view;
     }
@@ -105,10 +121,10 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
                 presenter.getSongFile();
                 break;
             case R.id.alarm_settings__save:
-                // todo create and save alarm
+                presenter.saveAlarm(this.alarm);
                 break;
             case R.id.alarm_settings__cancel:
-                // todo close fragment without saving
+                presenter.closeAlarmSettings();
                 break;
         }
     }
@@ -178,6 +194,25 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
     @Override
     public void getSongFile() {
         // todo implement .mp3 file selection
+    }
+
+    @Override
+    public void setAlarmData(Alarm alarm) {
+
+//        this.timePicker;
+//        this.alarmLabel;
+//        this.taskEnable;
+//        this.alarmEnable;
+//        this.dayPicker;
+//        this.difficultPicker;
+//        this.languagePicker;
+//        this.songPicker;
+
+    }
+
+    @Override
+    public void closeAlarmSettings() {
+        getFragmentManager().popBackStack();
     }
 
     /**

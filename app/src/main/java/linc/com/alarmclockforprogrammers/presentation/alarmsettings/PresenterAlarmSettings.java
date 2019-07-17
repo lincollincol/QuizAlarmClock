@@ -1,5 +1,7 @@
 package linc.com.alarmclockforprogrammers.presentation.alarmsettings;
 
+import linc.com.alarmclockforprogrammers.model.data.Alarm;
+
 public class PresenterAlarmSettings {
 
     private ViewAlarmSettings view;
@@ -24,5 +26,18 @@ public class PresenterAlarmSettings {
         // todo check for successfully provided permissions
         this.view.askForReadWritePermission();
         this.view.getSongFile();
+    }
+
+    public void setAlarmData(Alarm alarm) {
+        view.setAlarmData(alarm);
+    }
+
+    public void saveAlarm(Alarm alarm) {
+        // todo interactor save
+        view.closeAlarmSettings();
+    }
+
+    public void closeAlarmSettings() {
+        view.closeAlarmSettings();
     }
 }

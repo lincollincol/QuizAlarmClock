@@ -6,11 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import linc.com.alarmclockforprogrammers.model.data.Alarm;
@@ -37,7 +37,7 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
         View view = inflater.inflate(R.layout.fragment_alarms_bottom_dialog, container, false);
 
         FloatingActionButton deleteButton = view.findViewById(R.id.alarms_dialog_delete_alarm);
-        Switch enableAlarm = view.findViewById(R.id.alarms_dialog__toggle_alarm_enable);
+        SwitchCompat enableAlarm = view.findViewById(R.id.alarms_dialog__toggle_alarm_enable);
         TextView alarmTime = view.findViewById(R.id.alarms_dialog__alarm_time);
         TextView alarmDetails = view.findViewById(R.id.alarms_dialog__alarm_details);
 

@@ -99,14 +99,15 @@
             app:layout_constraintRight_toLeftOf="@id/alarm_settings__toggle_alarm_enable"
             app:layout_constraintTop_toBottomOf="@id/alarm_settings__song_layout" />
 
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:id="@+id/alarm_settings__toggle_alarm_enable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginEnd="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_medium"
-            android:thumbTint="@color/toggle_alarms"
+            app:trackTint="@drawable/switch_toggle_track"
+            app:thumbTint="@drawable/switch_toggle_thumb"
             app:layout_constraintLeft_toRightOf="@id/alarm_settings__alarm_enable_title"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/alarm_settings__alarm_enable_title"
@@ -127,14 +128,15 @@
             app:layout_constraintRight_toLeftOf="@id/alarm_settings__toggle_task_enable"
             app:layout_constraintTop_toBottomOf="@id/alarm_settings__alarm_enable_title" />
 
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:id="@+id/alarm_settings__toggle_task_enable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_medium"
             android:layout_marginEnd="@dimen/margin_medium"
-            android:thumbTint="@color/toggle_alarms"
+            app:trackTint="@drawable/switch_toggle_track"
+            app:thumbTint="@drawable/switch_toggle_thumb"
             app:layout_constraintLeft_toRightOf="@id/alarm_settings__task_enable_title"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/alarm_settings__task_enable_title"

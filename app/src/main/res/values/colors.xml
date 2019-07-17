@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Global-->
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#7126EE</color>
+    <color name="colorPrimaryDark">#E2E5FF</color>
+    <color name="colorAccent">#470D9D</color>
 
     <color name="text_light">#E2E5FF</color>
     <color name="text_dark">#1A023B</color>
@@ -36,7 +36,15 @@
     <color name="fab_button">#470D9D</color>
     <color name="fab_button_day_passive">#907FFC</color>
 
+    <!--Switch toggles color-->
+    <color name="switch_thumb_enable">#470D9D</color>
+    <color name="switch_thumb_disable">#7126EE</color>
+    <color name="switch_track_enable">#7126EE</color>
+    <color name="switch_track_disable">#E2E5FF</color>
+
     <color name="NONAME">#907FFC</color>
+
+
     <color name="NONAME_2">#4D907FFC</color>
     <color name="NONAME_3">#66E2E5FF</color>
 </resources>
