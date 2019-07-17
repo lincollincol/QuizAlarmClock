@@ -8,7 +8,7 @@
     <color name="text_light">#E2E5FF</color>
     <color name="text_dark">#1A023B</color>
 
-    <!--Alert dialog day picker-->
+    <!--Alert dialog days picker-->
     <color name="dialog_style_light">#E2E5FF</color>
     <color name="dialog_button_positive">#470D9D</color>
     <color name="dialog_button_negative">#7126EE</color>

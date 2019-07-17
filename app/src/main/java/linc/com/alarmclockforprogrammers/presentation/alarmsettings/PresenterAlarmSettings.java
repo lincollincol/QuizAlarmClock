@@ -1,6 +1,6 @@
 package linc.com.alarmclockforprogrammers.presentation.alarmsettings;
 
-import linc.com.alarmclockforprogrammers.model.data.Alarm;
+import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 
 public class PresenterAlarmSettings {
 
@@ -18,8 +18,12 @@ public class PresenterAlarmSettings {
         this.view.showWeekDaysDialog();
     }
 
-    public void showRadioButtonDialog(String[] items) {
-        this.view.showRadioButtonDialog(items);
+    public void showDifficultModeDialog() {
+        this.view.showDifficultModeDialog();
+    }
+
+    public void showLanguageDialog() {
+        this.view.showLanguageDialog();
     }
 
     public void getSongFile() {

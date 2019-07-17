@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import linc.com.alarmclockforprogrammers.model.data.Alarm;
+import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 import linc.com.alarmclockforprogrammers.R;
 
 public class FragmentBottomDialog extends BottomSheetDialogFragment implements View.OnClickListener,
@@ -46,7 +46,7 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
         enableAlarm.setOnCheckedChangeListener(this);
 
         alarmTime.setText(alarm.getTime());
-        alarmDetails.setText((alarm.getLanguage() + "\n" + alarm.getDay()));
+        alarmDetails.setText((alarm.getLanguage() + "\n" + alarm.getDays()));
 
         return view;
     }

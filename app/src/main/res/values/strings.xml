@@ -14,6 +14,10 @@
     <string name="item_menu_about">About</string>
 
     <!--Alert dialogs-->
+    <string name="title_dialog_week_days">Select days</string>
+    <string name="title_dialog_difficult_mode">Select difficult</string>
+    <string name="title_dialog_programming_language">Select language</string>
+
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_confirm">Confirm</string>
 

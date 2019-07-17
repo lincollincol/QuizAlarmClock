@@ -21,18 +21,28 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import linc.com.alarmclockforprogrammers.model.data.Alarm;
+import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 import linc.com.alarmclockforprogrammers.R;
+import linc.com.alarmclockforprogrammers.presentation.alarms.PresenterAlarms;
+import linc.com.alarmclockforprogrammers.presentation.alarms.ViewAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarms.adapters.AdapterAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarmsettings.FragmentAlarmSettings;
 
 
 public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmSelected,
-        View.OnClickListener, FragmentBottomDialog.BottomDialogClickListener {
+        View.OnClickListener, FragmentBottomDialog.BottomDialogClickListener, ViewAlarms {
 
     private RecyclerView alarmsListRV;
     private AdapterAlarms adapterAlarms;
     private List<Alarm> alarmList;
+    private PresenterAlarms presenter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        presenter = new PresenterAlarms(this);
+    }
 
     @Nullable
     @Override
@@ -40,31 +50,35 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmSel
         View view = inflater.inflate(R.layout.fragment_alarms, container, false);
 
         /**=============*/
-        FloatingActionButton fab = view.findViewById(R.id.alarms__add_alarm);
-        fab.setOnClickListener(this);
 
         alarmsListRV = view.findViewById(R.id.alarms__list_of_alarms);
+        FloatingActionButton fab = view.findViewById(R.id.alarms__add_alarm);
+
+        adapterAlarms = new AdapterAlarms(this, getActivity());
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         SnapHelper snapHelper = new LinearSnapHelper();
-        adapterAlarms = new AdapterAlarms(this, getActivity());
-
-        /***/
-
-        alarmList = new ArrayList<>();
-
-        for(int i = 0; i < 10; i++) {
-            alarmList.add(new Alarm((i+1)+":00", "Java", "weekdays", false));
-        }
-        adapterAlarms.setAlarms(alarmList);
-
-        /***/
 
         snapHelper.attachToRecyclerView(alarmsListRV);
         alarmsListRV.setHasFixedSize(true);
         alarmsListRV.setLayoutManager(layoutManager);
         alarmsListRV.setAdapter(adapterAlarms);
+        fab.setOnClickListener(this);
+
+        presenter.setAlarms();
 
         return view;
+    }
+
+    @Override
+    public void setAlarms() {
+
+        alarmList = new ArrayList<>();
+
+        for(int i = 0; i < 10; i++) {
+//            alarmList.add(new Alarm((i+1)+":00", "Java", "weekdays", false));
+        }
+
+        adapterAlarms.setAlarms(alarmList);
     }
 
     @Override

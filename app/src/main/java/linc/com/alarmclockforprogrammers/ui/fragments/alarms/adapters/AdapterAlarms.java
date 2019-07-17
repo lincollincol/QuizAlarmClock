@@ -13,7 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import linc.com.alarmclockforprogrammers.model.data.Alarm;
+import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 import linc.com.alarmclockforprogrammers.R;
 
 public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHolder> {
@@ -45,7 +45,7 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
     public void onBindViewHolder(@NonNull AlarmsHolder alarmsHolder, int i) {
         alarmsHolder.programmingLanguage.setText(alarms.get(i).getLanguage());
         alarmsHolder.time.setText(alarms.get(i).getTime());
-        alarmsHolder.days.setText(alarms.get(i).getDay());
+        alarmsHolder.days.setText(alarms.get(i).getDays());
 
         if(alarms.get(i).isEnable()) {
             alarmsHolder.layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.NONAME_3));
