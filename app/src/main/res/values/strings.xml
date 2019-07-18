@@ -33,4 +33,12 @@
     <string name="dialog_difficult_medium">medium</string>
     <string name="dialog_difficult_hard">hard</string>
 
+    <string name="dialog_day_monday_mark">Mn</string>
+    <string name="dialog_day_tuesday_mark">Tu</string>
+    <string name="dialog_day_wednesday_mark">We</string>
+    <string name="dialog_day_thursday_mark">Th</string>
+    <string name="dialog_day_friday_mark">Fr</string>
+    <string name="dialog_day_saturday_mark">Sa</string>
+    <string name="dialog_day_sunday_mark">Su</string>
+
 </resources>

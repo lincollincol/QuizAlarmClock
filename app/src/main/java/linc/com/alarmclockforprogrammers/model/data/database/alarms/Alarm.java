@@ -21,8 +21,8 @@ public class Alarm {
     @ColumnInfo(name = "minute", typeAffinity = INTEGER)
     private int minute;
 
-    @ColumnInfo(name = "language", typeAffinity = TEXT)
-    private String language;
+    @ColumnInfo(name = "label", typeAffinity = TEXT)
+    private String label;
 
     @ColumnInfo(name = "days", typeAffinity = TEXT)
     private String days;
@@ -30,8 +30,11 @@ public class Alarm {
     @ColumnInfo(name = "song_path", typeAffinity = TEXT)
     private String songPath;
 
-    @ColumnInfo(name = "difficult", typeAffinity = TEXT)
-    private String difficult;
+    @ColumnInfo(name = "language", typeAffinity = INTEGER)
+    private int language;
+
+    @ColumnInfo(name = "difficult", typeAffinity = INTEGER)
+    private int difficult;
 
     @ColumnInfo(name = "task", typeAffinity = INTEGER)
     private boolean task;
@@ -39,12 +42,14 @@ public class Alarm {
     @ColumnInfo(name = "enable", typeAffinity = INTEGER)
     private boolean enable;
 
-    public Alarm(int hour, int minute, String language, String days, String songPath, String difficult, boolean task, boolean enable) {
+    public Alarm(int hour, int minute, String label, String days, String songPath,
+                 int language, int difficult, boolean task, boolean enable) {
         this.hour = hour;
         this.minute = minute;
-        this.language = language;
+        this.label = label;
         this.days = days;
         this.songPath = songPath;
+        this.language = language;
         this.difficult = difficult;
         this.task = task;
         this.enable = enable;
@@ -74,12 +79,12 @@ public class Alarm {
         this.minute = minute;
     }
 
-    public String getLanguage() {
-        return language;
+    public String getLabel() {
+        return label;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getDays() {
@@ -98,11 +103,19 @@ public class Alarm {
         this.songPath = songPath;
     }
 
-    public String getDifficult() {
+    public int getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(int language) {
+        this.language = language;
+    }
+
+    public int getDifficult() {
         return difficult;
     }
 
-    public void setDifficult(String difficult) {
+    public void setDifficult(int difficult) {
         this.difficult = difficult;
     }
 
@@ -121,4 +134,10 @@ public class Alarm {
     public void setEnable(boolean enable) {
         this.enable = enable;
     }
+
+    public static Alarm getDefaultAlarm() {
+        return new Alarm(0,0,"", "",
+                "default", 0,0,false, false);
+    }
 }
+

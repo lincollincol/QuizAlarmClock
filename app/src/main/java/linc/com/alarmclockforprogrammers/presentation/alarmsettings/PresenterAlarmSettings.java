@@ -1,5 +1,7 @@
 package linc.com.alarmclockforprogrammers.presentation.alarmsettings;
 
+import android.util.Log;
+
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 
 public class PresenterAlarmSettings {
@@ -18,12 +20,12 @@ public class PresenterAlarmSettings {
         this.view.showWeekDaysDialog();
     }
 
-    public void showDifficultModeDialog() {
-        this.view.showDifficultModeDialog();
+    public void showDifficultModeDialog(int position) {
+        this.view.showDifficultModeDialog(position);
     }
 
-    public void showLanguageDialog() {
-        this.view.showLanguageDialog();
+    public void showLanguageDialog(int position) {
+        this.view.showLanguageDialog(position);
     }
 
     public void getSongFile() {
@@ -37,8 +39,14 @@ public class PresenterAlarmSettings {
     }
 
     public void saveAlarm(Alarm alarm) {
+        view.saveChanges();
         // todo interactor save
         view.closeAlarmSettings();
+
+        Log.d("ALARM_TEST", "saveAlarm: \n"+alarm.getHour()+":"+alarm.getMinute()+
+                "\n"+alarm.getDays()+"\n"+alarm.getDifficult()+"\n"+alarm.getLanguage()+"\n"+
+                alarm.getSongPath()+"\n"+alarm.getLabel());
+
     }
 
     public void closeAlarmSettings() {

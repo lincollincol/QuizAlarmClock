@@ -45,7 +45,7 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
         enableAlarm.setChecked(alarm.isEnable());
         enableAlarm.setOnCheckedChangeListener(this);
 
-        alarmTime.setText(alarm.getTime());
+//        alarmTime.setText(alarm.getTime());
         alarmDetails.setText((alarm.getLanguage() + "\n" + alarm.getDays()));
 
         return view;

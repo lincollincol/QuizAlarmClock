@@ -44,7 +44,6 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
     @Override
     public void onBindViewHolder(@NonNull AlarmsHolder alarmsHolder, int i) {
         alarmsHolder.programmingLanguage.setText(alarms.get(i).getLanguage());
-        alarmsHolder.time.setText(alarms.get(i).getTime());
         alarmsHolder.days.setText(alarms.get(i).getDays());
 
         if(alarms.get(i).isEnable()) {
