@@ -135,6 +135,7 @@ public class Alarm {
         this.enable = enable;
     }
 
+    /** Return default empty alarm object*/
     public static Alarm getDefaultAlarm() {
         return new Alarm(0,0,"", "",
                 "default", 0,0,false, false);

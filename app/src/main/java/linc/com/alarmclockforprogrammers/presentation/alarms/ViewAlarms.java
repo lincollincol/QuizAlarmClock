@@ -1,8 +1,13 @@
 package linc.com.alarmclockforprogrammers.presentation.alarms;
 
+import java.util.List;
+
+import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+
 public interface ViewAlarms {
 
-    // todo add List as a param
-    void setAlarms();
-
+    void setAlarms(List<Alarm> alarms);
+    void openAlarmEditor(int alarmId);
+    void openAlarmCreator();
+    void openBottomSheetDialog(Alarm alarm);
 }

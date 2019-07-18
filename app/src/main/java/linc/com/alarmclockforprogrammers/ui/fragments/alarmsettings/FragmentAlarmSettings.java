@@ -33,6 +33,8 @@ import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.model.interactor.alarmsettings.InteractorAlarmSettings;
+import linc.com.alarmclockforprogrammers.model.repository.alarmsettings.RepositoryAlarmSettings;
 import linc.com.alarmclockforprogrammers.presentation.alarmsettings.PresenterAlarmSettings;
 import linc.com.alarmclockforprogrammers.presentation.alarmsettings.ViewAlarmSettings;
 
@@ -43,7 +45,6 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
 
     private ViewGroup container;
     private Group taskExpand;
-    private View view;
     private TimePicker timePicker;
     private EditText alarmLabel;
     private SwitchCompat taskEnable;
@@ -52,29 +53,33 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
     private TextView selectedSong;
     private TextView selectedDifficultMode;
     private TextView selectedLanguage;
-    private LinearLayout difficultPicker;
-    private LinearLayout languagePicker;
-    private LinearLayout songPicker;
 
     private PresenterAlarmSettings presenter;
     private Alarm alarm;
-
+    private int alarmId;
     private int dialogPosition;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter = new PresenterAlarmSettings(this);
-        // todo get by id from room
         AppDatabase database = AlarmApp.getInstance().getDatabase();
 
+        if(presenter == null) {
+            presenter = new PresenterAlarmSettings(this, new InteractorAlarmSettings(
+                    new RepositoryAlarmSettings(database.alarmDao())
+            ));
+        }
+
+        if(getArguments() != null) {
+            this.alarmId = getArguments().getInt("alarm_id");
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_alarm_settings, container, false);
+        View view = inflater.inflate(R.layout.fragment_alarm_settings, container, false);
         this.container = container;
 
         taskExpand = view.findViewById(R.id.alarm_settings__task_expand);
@@ -86,9 +91,9 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
         selectedSong = view.findViewById(R.id.alarm_settings__song);
         selectedDifficultMode = view.findViewById(R.id.alarm_settings_task_expand__difficult);
         selectedLanguage = view.findViewById(R.id.alarm_settings_task_expand__language);
-        difficultPicker = view.findViewById(R.id.alarm_settings_task_expand__difficult_layout);
-        languagePicker = view.findViewById(R.id.alarm_settings_task_expand__language_layout);
-        songPicker = view.findViewById(R.id.alarm_settings__song_layout);
+        LinearLayout difficultPicker = view.findViewById(R.id.alarm_settings_task_expand__difficult_layout);
+        LinearLayout languagePicker = view.findViewById(R.id.alarm_settings_task_expand__language_layout);
+        LinearLayout songPicker = view.findViewById(R.id.alarm_settings__song_layout);
         FloatingActionButton saveAlarmButton = view.findViewById(R.id.alarm_settings__save);
         FloatingActionButton cancelButton = view.findViewById(R.id.alarm_settings__cancel);
 
@@ -101,23 +106,23 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
         taskEnable.setOnCheckedChangeListener(this);
         alarmEnable.setOnCheckedChangeListener(this);
 
-        presenter.setAlarmData(this.alarm);
+        presenter.setAlarmData(this.alarmId);
 
         return view;
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
         switch(buttonView.getId()) {
             case R.id.alarm_settings__toggle_task_enable:
                 presenter.openExpandedSettings(isChecked);
                 break;
             case R.id.alarm_settings__toggle_alarm_enable:
-                Toast.makeText(getContext(), "Checked: " + isChecked, Toast.LENGTH_SHORT).show();
+
+                // todo do something with click listener
+
                 break;
         }
-
     }
 
     @Override

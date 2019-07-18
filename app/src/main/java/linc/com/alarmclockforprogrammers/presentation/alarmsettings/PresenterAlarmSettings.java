@@ -2,14 +2,18 @@ package linc.com.alarmclockforprogrammers.presentation.alarmsettings;
 
 import android.util.Log;
 
+import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.model.interactor.alarmsettings.InteractorAlarmSettings;
 
 public class PresenterAlarmSettings {
 
     private ViewAlarmSettings view;
+    private InteractorAlarmSettings interactor;
 
-    public PresenterAlarmSettings(ViewAlarmSettings view) {
+    public PresenterAlarmSettings(ViewAlarmSettings view, InteractorAlarmSettings interactor) {
         this.view = view;
+        this.interactor = interactor;
     }
 
     public void openExpandedSettings(boolean isChecked) {
@@ -34,19 +38,15 @@ public class PresenterAlarmSettings {
         this.view.getSongFile();
     }
 
-    public void setAlarmData(Alarm alarm) {
-        view.setAlarmData(alarm);
+    public void setAlarmData(int alarmId) {
+        Disposable d = interactor.getAlarmById(alarmId)
+                .subscribe(alarm -> view.setAlarmData(alarm));
     }
 
     public void saveAlarm(Alarm alarm) {
         view.saveChanges();
-        // todo interactor save
+        interactor.saveAlarm(alarm);
         view.closeAlarmSettings();
-
-        Log.d("ALARM_TEST", "saveAlarm: \n"+alarm.getHour()+":"+alarm.getMinute()+
-                "\n"+alarm.getDays()+"\n"+alarm.getDifficult()+"\n"+alarm.getLanguage()+"\n"+
-                alarm.getSongPath()+"\n"+alarm.getLabel());
-
     }
 
     public void closeAlarmSettings() {

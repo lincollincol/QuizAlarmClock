@@ -29,7 +29,7 @@ public class RepositoryAlarmSettings {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Completable insertQuestions(Alarm alarm) {
+    public Completable insertAlarm(Alarm alarm) {
         return Completable.fromAction(
                 () -> alarmDao.insertAlarm(alarm)
         )

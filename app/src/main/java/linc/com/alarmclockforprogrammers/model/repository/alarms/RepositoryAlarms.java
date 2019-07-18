@@ -25,9 +25,8 @@ public class RepositoryAlarms {
             }catch (Exception e){
                 emitter.onError(e);
             }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        }).subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread());
     }
 
 }
