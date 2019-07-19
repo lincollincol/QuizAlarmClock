@@ -30,5 +30,18 @@ public class PresenterAlarms {
     public void openBottomSheetDialog(Alarm alarm) {
         view.openBottomSheetDialog(alarm);
     }
+
+    public void deleteAlarm(Alarm alarm) {
+        interactor.deleteAlarm(alarm);
+        Disposable d = interactor.getAlarms()
+                .subscribe(alarms -> view.setAlarms(alarms));
+    }
+
+    public void updateAlarm(Alarm alarm) {
+        interactor.updateAlarm(alarm);
+        Disposable d = interactor.getAlarms()
+                .subscribe(alarms -> view.setAlarms(alarms));
+    }
+
 }
 

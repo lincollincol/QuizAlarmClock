@@ -40,7 +40,11 @@ public class PresenterAlarmSettings {
 
     public void setAlarmData(int alarmId) {
         Disposable d = interactor.getAlarmById(alarmId)
-                .subscribe(alarm -> view.setAlarmData(alarm));
+                .subscribe(
+                        alarm -> view.setAlarmData(alarm),
+                        Throwable::printStackTrace
+                );
+        Log.d("ALARM_ID_EXCEPTION", "setAlarmData: "+alarmId);
     }
 
     public void saveAlarm(Alarm alarm) {

@@ -86,32 +86,11 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
         }
 
         public void setAlarm(Alarm alarm) {
-            this.programmingLanguage.setText(getProgrammingsLanguage(alarm.getLanguage()));
-            this.time.setText((alarm.getHour()+":"+alarm.getMinute()));
-            this.days.setText(getDaysMarks(alarm));
+            this.time.setText(Alarm.getCorrectTime(alarm.getHour(), alarm.getMinute()));
+            this.programmingLanguage.setText((Alarm.getProgrammingsLanguage(alarm.getLanguage(), context.getResources())));
+            this.days.setText(Alarm.getDaysMarks(alarm.getDays(), context.getResources()));
         }
 
-        private String getDaysMarks(Alarm alarm) {
-            final String[] weekDays = context.getResources().getStringArray(R.array.week_days_marks);
-            StringBuilder marks = new StringBuilder();
-
-            for(int i = 0; i < alarm.getDays().length(); i++) {
-                int day = Character.getNumericValue(alarm.getDays().charAt(i)) - 1;
-                marks.append(weekDays[day]);
-                marks.append((i == (alarm.getDays().length()-1) ? "" : ", "));
-            }
-            return marks.toString();
-        }
-
-        private String getDifficultMode(int position) {
-            String[] difficultModes = context.getResources().getStringArray(R.array.difficult_modes);
-            return difficultModes[position];
-        }
-
-        private String getProgrammingsLanguage(int position) {
-            String[] language = context.getResources().getStringArray(R.array.programming_languages);
-            return language[position];
-        }
     }
 
     public interface OnAlarmClicked {

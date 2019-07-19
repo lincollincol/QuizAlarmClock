@@ -4,6 +4,10 @@ package linc.com.alarmclockforprogrammers.model.data.database.alarms;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.content.res.Resources;
+import android.util.Log;
+
+import linc.com.alarmclockforprogrammers.R;
 
 import static android.arch.persistence.room.ColumnInfo.INTEGER;
 import static android.arch.persistence.room.ColumnInfo.TEXT;
@@ -140,5 +144,44 @@ public class Alarm {
         return new Alarm(0,0,"", "",
                 "default", 0,0,false, false);
     }
+
+    /** Return String with selected days in mark format: Mn(Monday), Fr (Friday)*/
+    public static String getDaysMarks(String days, Resources resources) {
+        StringBuilder marks = new StringBuilder();
+        String[] weekDays = resources.getStringArray(R.array.week_days_marks);
+
+        for(int i = 0; i < days.length(); i++) {
+            int day = Character.getNumericValue(days.charAt(i)) - 1;
+            marks.append(weekDays[day]);
+            marks.append((i == (days.length()-1) ? "" : ", "));
+        }
+
+        return marks.toString().isEmpty() ? "Select days" : marks.toString();
+    }
+
+    /** Retrieve song name from path */
+    public static String getSongName(String path) {
+        int cut = path.lastIndexOf('/');
+        if (cut != -1) {
+            path = path.substring(cut + 1);
+        }
+        return path;
+    }
+
+    public static String getDifficultMode(int position, Resources resources) {
+        String[] difficultModes = resources.getStringArray(R.array.difficult_modes);
+        return difficultModes[position];
+    }
+
+    public static String getProgrammingsLanguage(int position, Resources resources) {
+        String[] languages = resources.getStringArray(R.array.programming_languages);
+        return languages[position];
+    }
+
+    public static String getCorrectTime(int hour, int minute) {
+        return ( (hour < 10 ? "0" + hour : hour) + ":" +
+                (minute < 10 ? "0" + minute : minute) );
+    }
+
 }
 

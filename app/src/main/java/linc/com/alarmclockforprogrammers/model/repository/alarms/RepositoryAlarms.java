@@ -2,6 +2,7 @@ package linc.com.alarmclockforprogrammers.model.repository.alarms;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -27,6 +28,20 @@ public class RepositoryAlarms {
             }
         }).subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Completable deleteAlarm(Alarm alarm) {
+        return Completable.fromAction(
+                () -> alarmDao.deleteAlarm(alarm)
+        ).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Completable updateAlarm(Alarm alarm) {
+        return Completable.fromAction(
+                () -> alarmDao.updateAlarm(alarm)
+        ).subscribeOn(Schedulers.io())
+         .observeOn(AndroidSchedulers.mainThread());
     }
 
 }

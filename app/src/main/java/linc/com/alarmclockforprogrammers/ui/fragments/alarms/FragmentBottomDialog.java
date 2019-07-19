@@ -19,12 +19,13 @@ import linc.com.alarmclockforprogrammers.R;
 public class FragmentBottomDialog extends BottomSheetDialogFragment implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
 
-    private BottomDialogClickListener dialogClickListener;
+    private BottomDialogStateListener dialogStateListener;
+    private SwitchCompat enableAlarm;
     private Alarm alarm;
 
 
-    public void setBottomDialogClickListener(BottomDialogClickListener dialogClickListener) {
-        this.dialogClickListener = dialogClickListener;
+    public void setBottomDialogClickListener(BottomDialogStateListener dialogClickListener) {
+        this.dialogStateListener = dialogClickListener;
     }
 
     public void setAlarm(Alarm alarm) {
@@ -37,7 +38,7 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
         View view = inflater.inflate(R.layout.fragment_alarms_bottom_dialog, container, false);
 
         FloatingActionButton deleteButton = view.findViewById(R.id.alarms_dialog_delete_alarm);
-        SwitchCompat enableAlarm = view.findViewById(R.id.alarms_dialog__toggle_alarm_enable);
+        enableAlarm = view.findViewById(R.id.alarms_dialog__toggle_alarm_enable);
         TextView alarmTime = view.findViewById(R.id.alarms_dialog__alarm_time);
         TextView alarmDetails = view.findViewById(R.id.alarms_dialog__alarm_details);
 
@@ -45,8 +46,13 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
         enableAlarm.setChecked(alarm.isEnable());
         enableAlarm.setOnCheckedChangeListener(this);
 
-//        alarmTime.setText(alarm.getTime());
-        alarmDetails.setText((alarm.getLanguage() + "\n" + alarm.getDays()));
+        alarmTime.setText(Alarm.getCorrectTime(alarm.getHour(), alarm.getMinute()));
+        alarmDetails.setText((
+                Alarm.getProgrammingsLanguage(alarm.getLanguage(), getResources()) + "/" +
+                Alarm.getDifficultMode(alarm.getDifficult(), getResources()) + "\n" +
+                Alarm.getDaysMarks(alarm.getDays(), getResources())
+        ));
+
 
         return view;
     }
@@ -59,17 +65,23 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
 
     @Override
     public void onClick(View v) {
-        dialogClickListener.onDeleteClicked();
+        dialogStateListener.onDeleteClicked(this.alarm);
         dismiss();
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        dialogClickListener.onSwitchClicked(isChecked);
+        this.alarm.setEnable(isChecked);
     }
 
-    interface BottomDialogClickListener {
-        void onSwitchClicked(boolean isChecked);
-        void onDeleteClicked();
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dialogStateListener.onDialogDestroyed(this.alarm);
+    }
+
+    interface BottomDialogStateListener {
+        void onDeleteClicked(Alarm alarm);
+        void onDialogDestroyed(Alarm alarm);
     }
 }

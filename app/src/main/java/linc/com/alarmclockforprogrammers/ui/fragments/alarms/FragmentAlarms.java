@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
@@ -33,9 +34,8 @@ import linc.com.alarmclockforprogrammers.ui.fragments.alarmsettings.FragmentAlar
 
 
 public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmClicked,
-        View.OnClickListener, FragmentBottomDialog.BottomDialogClickListener, ViewAlarms {
+        View.OnClickListener, FragmentBottomDialog.BottomDialogStateListener, ViewAlarms {
 
-    private RecyclerView alarmsListRV;
     private AdapterAlarms adapterAlarms;
     private PresenterAlarms presenter;
     private List<Alarm> alarms;
@@ -55,14 +55,12 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
             ));
         }
 
-        enterAnimation = new TransitionSet()
-                .addTransition(new Explode())
+        enterAnimation = new Explode()
                 .setInterpolator(new FastOutSlowInInterpolator())
                 .setStartDelay(500)
                 .setDuration(1000);
 
-        returnAnimation = new TransitionSet()
-                .addTransition(new Explode())
+        returnAnimation = new Explode()
                 .setInterpolator(new FastOutSlowInInterpolator())
                 .setDuration(1000);
     }
@@ -72,7 +70,7 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alarms, container, false);
 
-        alarmsListRV = view.findViewById(R.id.alarms__list_of_alarms);
+        RecyclerView alarmsListRV = view.findViewById(R.id.alarms__list_of_alarms);
         FloatingActionButton fab = view.findViewById(R.id.alarms__add_alarm);
 
         adapterAlarms = new AdapterAlarms(this, getActivity());
@@ -136,10 +134,8 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.alarms__add_alarm:
-                presenter.openAlarmCreator();
-                break;
+        if(v.getId() == R.id.alarms__add_alarm) {
+            presenter.openAlarmCreator();
         }
     }
 
@@ -154,13 +150,14 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
     }
 
     @Override
-    public void onSwitchClicked(boolean isChecked) {
-        // Implement turn off/on alarm
-        Toast.makeText(getActivity(), ""+isChecked, Toast.LENGTH_SHORT).show();
+    public void onDeleteClicked(Alarm alarm) {
+        // Implement alarm deleting
+        presenter.deleteAlarm(alarm);
     }
 
     @Override
-    public void onDeleteClicked() {
-        // Implement deleting alarm
+    public void onDialogDestroyed(Alarm alarm) {
+        // Implement alarm saving
+        presenter.updateAlarm(alarm);
     }
 }

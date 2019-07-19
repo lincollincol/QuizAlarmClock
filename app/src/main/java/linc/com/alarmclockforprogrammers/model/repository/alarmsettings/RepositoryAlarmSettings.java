@@ -20,7 +20,8 @@ public class RepositoryAlarmSettings {
     public Single<Alarm> getAlarmById(int id) {
         return Single.create((SingleOnSubscribe<Alarm>) emitter -> {
             try{
-                emitter.onSuccess(alarmDao.getAlarmById(id));
+                emitter.onSuccess(alarmDao.getAlarmById(id) == null ?
+                        Alarm.getDefaultAlarm() : alarmDao.getAlarmById(id));
             }catch (Exception e){
                 emitter.onError(e);
             }

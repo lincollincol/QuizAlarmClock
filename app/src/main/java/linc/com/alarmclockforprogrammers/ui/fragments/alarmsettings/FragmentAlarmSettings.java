@@ -113,15 +113,8 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch(buttonView.getId()) {
-            case R.id.alarm_settings__toggle_task_enable:
-                presenter.openExpandedSettings(isChecked);
-                break;
-            case R.id.alarm_settings__toggle_alarm_enable:
-
-                // todo do something with click listener
-
-                break;
+        if(buttonView.getId() == R.id.alarm_settings__toggle_task_enable) {
+            presenter.openExpandedSettings(isChecked);
         }
     }
 
@@ -183,7 +176,8 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
                         selectedDays.append(checkedDays[i] ? (i+1) : "");
                     }
                     this.alarm.setDays(selectedDays.toString());
-                    this.dayPicker.setText(getDaysMarks(this.alarm.getDays()));
+                    this.dayPicker.setText(
+                            Alarm.getDaysMarks(this.alarm.getDays(), getResources()));
                 })
                 .setNegativeButton(R.string.dialog_cancel, (dialog, id) -> dialog.cancel());
         dialogBuilder.create()
@@ -203,7 +197,8 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
                         (dialog, id) -> this.dialogPosition = id)
                 .setPositiveButton(R.string.dialog_confirm, (dialog, id) -> {
                     this.alarm.setDifficult(dialogPosition);
-                    this.selectedDifficultMode.setText(getDifficultMode(this.alarm.getDifficult()));
+                    this.selectedDifficultMode.setText(
+                            Alarm.getDifficultMode(this.alarm.getDifficult(), getResources()));
                 })
                 .setNegativeButton(R.string.dialog_cancel, (dialog, id) -> dialog.cancel());
         dialogBuilder.create()
@@ -223,7 +218,8 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
                         (dialog, id) -> this.dialogPosition = id)
                 .setPositiveButton(R.string.dialog_confirm, (dialog, id) -> {
                     this.alarm.setLanguage(dialogPosition);
-                    this.selectedLanguage.setText(getProgrammingsLanguage(this.alarm.getLanguage()));
+                    this.selectedLanguage.setText(
+                            Alarm.getProgrammingsLanguage(this.alarm.getLanguage(), getResources()));
                 })
                 .setNegativeButton(R.string.dialog_cancel, (dialog, id) -> dialog.cancel());
         dialogBuilder.create()
@@ -246,27 +242,23 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
 
     @Override
     public void setAlarmData(Alarm alarm) {
-        if(alarm == null) {
-            this.alarm = Alarm.getDefaultAlarm();
-        }else {
-            this.alarm = alarm;
-        }
+        this.alarm = alarm;
 
         if(Build.VERSION.SDK_INT < 23){
-            this.timePicker.setCurrentHour(this.alarm.getHour());
-            this.timePicker.setCurrentMinute(this.alarm.getMinute());
+            this.timePicker.setCurrentHour(alarm.getHour());
+            this.timePicker.setCurrentMinute(alarm.getMinute());
         } else{
-            this.timePicker.setHour(this.alarm.getHour());
-            this.timePicker.setMinute(this.alarm.getMinute());
+            this.timePicker.setHour(alarm.getHour());
+            this.timePicker.setMinute(alarm.getMinute());
         }
 
-        this.dayPicker.setText(getDaysMarks(this.alarm.getDays()));
-        this.alarmLabel.setText(this.alarm.getLabel());
-        this.selectedSong.setText(getSongName(this.alarm.getSongPath()));
-        this.selectedDifficultMode.setText(getDifficultMode(this.alarm.getDifficult()));
-        this.selectedLanguage.setText(getProgrammingsLanguage(this.alarm.getLanguage()));
-        this.alarmEnable.setChecked(this.alarm.isEnable());
-        this.taskEnable.setChecked(this.alarm.hasTask());
+        this.dayPicker.setText(Alarm.getDaysMarks(alarm.getDays(), getResources()));
+        this.alarmLabel.setText(alarm.getLabel());
+        this.selectedSong.setText(Alarm.getSongName(alarm.getSongPath()));
+        this.selectedDifficultMode.setText(Alarm.getDifficultMode(alarm.getDifficult(), getResources()));
+        this.selectedLanguage.setText(Alarm.getProgrammingsLanguage(alarm.getLanguage(), getResources()));
+        this.alarmEnable.setChecked(alarm.isEnable());
+        this.taskEnable.setChecked(alarm.hasTask());
     }
 
     @Override
@@ -296,41 +288,8 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
             Uri uri = data.getData();
             if (resultCode == RESULT_OK) {
                 this.alarm.setSongPath(uri.getPath());
-                this.selectedSong.setText(getSongName(this.alarm.getSongPath()));
+                this.selectedSong.setText(Alarm.getSongName(this.alarm.getSongPath()));
             }
         }
     }
-
-    /** Retrieve song name from path */
-    private String getSongName(String path) {
-        int cut = path.lastIndexOf('/');
-        if (cut != -1) {
-            path = path.substring(cut + 1);
-        }
-        return path;
-    }
-
-    /** Return String with selected days in mark format: Mn(Monday), Fr (Friday)*/
-    private String getDaysMarks(String days) {
-        final String[] weekDays = getResources().getStringArray(R.array.week_days_marks);
-        StringBuilder marks = new StringBuilder();
-
-        for(int i = 0; i < days.length(); i++) {
-            int day = Character.getNumericValue(this.alarm.getDays().charAt(i)) - 1;
-            marks.append(weekDays[day]);
-            marks.append((i == (days.length()-1) ? "" : ", "));
-        }
-        return marks.toString().isEmpty() ? "Select days" : marks.toString();
-    }
-
-    private String getDifficultMode(int position) {
-        String[] difficultModes = getResources().getStringArray(R.array.difficult_modes);
-        return difficultModes[position];
-    }
-
-    private String getProgrammingsLanguage(int position) {
-        String[] language = getResources().getStringArray(R.array.programming_languages);
-        return language[position];
-    }
-
 }
