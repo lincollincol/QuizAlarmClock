@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_alarm"
     android:layout_width="match_parent"
     android:layout_height="@dimen/layout_alarm_height"
     android:layout_marginStart="@dimen/margin_small"
-    android:layout_marginEnd="@dimen/margin_small"
     android:layout_marginTop="@dimen/margin_small"
+    android:layout_marginEnd="@dimen/margin_small"
     android:layout_marginBottom="@dimen/margin_small"
-    app:cardElevation="@dimen/elevation_card"
     app:cardCornerRadius="@dimen/corners_default"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    app:cardElevation="@dimen/elevation_card">
 
-    <LinearLayout android:orientation="vertical"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/selectableItemBackground"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/item_alarm__programming_language"
@@ -24,26 +24,52 @@
             android:layout_height="wrap_content"
             android:text="Java"
             android:textSize="@dimen/text_medium"
-            android:layout_gravity="center_horizontal|top"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/item_alarm__time"
+            app:layout_constraintRight_toRightOf="@id/item_alarm_am_pm"
+            app:layout_constraintBottom_toTopOf="@id/item_alarm__time"
+            app:layout_constraintVertical_bias="0.9"/>
+
         <TextView
             android:id="@+id/item_alarm__time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
             android:text="9:00"
             android:textSize="@dimen/text_large"
-            android:fontFamily="sans-serif-black"
-            android:layout_gravity="center_horizontal|center"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/item_alarm_am_pm"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_alarm_am_pm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:text="AM"
+            android:textSize="@dimen/text_medium"
+            app:layout_constraintBottom_toBottomOf="@id/item_alarm__time"
+            app:layout_constraintLeft_toRightOf="@id/item_alarm__time"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/item_alarm__time" />
+
         <TextView
             android:id="@+id/item_alarm__days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_large"
-            android:layout_marginStart="@dimen/margin_large"
-            android:text="weekdays"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
             android:maxLines="2"
+            android:text="weekdays"
             android:textSize="@dimen/text_small"
-            android:layout_gravity="center_horizontal|bottom"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/item_alarm__programming_language"
+            app:layout_constraintRight_toRightOf="@id/item_alarm__programming_language"
+            app:layout_constraintTop_toBottomOf="@id/item_alarm__time"
+            app:layout_constraintVertical_bias="0.1" />
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>

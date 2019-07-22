@@ -6,7 +6,7 @@ import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 
 public interface ViewAlarms {
 
-    void setAlarms(List<Alarm> alarms);
+    void setAlarmsData(List<Alarm> alarms);
     void openAlarmEditor(int alarmId);
     void openAlarmCreator();
     void openBottomSheetDialog(Alarm alarm);

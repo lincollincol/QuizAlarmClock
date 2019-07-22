@@ -1,8 +1,10 @@
 package linc.com.alarmclockforprogrammers.presentation.alarmsettings;
 
+import android.content.Context;
 import android.util.Log;
 
 import io.reactivex.disposables.Disposable;
+import linc.com.alarmclockforprogrammers.AlarmHandler;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 import linc.com.alarmclockforprogrammers.model.interactor.alarmsettings.InteractorAlarmSettings;
 
@@ -44,12 +46,11 @@ public class PresenterAlarmSettings {
                         alarm -> view.setAlarmData(alarm),
                         Throwable::printStackTrace
                 );
-        Log.d("ALARM_ID_EXCEPTION", "setAlarmData: "+alarmId);
     }
 
-    public void saveAlarm(Alarm alarm) {
+    public void saveAlarm(Alarm alarm, Context context) {
         view.saveChanges();
-        interactor.saveAlarm(alarm);
+        interactor.saveAlarm(alarm, context);
         view.closeAlarmSettings();
     }
 

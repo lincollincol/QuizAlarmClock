@@ -1,25 +1,34 @@
 package linc.com.alarmclockforprogrammers.ui.fragments.alarms;
 
+import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.icu.util.DateInterval;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.transition.Explode;
 import android.support.transition.Transition;
-import android.support.transition.TransitionSet;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
@@ -31,6 +40,9 @@ import linc.com.alarmclockforprogrammers.presentation.alarms.PresenterAlarms;
 import linc.com.alarmclockforprogrammers.presentation.alarms.ViewAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarms.adapters.AdapterAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarmsettings.FragmentAlarmSettings;
+import linc.com.alarmclockforprogrammers.utils.AlarmReceiver;
+
+import static android.content.Context.ALARM_SERVICE;
 
 
 public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmClicked,
@@ -63,6 +75,12 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
         returnAnimation = new Explode()
                 .setInterpolator(new FastOutSlowInInterpolator())
                 .setDuration(1000);
+
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.WAKE_LOCK,
+                        Manifest.permission.SET_ALARM,
+                        Manifest.permission.RECEIVE_BOOT_COMPLETED
+                }, 1);
     }
 
     @Nullable
@@ -83,16 +101,32 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
         alarmsListRV.setAdapter(adapterAlarms);
         fab.setOnClickListener(this);
 
-        presenter.setAlarms();
-
         return view;
     }
 
     @Override
-    public void setAlarms(List<Alarm> alarms) {
+    public void onResume() {
+        super.onResume();
+        presenter.setAlarms();
+        Log.d("RESUME_CHECK", "Resumed ");
+    }
+
+    @Override
+    public void setAlarmsData(List<Alarm> alarms) {
         this.alarms = alarms;
         adapterAlarms.setAlarms(alarms);
     }
+
+    /**
+     *
+     * https://github.com/Vendin/Alarm-Clock-Android/blob/master/app/src/main/java/com/example/av/alarm_clock/alarm_ringer/AlarmRegistrator.java
+     *
+     * https://github.com/ManveerBasra/OnTime/blob/master/app/src/main/java/com/manveerbasra/ontime/alarmmanager/AlarmHandler.java
+     *
+     * https://github.com/leanh153/Android-Alarm/blob/master/app/src/main/java/com/example/leanh/activity/AlarmMainActivity.java
+     *
+     * */
+
 
     @Override
     public void openAlarmEditor(int alarmId) {
@@ -151,13 +185,11 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
 
     @Override
     public void onDeleteClicked(Alarm alarm) {
-        // Implement alarm deleting
-        presenter.deleteAlarm(alarm);
+        presenter.deleteAlarm(alarm, getActivity());
     }
 
     @Override
     public void onDialogDestroyed(Alarm alarm) {
-        // Implement alarm saving
-        presenter.updateAlarm(alarm);
+        presenter.updateAlarm(alarm, getActivity());
     }
 }

@@ -1,6 +1,9 @@
 package linc.com.alarmclockforprogrammers.model.interactor.alarmsettings;
 
+import android.content.Context;
+
 import io.reactivex.Single;
+import linc.com.alarmclockforprogrammers.AlarmHandler;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 import linc.com.alarmclockforprogrammers.model.repository.alarmsettings.RepositoryAlarmSettings;
 
@@ -12,7 +15,8 @@ public class InteractorAlarmSettings {
         this.repository = repository;
     }
 
-    public void saveAlarm(Alarm alarm) {
+    public void saveAlarm(Alarm alarm, Context context) {
+        AlarmHandler.setReminderAlarm(context, alarm);
         this.repository.insertAlarm(alarm)
                 .subscribe();
     }

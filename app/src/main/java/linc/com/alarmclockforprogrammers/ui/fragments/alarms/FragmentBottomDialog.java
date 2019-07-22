@@ -40,13 +40,15 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
         FloatingActionButton deleteButton = view.findViewById(R.id.alarms_dialog_delete_alarm);
         enableAlarm = view.findViewById(R.id.alarms_dialog__toggle_alarm_enable);
         TextView alarmTime = view.findViewById(R.id.alarms_dialog__alarm_time);
+        TextView alarmTimeAmPm = view.findViewById(R.id.alarms_dialog__time_am_pm);
         TextView alarmDetails = view.findViewById(R.id.alarms_dialog__alarm_details);
 
         deleteButton.setOnClickListener(this);
         enableAlarm.setChecked(alarm.isEnable());
         enableAlarm.setOnCheckedChangeListener(this);
 
-        alarmTime.setText(Alarm.getCorrectTime(alarm.getHour(), alarm.getMinute()));
+        alarmTime.setText(Alarm.getReadableTime(alarm.getTime()));
+        alarmTimeAmPm.setText(Alarm.getAmPm(alarm.getTime()));
         alarmDetails.setText((
                 Alarm.getProgrammingsLanguage(alarm.getLanguage(), getResources()) + "/" +
                 Alarm.getDifficultMode(alarm.getDifficult(), getResources()) + "\n" +

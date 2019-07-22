@@ -29,6 +29,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
@@ -134,7 +136,7 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
                 presenter.getSongFile();
                 break;
             case R.id.alarm_settings__save:
-                presenter.saveAlarm(this.alarm);
+                presenter.saveAlarm(this.alarm, getActivity());
                 break;
             case R.id.alarm_settings__cancel:
                 presenter.closeAlarmSettings();
@@ -160,7 +162,7 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
 
         // Set selected days
         for(int i = 0; i < this.alarm.getDays().length(); i++) {
-            int day = Character.getNumericValue(this.alarm.getDays().charAt(i)) - 1;
+            int day = Character.getNumericValue(this.alarm.getDays().charAt(i));
             checkedDays[day] = true;
         }
 
@@ -173,7 +175,7 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
                 .setPositiveButton(R.string.dialog_confirm, (dialog, id) -> {
                     StringBuilder selectedDays = new StringBuilder();
                     for (int i = 0; i < weekDays.length; i++) {
-                        selectedDays.append(checkedDays[i] ? (i+1) : "");
+                        selectedDays.append(checkedDays[i] ? i : "");
                     }
                     this.alarm.setDays(selectedDays.toString());
                     this.dayPicker.setText(
@@ -243,13 +245,15 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
     @Override
     public void setAlarmData(Alarm alarm) {
         this.alarm = alarm;
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(alarm.getTime());
 
         if(Build.VERSION.SDK_INT < 23){
-            this.timePicker.setCurrentHour(alarm.getHour());
-            this.timePicker.setCurrentMinute(alarm.getMinute());
+            this.timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+            this.timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
         } else{
-            this.timePicker.setHour(alarm.getHour());
-            this.timePicker.setMinute(alarm.getMinute());
+            this.timePicker.setHour(calendar.get(Calendar.HOUR_OF_DAY));
+            this.timePicker.setMinute(calendar.get(Calendar.MINUTE));
         }
 
         this.dayPicker.setText(Alarm.getDaysMarks(alarm.getDays(), getResources()));
@@ -263,14 +267,17 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
 
     @Override
     public void saveChanges() {
+        final Calendar calendar = Calendar.getInstance();
+
         if(Build.VERSION.SDK_INT < 23){
-            this.alarm.setHour(timePicker.getCurrentHour());
-            this.alarm.setMinute(timePicker.getCurrentMinute());
+            calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+            calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
         } else{
-            this.alarm.setHour(timePicker.getHour());
-            this.alarm.setMinute(timePicker.getMinute());
+            calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
+            calendar.set(Calendar.MINUTE, timePicker.getMinute());
         }
 
+        this.alarm.setTime(calendar.getTimeInMillis());
         this.alarm.setLabel(alarmLabel.getText().toString());
         this.alarm.setHasTask(taskEnable.isChecked());
         this.alarm.setEnable(alarmEnable.isChecked());

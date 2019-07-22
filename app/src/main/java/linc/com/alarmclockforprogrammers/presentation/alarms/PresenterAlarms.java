@@ -1,6 +1,9 @@
 package linc.com.alarmclockforprogrammers.presentation.alarms;
 
+import android.content.Context;
+
 import io.reactivex.disposables.Disposable;
+import linc.com.alarmclockforprogrammers.AlarmHandler;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 import linc.com.alarmclockforprogrammers.model.interactor.alarms.InteractorAlarms;
 
@@ -16,7 +19,9 @@ public class PresenterAlarms {
 
     public void setAlarms() {
         Disposable d = interactor.getAlarms()
-                .subscribe(alarms -> view.setAlarms(alarms));
+                .subscribe(alarms ->
+                    view.setAlarmsData(alarms)
+                );
     }
 
     public void openAlarmCreator() {
@@ -31,17 +36,12 @@ public class PresenterAlarms {
         view.openBottomSheetDialog(alarm);
     }
 
-    public void deleteAlarm(Alarm alarm) {
-        interactor.deleteAlarm(alarm);
-        Disposable d = interactor.getAlarms()
-                .subscribe(alarms -> view.setAlarms(alarms));
+    public void deleteAlarm(Alarm alarm, Context context) {
+        interactor.deleteAlarm(alarm, context);
     }
 
-    public void updateAlarm(Alarm alarm) {
-        interactor.updateAlarm(alarm);
-        Disposable d = interactor.getAlarms()
-                .subscribe(alarms -> view.setAlarms(alarms));
+    public void updateAlarm(Alarm alarm, Context context) {
+        interactor.updateAlarm(alarm, context);
     }
-
 }
 

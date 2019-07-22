@@ -43,4 +43,8 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:$room_version"
     //
 
+    // Objects
+    implementation 'com.google.code.gson:gson:2.8.5'
+    //
+
 }

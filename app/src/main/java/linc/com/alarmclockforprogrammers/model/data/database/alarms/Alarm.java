@@ -3,9 +3,13 @@ package linc.com.alarmclockforprogrammers.model.data.database.alarms;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.content.res.Resources;
 import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import linc.com.alarmclockforprogrammers.R;
 
@@ -19,11 +23,8 @@ public class Alarm {
     @ColumnInfo(name = "_id")
     private int id;
 
-    @ColumnInfo(name = "hour", typeAffinity = INTEGER)
-    private int hour;
-
-    @ColumnInfo(name = "minute", typeAffinity = INTEGER)
-    private int minute;
+    @ColumnInfo(name = "time", typeAffinity = INTEGER)
+    private long time;
 
     @ColumnInfo(name = "label", typeAffinity = TEXT)
     private String label;
@@ -46,10 +47,9 @@ public class Alarm {
     @ColumnInfo(name = "enable", typeAffinity = INTEGER)
     private boolean enable;
 
-    public Alarm(int hour, int minute, String label, String days, String songPath,
+    public Alarm(long time, String label, String days, String songPath,
                  int language, int difficult, boolean task, boolean enable) {
-        this.hour = hour;
-        this.minute = minute;
+        this.time = time;
         this.label = label;
         this.days = days;
         this.songPath = songPath;
@@ -67,20 +67,12 @@ public class Alarm {
         this.id = id;
     }
 
-    public int getHour() {
-        return hour;
+    public long getTime() {
+        return time;
     }
 
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public void setMinute(int minute) {
-        this.minute = minute;
+    public void setTime(long time) {
+        this.time = time;
     }
 
     public String getLabel() {
@@ -140,26 +132,30 @@ public class Alarm {
     }
 
     /** Return default empty alarm object*/
+    @Ignore
     public static Alarm getDefaultAlarm() {
-        return new Alarm(0,0,"", "",
+        return new Alarm(0,"", "",
                 "default", 0,0,false, false);
     }
 
     /** Return String with selected days in mark format: Mn(Monday), Fr (Friday)*/
+    @Ignore
     public static String getDaysMarks(String days, Resources resources) {
         StringBuilder marks = new StringBuilder();
         String[] weekDays = resources.getStringArray(R.array.week_days_marks);
 
         for(int i = 0; i < days.length(); i++) {
-            int day = Character.getNumericValue(days.charAt(i)) - 1;
+            int day = Character.getNumericValue(days.charAt(i));
             marks.append(weekDays[day]);
             marks.append((i == (days.length()-1) ? "" : ", "));
+            marks.append( ((i == 3) && (i < days.length() - 1) ? "\n\t\t\t" : "") );
         }
 
         return marks.toString().isEmpty() ? "Select days" : marks.toString();
     }
 
     /** Retrieve song name from path */
+    @Ignore
     public static String getSongName(String path) {
         int cut = path.lastIndexOf('/');
         if (cut != -1) {
@@ -168,20 +164,28 @@ public class Alarm {
         return path;
     }
 
+    @Ignore
     public static String getDifficultMode(int position, Resources resources) {
         String[] difficultModes = resources.getStringArray(R.array.difficult_modes);
         return difficultModes[position];
     }
 
+    @Ignore
     public static String getProgrammingsLanguage(int position, Resources resources) {
         String[] languages = resources.getStringArray(R.array.programming_languages);
         return languages[position];
     }
 
-    public static String getCorrectTime(int hour, int minute) {
-        return ( (hour < 10 ? "0" + hour : hour) + ":" +
-                (minute < 10 ? "0" + minute : minute) );
+    @Ignore
+    public static String getReadableTime(long time) {
+        return new SimpleDateFormat("h:mm", Locale.getDefault())
+                .format(time);
     }
 
+    @Ignore
+    public static String getAmPm(long time) {
+        return new SimpleDateFormat("a", Locale.getDefault())
+                .format(time);
+    }
 }
 

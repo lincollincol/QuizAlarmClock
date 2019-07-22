@@ -59,6 +59,7 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
     class AlarmsHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private TextView programmingLanguage;
         private TextView time;
+        private TextView timeAmPm;
         private TextView days;
         private CardView layout;
         private OnAlarmClicked alarmClicked;
@@ -67,6 +68,7 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
             super(itemView);
             this.programmingLanguage = itemView.findViewById(R.id.item_alarm__programming_language);
             this.time = itemView.findViewById(R.id.item_alarm__time);
+            this.timeAmPm = itemView.findViewById(R.id.item_alarm_am_pm);
             this.days = itemView.findViewById(R.id.item_alarm__days);
             this.layout = itemView.findViewById(R.id.layout_alarm);
             this.alarmClicked = alarmClicked;
@@ -86,8 +88,10 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
         }
 
         public void setAlarm(Alarm alarm) {
-            this.time.setText(Alarm.getCorrectTime(alarm.getHour(), alarm.getMinute()));
+            this.time.setText(Alarm.getReadableTime(alarm.getTime()));
+            this.timeAmPm.setText(Alarm.getAmPm(alarm.getTime()));
             this.programmingLanguage.setText((Alarm.getProgrammingsLanguage(alarm.getLanguage(), context.getResources())));
+//            this.programmingLanguage.setText(String.valueOf(alarm.getId()));
             this.days.setText(Alarm.getDaysMarks(alarm.getDays(), context.getResources()));
         }
 

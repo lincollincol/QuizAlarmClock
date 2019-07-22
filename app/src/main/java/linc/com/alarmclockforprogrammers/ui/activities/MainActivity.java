@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.ui;
+package linc.com.alarmclockforprogrammers.ui.activities;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -25,10 +25,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AnticipateInterpolator;
-import android.view.animation.AnticipateOvershootInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
 
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
