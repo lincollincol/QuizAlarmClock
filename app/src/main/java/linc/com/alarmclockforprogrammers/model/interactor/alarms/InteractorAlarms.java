@@ -5,9 +5,8 @@ import android.content.Context;
 
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.Observable;
-import linc.com.alarmclockforprogrammers.AlarmHandler;
+import linc.com.alarmclockforprogrammers.utils.AlarmHandler;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 import linc.com.alarmclockforprogrammers.model.repository.alarms.RepositoryAlarms;
 

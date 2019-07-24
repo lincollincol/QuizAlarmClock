@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activities.WakeActivity" android:launchMode="singleTask"/>
-        <receiver android:name=".utils.AlarmReceiver">
+        <receiver android:name=".service.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>

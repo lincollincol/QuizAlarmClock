@@ -42,4 +42,9 @@
         <item name="android:textSize">@dimen/text_small</item>
     </style>
 
+    <!--Number picker-->
+    <style name="DefaultNumberPickerTheme" parent="AppTheme">
+        <item name="colorControlNormal">@android:color/transparent</item>
+    </style>
+
 </resources>

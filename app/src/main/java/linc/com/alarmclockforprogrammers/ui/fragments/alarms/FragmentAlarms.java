@@ -1,12 +1,7 @@
 package linc.com.alarmclockforprogrammers.ui.fragments.alarms;
 
 import android.Manifest;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.icu.util.DateInterval;
 import android.os.Bundle;
-import android.provider.AlarmClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -24,11 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
@@ -40,9 +31,6 @@ import linc.com.alarmclockforprogrammers.presentation.alarms.PresenterAlarms;
 import linc.com.alarmclockforprogrammers.presentation.alarms.ViewAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarms.adapters.AdapterAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarmsettings.FragmentAlarmSettings;
-import linc.com.alarmclockforprogrammers.utils.AlarmReceiver;
-
-import static android.content.Context.ALARM_SERVICE;
 
 
 public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmClicked,

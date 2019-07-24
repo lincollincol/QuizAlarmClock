@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers;
+package linc.com.alarmclockforprogrammers.utils;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -11,10 +11,12 @@ import com.google.gson.Gson;
 import java.util.Calendar;
 
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
-import linc.com.alarmclockforprogrammers.utils.AlarmReceiver;
+import linc.com.alarmclockforprogrammers.service.AlarmReceiver;
 
 public class AlarmHandler {
 
+
+    // todo Completable rx
     public static void setReminderAlarm(Context context, Alarm alarm) {
         //Check whether the alarm is set to run on any days
         if(!alarm.isEnable()) {

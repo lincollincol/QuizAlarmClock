@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.utils;
+package linc.com.alarmclockforprogrammers.service;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,9 +7,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
-import linc.com.alarmclockforprogrammers.AlarmHandler;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 import linc.com.alarmclockforprogrammers.ui.activities.WakeActivity;
+import linc.com.alarmclockforprogrammers.utils.AlarmHandler;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -23,9 +23,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         Alarm alarm = gson.fromJson(intent.getStringExtra("ALARM_JSON"), Alarm.class);
 
         Log.d("HERE_WORKS", "onReceive: " + alarm.getId());
-        Log.d("HERE_WORKS", "onReceive: " + alarm.getDays());
-        Log.d("HERE_WORKS", "onReceive: " + alarm.getDifficult());
-
 
         // Set new day for alarm clock repeat
         AlarmHandler.setReminderAlarm(context, alarm);

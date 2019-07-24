@@ -29,6 +29,7 @@ import android.view.WindowManager;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.settings.FragmentSettings;
+import linc.com.alarmclockforprogrammers.ui.fragments.timer.FragmentTimer;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -94,6 +95,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_settings:
                 replaceFragment(new FragmentSettings());
                 break;
+            case  R.id.menu_timer:
+
+                FragmentTimer fragmentTimer = new FragmentTimer();
+
+                // Clear back stack
+                FragmentManager fm = getSupportFragmentManager();
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
+
+                // Start new fragment
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, fragmentTimer)
+                        .commit();
+
+                break;
+
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -112,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //todo param diff transitions
     private void replaceFragment(Fragment fragment) {
 
+        // todo 800 milli transition
+
         Transition enterAnimation = new TransitionSet()
                 .setOrdering(TransitionSet.ORDERING_TOGETHER)
                 .addTransition(new Fade(Fade.IN)
@@ -123,11 +143,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .setInterpolator(new FastOutSlowInInterpolator())
                         .setDuration(1500));
 
-        Transition exitAnimation = new Explode()
-                .setInterpolator(new FastOutSlowInInterpolator())
-                .setDuration(1000);
 
-        Transition trans = new TransitionSet()
+        Transition exitAnimation = new TransitionSet()
                 .addTransition(new Fade(Fade.OUT)
                         .addTarget(R.id.alarms__list_of_alarms)
                         .setInterpolator(new FastOutLinearInInterpolator())
@@ -138,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .setDuration(1500));
 
 
-        fragment.setExitTransition(trans);
+        fragment.setExitTransition(exitAnimation);
         fragment.setReenterTransition(enterAnimation);
         fragment.setEnterTransition(enterAnimation);
 

@@ -1,10 +1,8 @@
 package linc.com.alarmclockforprogrammers.presentation.alarmsettings;
 
 import android.content.Context;
-import android.util.Log;
 
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.AlarmHandler;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 import linc.com.alarmclockforprogrammers.model.interactor.alarmsettings.InteractorAlarmSettings;
 

@@ -3,7 +3,6 @@ package linc.com.alarmclockforprogrammers.presentation.alarms;
 import android.content.Context;
 
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.AlarmHandler;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 import linc.com.alarmclockforprogrammers.model.interactor.alarms.InteractorAlarms;
 
