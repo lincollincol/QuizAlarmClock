@@ -43,7 +43,8 @@
     <color name="switch_track_disable">#E2E5FF</color>
 
     <!--Fragment timer-->
-    <color name="button_play">#470D9D</color>
+    <color name="button_start">#470D9D</color>
+    <color name="button_start_disable">#B3470D9D</color>
     <color name="progress_bar_track">#337126EE</color>
     <color name="progress_bar_gradient_start">#7126EE</color>
     <color name="progress_bar_gradient_center">#470D9D</color>

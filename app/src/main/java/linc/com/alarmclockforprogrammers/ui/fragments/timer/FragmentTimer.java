@@ -1,5 +1,6 @@
 package linc.com.alarmclockforprogrammers.ui.fragments.timer;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -13,25 +14,22 @@ import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
 import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Locale;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.presentation.timer.PresenterTimer;
 import linc.com.alarmclockforprogrammers.presentation.timer.ViewTimer;
+
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
 public class FragmentTimer extends Fragment implements View.OnClickListener, ViewTimer,
@@ -55,16 +53,15 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
     private long timeLeftInMillis;
     private long progress;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(presenter == null) {
-            presenter = new PresenterTimer(this);
+            this.presenter = new PresenterTimer(this);
         }
 
         // Animation between constraint layout transition
-         layoutAnimation = new TransitionSet()
+        this.layoutAnimation = new TransitionSet()
                 .setOrdering(TransitionSet.ORDERING_TOGETHER)
                 .addTransition(new Slide(Gravity.START)
                         .addTarget(R.id.timer__hour_picker)
@@ -90,32 +87,34 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
 
-        layout = view.findViewById(R.id.timer__layout);
-        hourPicker = view.findViewById(R.id.timer__hour_picker);
-        minutePicker = view.findViewById(R.id.timer__minute_picker);
-        secondPicker = view.findViewById(R.id.timer__second_picker);
-        progressBar = view.findViewById(R.id.timer__progress_bar);
-        timeBar = view.findViewById(R.id.timer__time_to_stop);
-        startPauseTimer = view.findViewById(R.id.timer__start);
         FloatingActionButton stopTimer = view.findViewById(R.id.timer__stop);
+        this.layout = view.findViewById(R.id.timer__layout);
+        this.hourPicker = view.findViewById(R.id.timer__hour_picker);
+        this.minutePicker = view.findViewById(R.id.timer__minute_picker);
+        this.secondPicker = view.findViewById(R.id.timer__second_picker);
+        this.progressBar = view.findViewById(R.id.timer__progress_bar);
+        this.timeBar = view.findViewById(R.id.timer__time_to_stop);
+        this.startPauseTimer = view.findViewById(R.id.timer__start);
 
-
-        timerConstraintSet = new ConstraintSet();
-        timerConstraintSet.clone(layout);
+        this.timerConstraintSet = new ConstraintSet();
+        this.timerConstraintSet.clone(layout);
 
         // Set time pickers max/min values
-        hourPicker.setMaxValue(PICKER_HOURS_MAX);
-        hourPicker.setMinValue(PICKERS_MIN);
-        minutePicker.setMaxValue(PICKER_MINUTES_MAX);
-        minutePicker.setMinValue(PICKERS_MIN);
-        secondPicker.setMaxValue(PICKER_SECONDS_MAX);
-        secondPicker.setMinValue(PICKERS_MIN);
+        this.hourPicker.setMaxValue(PICKER_HOURS_MAX);
+        this.hourPicker.setMinValue(PICKERS_MIN);
+        this.minutePicker.setMaxValue(PICKER_MINUTES_MAX);
+        this.minutePicker.setMinValue(PICKERS_MIN);
+        this.secondPicker.setMaxValue(PICKER_SECONDS_MAX);
+        this.secondPicker.setMinValue(PICKERS_MIN);
 
-        startPauseTimer.setOnClickListener(this);
         stopTimer.setOnClickListener(this);
-        hourPicker.setOnScrollListener(this);
-        minutePicker.setOnScrollListener(this);
-        secondPicker.setOnScrollListener(this);
+        this.startPauseTimer.setOnClickListener(this);
+        this.hourPicker.setOnScrollListener(this);
+        this.minutePicker.setOnScrollListener(this);
+        this.secondPicker.setOnScrollListener(this);
+
+        // Disable start button first time
+        this.presenter.setStartEnable(PICKERS_MIN);
 
         return view;
     }
@@ -124,10 +123,10 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.timer__start:
-                presenter.startOrPauseTimer();
+                this.presenter.startOrPauseTimer();
                 break;
             case R.id.timer__stop:
-                presenter.resetTimer();
+                this.presenter.resetTimer();
                 break;
         }
     }
@@ -136,13 +135,13 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
     public void onScrollStateChange(NumberPicker view, int scrollState) {
         switch(view.getId()) {
             case R.id.timer__hour_picker:
-                presenter.setStartEnable(hourPicker.getValue());
+                this.presenter.setStartEnable(hourPicker.getValue());
                 break;
             case R.id.timer__minute_picker:
-                presenter.setStartEnable(minutePicker.getValue());
+                this.presenter.setStartEnable(minutePicker.getValue());
                 break;
             case R.id.timer__second_picker:
-                presenter.setStartEnable(secondPicker.getValue());
+                this.presenter.setStartEnable(secondPicker.getValue());
                 break;
         }
     }
@@ -150,51 +149,51 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
     @Override
     public void openProgressLayout() {
         TransitionManager.beginDelayedTransition(layout, layoutAnimation);
-        timerConstraintSet.setVisibility(R.id.timer__hour_picker, ConstraintSet.GONE);
-        timerConstraintSet.setVisibility(R.id.timer__minute_picker, ConstraintSet.GONE);
-        timerConstraintSet.setVisibility(R.id.timer__second_picker, ConstraintSet.GONE);
-        timerConstraintSet.setVisibility(R.id.timer__stop, ConstraintSet.VISIBLE);
-        timerConstraintSet.setVisibility(R.id.timer__time_to_stop, ConstraintSet.VISIBLE);
-        timerConstraintSet.setVisibility(R.id.timer__progress_bar, ConstraintSet.VISIBLE);
-        timerConstraintSet.applyTo(layout);
+        this.timerConstraintSet.setVisibility(R.id.timer__hour_picker, ConstraintSet.GONE);
+        this.timerConstraintSet.setVisibility(R.id.timer__minute_picker, ConstraintSet.GONE);
+        this.timerConstraintSet.setVisibility(R.id.timer__second_picker, ConstraintSet.GONE);
+        this.timerConstraintSet.setVisibility(R.id.timer__stop, ConstraintSet.VISIBLE);
+        this.timerConstraintSet.setVisibility(R.id.timer__time_to_stop, ConstraintSet.VISIBLE);
+        this.timerConstraintSet.setVisibility(R.id.timer__progress_bar, ConstraintSet.VISIBLE);
+        this.timerConstraintSet.applyTo(layout);
     }
 
     @Override
     public void closeProgressLayout() {
         TransitionManager.beginDelayedTransition(layout, layoutAnimation);
-        timerConstraintSet.setVisibility(R.id.timer__hour_picker, ConstraintSet.VISIBLE);
-        timerConstraintSet.setVisibility(R.id.timer__minute_picker, ConstraintSet.VISIBLE);
-        timerConstraintSet.setVisibility(R.id.timer__second_picker, ConstraintSet.VISIBLE);
-        timerConstraintSet.setVisibility(R.id.timer__stop, ConstraintSet.GONE);
-        timerConstraintSet.setVisibility(R.id.timer__time_to_stop, ConstraintSet.GONE);
-        timerConstraintSet.setVisibility(R.id.timer__progress_bar, ConstraintSet.GONE);
-        timerConstraintSet.applyTo(layout);
+        this.timerConstraintSet.setVisibility(R.id.timer__hour_picker, ConstraintSet.VISIBLE);
+        this.timerConstraintSet.setVisibility(R.id.timer__minute_picker, ConstraintSet.VISIBLE);
+        this.timerConstraintSet.setVisibility(R.id.timer__second_picker, ConstraintSet.VISIBLE);
+        this.timerConstraintSet.setVisibility(R.id.timer__stop, ConstraintSet.GONE);
+        this.timerConstraintSet.setVisibility(R.id.timer__time_to_stop, ConstraintSet.GONE);
+        this.timerConstraintSet.setVisibility(R.id.timer__progress_bar, ConstraintSet.GONE);
+        this.timerConstraintSet.applyTo(layout);
     }
 
     @Override
     public void setIntroducedTime() {
         // Convert selected time to millis
-        timeLeftInMillis = TimeUnit.HOURS.toMillis(this.hourPicker.getValue())
+        this.timeLeftInMillis = TimeUnit.HOURS.toMillis(this.hourPicker.getValue())
                 + TimeUnit.MINUTES.toMillis(this.minutePicker.getValue())
                 + TimeUnit.SECONDS.toMillis(this.secondPicker.getValue());
         // Save selected time
-        progress = timeLeftInMillis;
+        this.progress = timeLeftInMillis;
         // Set selected time as max progress in the progress bar
-        progressBar.setMax((int)timeLeftInMillis);
+        this.progressBar.setMax((int)timeLeftInMillis);
     }
 
     @Override
     public void setStartEnable() {
-
-        //todo set silver(50%) color
-
         this.startPauseTimer.setEnabled(true);
+        this.startPauseTimer.setBackgroundTintList(ColorStateList.valueOf(getResources()
+                .getColor(R.color.button_start)));
     }
 
     @Override
     public void setStartDisable() {
-        //todo return std color color
         this.startPauseTimer.setEnabled(false);
+        this.startPauseTimer.setBackgroundTintList(ColorStateList.valueOf(getResources()
+                .getColor(R.color.button_start_disable)));
     }
 
     @Override
@@ -203,47 +202,33 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
             @Override
             public void onTick(long millisUntilFinished) {
                 timeLeftInMillis = millisUntilFinished;
-                presenter.updateTime();
+                presenter.updateTime(millisUntilFinished);
             }
 
             @Override
             public void onFinish() {
                 presenter.startFinishAlarm();
-
             }
         }.start();
+
         this.startPauseTimer.setImageResource(R.drawable.ic_pause);
     }
 
     @Override
     public void pauseTimer() {
-        timer.cancel();
-        startPauseTimer.setImageResource(R.drawable.ic_start);
+        this.timer.cancel();
+        this.startPauseTimer.setImageResource(R.drawable.ic_start);
     }
 
-    //todo rename
     @Override
-    public void updateProgressBar() {
-        int seconds = (int) ((timeLeftInMillis / ONE_SECOND) % 60);
-        int minutes = (int) ((timeLeftInMillis / ONE_MINUTE) % 60);
-        int hours   = (int) ((timeLeftInMillis / ONE_HOUR) % 24);
-        String timeLeftFormatted;
-
-        if (hours > 0) {
-            timeLeftFormatted = String.format(Locale.getDefault(),
-                    "%d:%02d:%02d", hours, minutes, seconds);
-        } else {
-            timeLeftFormatted = String.format(Locale.getDefault(),
-                    "%02d:%02d", minutes, seconds);
-        }
-
-        progressBar.setProgress((int) (progress - (progress-timeLeftInMillis)) );
-        timeBar.setText(timeLeftFormatted);
+    public void updateProgressBar(String time) {
+        this.progressBar.setProgress((int) (progress - (progress-timeLeftInMillis)) );
+        this.timeBar.setText(time);
     }
 
     @Override
     public void startAlarm() {
-        progressBar.setProgress(PROGRESS_MIN);
-        startPauseTimer.setImageResource(R.drawable.ic_start);
+        this.progressBar.setProgress(PROGRESS_MIN);
+        this.startPauseTimer.setImageResource(R.drawable.ic_start);
     }
 }

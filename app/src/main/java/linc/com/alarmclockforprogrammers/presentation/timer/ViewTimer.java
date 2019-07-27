@@ -9,7 +9,7 @@ public interface ViewTimer {
     void setStartDisable();
     void startTimer();
     void pauseTimer();
-    void updateProgressBar();
+    void updateProgressBar(String time);
     void startAlarm();
 
 }

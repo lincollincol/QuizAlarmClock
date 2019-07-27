@@ -29,6 +29,7 @@ import android.view.WindowManager;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.settings.FragmentSettings;
+import linc.com.alarmclockforprogrammers.ui.fragments.stopwatch.FragmentStopwatch;
 import linc.com.alarmclockforprogrammers.ui.fragments.timer.FragmentTimer;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -111,7 +112,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .commit();
 
                 break;
+            case R.id.menu_stopwatch:
+                FragmentStopwatch stopwatch = new FragmentStopwatch();
 
+                // Clear back stack
+                FragmentManager fms = getSupportFragmentManager();
+                for(int i = 0; i < fms.getBackStackEntryCount(); ++i) {
+                    fms.popBackStack();
+                }
+
+                // Start new fragment
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, stopwatch)
+                        .commit();
+                break;
         }
 
         drawer.closeDrawer(GravityCompat.START);

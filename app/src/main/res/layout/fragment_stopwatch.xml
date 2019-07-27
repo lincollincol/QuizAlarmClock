@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/stopwatch__layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ProgressBar
+        android:id="@+id/stopwatch__progress_bar"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
+        android:indeterminate="false"
+        android:progress="0"
+        android:progressDrawable="@drawable/progress_bar_gradient"
+        android:background="@drawable/progress_bar_shape"
+        android:visibility="visible"
+        style="?android:attr/progressBarStyleHorizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/stopwatch__horizontal_recycler_fix"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/stow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time_default"
+        android:textSize="@dimen/text_large"
+        android:fontFamily="sans-serif-black"
+        app:layout_constraintTop_toTopOf="@id/stopwatch__progress_bar"
+        app:layout_constraintBottom_toBottomOf="@id/stopwatch__progress_bar"
+        app:layout_constraintLeft_toLeftOf="@id/stopwatch__progress_bar"
+        app:layout_constraintRight_toRightOf="@id/stopwatch__progress_bar"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/stopwatch__horizontal_recycler_fix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/stopwatch__lap_info"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/stopwatch__horizontal_recycler_fix"
+        app:layout_constraintBottom_toTopOf="@id/stopwatch__horizontal_fix_line"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/stopwatch__horizontal_fix_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/stopwatch__start_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_start"
+        app:elevation="@dimen/elevation_default"
+        app:layout_constraintTop_toTopOf="@id/stopwatch__horizontal_fix_line"
+        app:layout_constraintBottom_toBottomOf="@id/stopwatch__horizontal_fix_line"
+        app:layout_constraintLeft_toRightOf="@id/stopwatch__lap_stop"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/stopwatch__lap_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_stopwatch_lap"
+        android:visibility="gone"
+        app:elevation="@dimen/elevation_default"
+        app:layout_constraintTop_toTopOf="@id/stopwatch__start_pause"
+        app:layout_constraintBottom_toBottomOf="@id/stopwatch__start_pause"
+        app:layout_constraintRight_toLeftOf="@id/stopwatch__start_pause"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

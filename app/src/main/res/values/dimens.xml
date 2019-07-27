@@ -36,5 +36,8 @@
     <dimen name="button_size_medium">30dp</dimen>
     <dimen name="button_size_large">60dp</dimen>
 
+    <!--Timer / stopwatch layouts-->
+    <dimen name="progress_bar_size">250dp</dimen>
+
 
 </resources>
