@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <gradient
+                android:angle="180"
+                android:startColor="@color/progress_bar_gradient_start"
+                android:centerColor="@color/progress_bar_gradient_center"
+                android:endColor="@color/progress_bar_gradient_end"
+                android:type="linear" />
+        </shape>
+    </item>
+</selector>

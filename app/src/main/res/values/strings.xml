@@ -13,7 +13,7 @@
     <string name="item_menu_settings">Settings</string>
     <string name="item_menu_about">About</string>
 
-    <!--Alert dialogs-->
+    <!--AlarmSettings alert dialogs-->
     <string name="title_dialog_week_days">Select days</string>
     <string name="title_dialog_difficult_mode">Select difficult</string>
     <string name="title_dialog_programming_language">Select language</string>
@@ -45,5 +45,9 @@
     <string name="time_default">00:00</string>
     <string name="animator_property_name">progress</string>
 
+    <!--Wake -->
+    <string name="dialog_message_pay_transaction">Are you sure? Pay %1$d</string>
+    <string name="dialog_yes_positive">Yes</string>
+    <string name="dialog_no_negative">No</string>
 
 </resources>

@@ -182,13 +182,14 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
         this.progressBar.setMax((int)timeLeftInMillis);
     }
 
+    //todo rename from set
     @Override
     public void setStartEnable() {
         this.startPauseTimer.setEnabled(true);
         this.startPauseTimer.setBackgroundTintList(ColorStateList.valueOf(getResources()
                 .getColor(R.color.button_start)));
     }
-
+//todo rename from set
     @Override
     public void setStartDisable() {
         this.startPauseTimer.setEnabled(false);

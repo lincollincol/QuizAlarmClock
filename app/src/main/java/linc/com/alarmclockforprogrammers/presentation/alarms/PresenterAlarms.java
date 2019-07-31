@@ -42,5 +42,9 @@ public class PresenterAlarms {
     public void updateAlarm(Alarm alarm, Context context) {
         interactor.updateAlarm(alarm, context);
     }
+
+    public void updateQuestionsInLocal() {
+        interactor.updateQuestionInLocal();
+    }
 }
 

@@ -1,6 +1,8 @@
 package linc.com.alarmclockforprogrammers.ui.fragments.alarms;
 
 import android.Manifest;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +27,7 @@ import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 import linc.com.alarmclockforprogrammers.R;
+import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.model.interactor.alarms.InteractorAlarms;
 import linc.com.alarmclockforprogrammers.model.repository.alarms.RepositoryAlarms;
 import linc.com.alarmclockforprogrammers.presentation.alarms.PresenterAlarms;
@@ -47,13 +50,18 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // todo replace to view method
+
         AppDatabase database = AlarmApp.getInstance().getDatabase();
 
         if(presenter == null) {
-            presenter = new PresenterAlarms(this, new InteractorAlarms(
-                    new RepositoryAlarms(database.alarmDao())
+            this.presenter = new PresenterAlarms(this, new InteractorAlarms(
+                    new RepositoryAlarms(database.alarmDao(), database.questionsDao()),
+                    new PreferencesAlarm(getActivity())
             ));
         }
+
+        this.presenter.updateQuestionsInLocal();
 
         enterAnimation = new Explode()
                 .setInterpolator(new FastOutSlowInInterpolator())
@@ -96,7 +104,6 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
     public void onResume() {
         super.onResume();
         presenter.setAlarms();
-        Log.d("RESUME_CHECK", "Resumed ");
     }
 
     @Override
@@ -104,17 +111,6 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
         this.alarms = alarms;
         adapterAlarms.setAlarms(alarms);
     }
-
-    /**
-     *
-     * https://github.com/Vendin/Alarm-Clock-Android/blob/master/app/src/main/java/com/example/av/alarm_clock/alarm_ringer/AlarmRegistrator.java
-     *
-     * https://github.com/ManveerBasra/OnTime/blob/master/app/src/main/java/com/manveerbasra/ontime/alarmmanager/AlarmHandler.java
-     *
-     * https://github.com/leanh153/Android-Alarm/blob/master/app/src/main/java/com/example/leanh/activity/AlarmMainActivity.java
-     *
-     * */
-
 
     @Override
     public void openAlarmEditor(int alarmId) {

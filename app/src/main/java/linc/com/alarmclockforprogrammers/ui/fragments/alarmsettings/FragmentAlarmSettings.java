@@ -41,6 +41,7 @@ import linc.com.alarmclockforprogrammers.presentation.alarmsettings.PresenterAla
 import linc.com.alarmclockforprogrammers.presentation.alarmsettings.ViewAlarmSettings;
 
 import static android.app.Activity.RESULT_OK;
+import static linc.com.alarmclockforprogrammers.utils.Consts.NORMAL_SPEED;
 
 public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings,
         CompoundButton.OnCheckedChangeListener, View.OnClickListener{
@@ -147,10 +148,9 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
     @Override
     public void openExpandedSettings(boolean isChecked) {
         TransitionManager.beginDelayedTransition(
-                container,
-                new Slide(Gravity.BOTTOM)
+                container, new Slide(Gravity.BOTTOM)
                         .setInterpolator(new FastOutSlowInInterpolator())
-                        .setDuration(800)
+                        .setDuration(NORMAL_SPEED)
         );
         taskExpand.setVisibility(isChecked ? View.VISIBLE : View.GONE);
     }

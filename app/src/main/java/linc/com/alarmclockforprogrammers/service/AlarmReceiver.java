@@ -15,19 +15,17 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent intent1 = new Intent(context, WakeActivity.class)
+        Intent wakeActivity = new Intent(context, WakeActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-
-        Gson gson = new Gson();
-        Alarm alarm = gson.fromJson(intent.getStringExtra("ALARM_JSON"), Alarm.class);
-
-        Log.d("HERE_WORKS", "onReceive: " + alarm.getId());
+        Alarm alarm = new Gson().fromJson(
+                intent.getStringExtra("ALARM_JSON"), Alarm.class);
 
         // Set new day for alarm clock repeat
         AlarmHandler.setReminderAlarm(context, alarm);
 
-        intent1.putExtra("ALARM_ID", alarm.getId());
-        context.startActivity(intent1);
+        wakeActivity.putExtra("ALARM_JSON",
+                intent.getStringExtra("ALARM_JSON"));
+        context.startActivity(wakeActivity);
     }
 }

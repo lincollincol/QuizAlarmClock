@@ -50,10 +50,16 @@
     <color name="progress_bar_gradient_center">#470D9D</color>
     <color name="progress_bar_gradient_end">#1A023B</color>
 
+    <!--Wake activity-->
+    <color name="image_currency">#1A023B</color>
+    <color name="value_currency">#1A023B</color>
+    <color name="button_enable">#470D9D</color>
+    <color name="button_disable">#B3470D9D</color>
+    <color name="answer_correct">#8AE261</color>
+    <color name="answer_incorrect">#E74F4F</color>
+
 
     <color name="NONAME">#907FFC</color>
-
-
     <color name="NONAME_2">#4D907FFC</color>
     <color name="NONAME_3">#66E2E5FF</color>
 </resources>

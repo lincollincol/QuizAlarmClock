@@ -1,22 +1,44 @@
 package linc.com.alarmclockforprogrammers.model.repository.alarms;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import linc.com.alarmclockforprogrammers.entity.Question;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.AlarmDao;
+import linc.com.alarmclockforprogrammers.model.data.database.questions.QuestionsDao;
+import linc.com.alarmclockforprogrammers.utils.callbacks.VersionUpdateCallback;
 
 public class RepositoryAlarms {
 
     private AlarmDao alarmDao;
+    private QuestionsDao questionsDao;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
-    public RepositoryAlarms(AlarmDao alarmDao) {
+    public RepositoryAlarms(AlarmDao alarmDao, QuestionsDao questionsDao) {
+        this.firebaseDatabase = FirebaseDatabase.getInstance();
         this.alarmDao = alarmDao;
+        this.questionsDao = questionsDao;
     }
+
+    /** Alarms*/
 
     public Observable<List<Alarm>> getAlarms() {
         return Observable.create((ObservableOnSubscribe<List<Alarm>>) emitter -> {
@@ -41,7 +63,68 @@ public class RepositoryAlarms {
         return Completable.fromAction(
                 () -> alarmDao.updateAlarm(alarm)
         ).subscribeOn(Schedulers.io())
-         .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /** Questions*/
+
+    // todo replace to firebase package
+    public void updateLocalQuestionsVersion(VersionUpdateCallback callback) {
+        this.databaseReference = this.firebaseDatabase.getReference("version");
+        this.databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                callback.onRemoteUpdated(((String)dataSnapshot.getValue()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+    }
+
+    public void updateLocalQuestions() {
+        List<Question> questions = new ArrayList<>();
+        this.databaseReference = this.firebaseDatabase.getReference("questions");
+        this.databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    questions.add(new Question(
+                                    ((Long) (ds.child("id").getValue())).intValue(),
+                                    ((Long) (ds.child("difficult").getValue())).intValue(),
+                                    ((Long) (ds.child("trueAnswerPosition").getValue())).intValue(),
+                                    (String) (ds.child("programmingLanguage").getValue()),
+                                    (String) (ds.child("preQuestion").getValue()),
+                                    (String) (ds.child("postQuestion").getValue()),
+                                    toJson((ArrayList<String>) (ds.child("answers").getValue())),
+                                    (String) (ds.child("htmlCodeSnippet").getValue()),
+                                    ((Boolean) (ds.child("completed").getValue()))));
+                }
+                Disposable d = updateLocalQuestion(questions)
+                        .subscribe(() -> {}, e -> e.printStackTrace());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+    }
+
+    private Completable updateLocalQuestion(List<Question> questions) {
+        return Completable.fromAction(() -> {
+            for(Question q : questions) {
+                try {
+                    questionsDao.insert(q);
+                }catch (Exception e) {
+                    Log.d("EZIST", "updateLocalQuestion:exist " );
+                }
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    private String toJson(List<String> answers) {
+        return new Gson().toJson(answers);
     }
 
 }

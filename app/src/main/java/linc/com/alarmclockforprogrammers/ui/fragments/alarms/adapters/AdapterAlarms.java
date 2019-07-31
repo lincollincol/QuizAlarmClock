@@ -45,7 +45,7 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
         alarmsHolder.setAlarm(alarms.get(i));
 
 //        if(alarms.get(i).isEnable()) {
-//            alarmsHolder.layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.NONAME_3));
+//            alarmsHolder.layout.setCardBackgroundColor(ContextCompat.getButtonColor(context, R.color.NONAME_3));
 //        }
     }
 
