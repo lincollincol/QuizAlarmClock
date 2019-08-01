@@ -1,5 +1,7 @@
 package linc.com.alarmclockforprogrammers.ui.activities;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -20,15 +22,20 @@ import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.entity.Question;
 import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.model.interactor.wake.InteractorWake;
 import linc.com.alarmclockforprogrammers.model.repository.wake.RepositoryWake;
 import linc.com.alarmclockforprogrammers.presentation.wake.PresenterWake;
 import linc.com.alarmclockforprogrammers.presentation.wake.ViewWake;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
-public class WakeActivity extends AppCompatActivity implements ViewWake, View.OnClickListener {
+import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
-    private ProgressBar progressBar;
+public class WakeActivity extends AppCompatActivity implements ViewWake, View.OnClickListener,
+        Animator.AnimatorListener {
+
+    private TextView balance;
+    private TextView completedQuestions;
     private TextView preQuestion;
     private TextView postQuestion;
     private WebView codeSnippet;
@@ -36,16 +43,17 @@ public class WakeActivity extends AppCompatActivity implements ViewWake, View.On
     private FloatingActionButton nextQuestion;
     private FloatingActionButton payForQuestion;
 
+    private ObjectAnimator progressAnimation;
     private PresenterWake presenter;
-    private int questionDifficult;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wake);
 
-        TextView balance = findViewById(R.id.wake__balance);
-        this.progressBar = findViewById(R.id.wake__time_for_answer);
+        ProgressBar progressBar = findViewById(R.id.wake__time_for_answer);
+        this.balance = findViewById(R.id.wake__balance);
+        this.completedQuestions = findViewById(R.id.wake__completed_questions);
         this.preQuestion = findViewById(R.id.wake__pre_question);
         this.postQuestion = findViewById(R.id.wake__post_question);
         this.codeSnippet = findViewById(R.id.wake__code_snippet);
@@ -62,12 +70,19 @@ public class WakeActivity extends AppCompatActivity implements ViewWake, View.On
 
         if(presenter == null) {
             this.presenter = new PresenterWake(this,
-                    new InteractorWake(new RepositoryWake(database.questionsDao()))
+                    new InteractorWake(new RepositoryWake(database.questionsDao()),
+                            new PreferencesAlarm(this))
             );
         }
 
+        this.progressAnimation = ObjectAnimator.ofInt(progressBar,
+                getResources().getString(R.string.animator_property_progress), ANIMATION_END, ANIMATION_START);
         this.presenter.setData(ResUtil.getLanguage(this,
                 alarm.getLanguage()), alarm.getDifficult());
+
+        this.progressAnimation.addListener(this);
+        this.progressAnimation.setDuration(60000);
+        this.progressAnimation.start();
 
     }
 
@@ -78,10 +93,10 @@ public class WakeActivity extends AppCompatActivity implements ViewWake, View.On
                 // Get selected
                 RadioButton radioButton = findViewById(answersGroup.getCheckedRadioButtonId());
                 // Check answer by position
-                presenter.checkAnswer(answersGroup.indexOfChild(radioButton));
+                this.presenter.checkAnswer(answersGroup.indexOfChild(radioButton));
                 break;
             case R.id.wake__pay_for_answer:
-                presenter.showTransitionAcceptDialog(this.questionDifficult);
+                this.presenter.showTransitionAcceptDialog();
                 break;
         }
     }
@@ -91,13 +106,9 @@ public class WakeActivity extends AppCompatActivity implements ViewWake, View.On
         this.preQuestion.setText(String.valueOf(question.getId()));
         this.postQuestion.setText(question.getPostQuestion());
         this.codeSnippet.loadData(question.getHtmlCodeSnippet(), "text/html", "utf-8");
-        this.questionDifficult = question.getDifficult();
         this.answersGroup.clearCheck();
-
-        getResources().getColor(R.color.answer_correct);
-
         // Reset radio buttons
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < answersGroup.getChildCount(); i++) {
             RadioButton answer = (RadioButton)answersGroup.getChildAt(i);
             answer.setText(question.getAnswersList().get(i));
             answer.setTextColor(getResources().getColor(R.color.text_dark));
@@ -105,16 +116,24 @@ public class WakeActivity extends AppCompatActivity implements ViewWake, View.On
     }
 
     @Override
+    public void updateCompletedQuestions(String completedQuestions) {
+        this.completedQuestions.setText(completedQuestions);
+    }
+
+    @Override
+    public void updateBalance(int balance) {
+        this.balance.setText(String.valueOf(balance));
+    }
+
+    @Override
     public void showCorrectAnswer(int selectedPosition) {
         RadioButton answer = (RadioButton) answersGroup.getChildAt(selectedPosition);
         answer.setTextColor(ResUtil.getTextColor(this, R.color.answer_correct));
-//        answer.setTextColor(getResources().getColor(R.color.answer_correct));
     }
 
     @Override
     public void showMistake(int selectedPosition) {
         RadioButton answer = (RadioButton) answersGroup.getChildAt(selectedPosition);
-//        answer.setTextColor(getResources().getColor(R.color.answer_incorrect));
         answer.setTextColor(ResUtil.getTextColor(this, R.color.answer_incorrect));
     }
 
@@ -143,13 +162,77 @@ public class WakeActivity extends AppCompatActivity implements ViewWake, View.On
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
                 new ContextThemeWrapper(this, R.style.AlertDialogStyle));
         dialogBuilder.setCancelable(false)
-                .setTitle(R.string.title_dialog_week_days)
+                .setTitle(R.string.title_dialog_skip_question)
                 .setMessage(getResources().getString(R.string.dialog_message_pay_transaction, price))
-                .setPositiveButton(R.string.dialog_yes_positive, (dialog, id) -> {
-                    this.presenter.doPayTransaction(this.questionDifficult);
-                })
+                .setPositiveButton(R.string.dialog_yes_positive, (dialog, id) ->
+                    this.presenter.doPayTransaction())
                 .setNegativeButton(R.string.dialog_no_negative, (dialog, id) -> dialog.cancel())
                 .show();
     }
 
+    @Override
+    public void showCompletedDialog(int award) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
+                new ContextThemeWrapper(this, R.style.AlertDialogStyle));
+        dialogBuilder.setCancelable(false)
+                .setTitle(R.string.title_dialog_completed)
+                .setMessage(getResources().getString(R.string.dialog_message_completed, award))
+                .setPositiveButton(R.string.dialog_got_it_positive, (dialog, id) ->
+                    this.presenter.closeTask())
+                .show();
+    }
+
+    @Override
+    public void showFailedDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
+                new ContextThemeWrapper(this, R.style.AlertDialogStyle));
+        dialogBuilder.setCancelable(false)
+                .setTitle(R.string.title_dialog_failed)
+                .setMessage(R.string.dialog_message_failed)
+                .setPositiveButton(R.string.dialog_got_it_positive, (dialog, id) ->
+                        this.presenter.closeTask())
+                .show();
+    }
+
+    @Override
+    public void showTimeOutDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
+                new ContextThemeWrapper(this, R.style.AlertDialogStyle));
+        dialogBuilder.setCancelable(false)
+                .setTitle(R.string.title_dialog_time_out)
+                .setMessage(R.string.dialog_message_time_out)
+                .setPositiveButton(R.string.dialog_got_it_positive, (dialog, id) ->
+                        presenter.goToNextQuestion())
+                .show();
+    }
+
+    @Override
+    public void startTimer() {
+        this.progressAnimation.setCurrentPlayTime(ANIMATION_START);
+        this.progressAnimation.start();
+    }
+
+    @Override
+    public void pauseTimer() {
+        this.progressAnimation.pause();
+    }
+
+    @Override
+    public void closeActivity() {
+        finish();
+    }
+
+    @Override
+    public void onAnimationStart(Animator animation) {/** Not implemented*/}
+
+    @Override
+    public void onAnimationEnd(Animator animation) {
+        presenter.timeOut();
+    }
+
+    @Override
+    public void onAnimationCancel(Animator animation) {/** Not implemented*/}
+
+    @Override
+    public void onAnimationRepeat(Animator animation) {/** Not implemented*/}
 }

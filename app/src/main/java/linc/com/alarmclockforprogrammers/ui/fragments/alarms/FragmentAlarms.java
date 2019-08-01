@@ -50,8 +50,6 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // todo replace to view method
-
         AppDatabase database = AlarmApp.getInstance().getDatabase();
 
         if(presenter == null) {
@@ -63,12 +61,12 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
 
         this.presenter.updateQuestionsInLocal();
 
-        enterAnimation = new Explode()
+        this.enterAnimation = new Explode()
                 .setInterpolator(new FastOutSlowInInterpolator())
                 .setStartDelay(500)
                 .setDuration(1000);
 
-        returnAnimation = new Explode()
+        this.returnAnimation = new Explode()
                 .setInterpolator(new FastOutSlowInInterpolator())
                 .setDuration(1000);
 
@@ -87,9 +85,9 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
         RecyclerView alarmsListRV = view.findViewById(R.id.alarms__list_of_alarms);
         FloatingActionButton fab = view.findViewById(R.id.alarms__add_alarm);
 
-        adapterAlarms = new AdapterAlarms(this, getActivity());
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         SnapHelper snapHelper = new LinearSnapHelper();
+        this.adapterAlarms = new AdapterAlarms(this, getActivity());
 
         snapHelper.attachToRecyclerView(alarmsListRV);
         alarmsListRV.setHasFixedSize(true);
@@ -97,13 +95,8 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
         alarmsListRV.setAdapter(adapterAlarms);
         fab.setOnClickListener(this);
 
+        this.presenter.setAlarms();
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        presenter.setAlarms();
     }
 
     @Override
@@ -118,8 +111,8 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
         Bundle data = new Bundle();
         data.putInt("alarm_id", alarmId);
 
-        alarmSettings.setEnterTransition(this.enterAnimation);
-        alarmSettings.setReturnTransition(this.returnAnimation);
+        alarmSettings.setEnterTransition(enterAnimation);
+        alarmSettings.setReturnTransition(returnAnimation);
         alarmSettings.setArguments(data);
 
         getFragmentManager().beginTransaction()
@@ -132,8 +125,8 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
     public void openAlarmCreator() {
         FragmentAlarmSettings alarmSettings = new FragmentAlarmSettings();
 
-        alarmSettings.setEnterTransition(this.enterAnimation);
-        alarmSettings.setReturnTransition(this.returnAnimation);
+        alarmSettings.setEnterTransition(enterAnimation);
+        alarmSettings.setReturnTransition(returnAnimation);
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, alarmSettings)
@@ -153,27 +146,27 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.alarms__add_alarm) {
-            presenter.openAlarmCreator();
+            this.presenter.openAlarmCreator();
         }
     }
 
     @Override
     public void onAlarmClicked(int position) {
-        presenter.openAlarmEditor(this.alarms.get(position).getId());
+        this.presenter.openAlarmEditor(this.alarms.get(position).getId());
     }
 
     @Override
     public void onHold(int position) {
-        presenter.openBottomSheetDialog(this.alarms.get(position));
+        this.presenter.openBottomSheetDialog(alarms.get(position));
     }
 
     @Override
     public void onDeleteClicked(Alarm alarm) {
-        presenter.deleteAlarm(alarm, getActivity());
+        this.presenter.deleteAlarm(alarm, getActivity());
     }
 
     @Override
     public void onDialogDestroyed(Alarm alarm) {
-        presenter.updateAlarm(alarm, getActivity());
+        this.presenter.updateAlarm(alarm, getActivity());
     }
 }

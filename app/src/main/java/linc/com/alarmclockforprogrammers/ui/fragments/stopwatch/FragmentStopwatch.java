@@ -9,9 +9,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.design.widget.FloatingActionButton;
 import android.support.transition.AutoTransition;
-import android.support.transition.Fade;
 import android.support.transition.TransitionManager;
-import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
@@ -72,7 +70,7 @@ public class FragmentStopwatch extends Fragment implements ViewStopwatch, View.O
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         this.adapter = new AdapterLaps();
         this.progressAnimation = ObjectAnimator.ofInt(progressBar,
-                getResources().getString(R.string.animator_property_name), ANIMATION_START, ANIMATION_END);
+                getResources().getString(R.string.animator_property_progress), ANIMATION_START, ANIMATION_END);
         this.constraintSet = new ConstraintSet();
 
         layoutManager.setReverseLayout(true);

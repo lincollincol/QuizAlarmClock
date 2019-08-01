@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.entity.Question;
 import linc.com.alarmclockforprogrammers.model.interactor.wake.InteractorWake;
+
+import static linc.com.alarmclockforprogrammers.utils.Consts.FIRST_QUESTION;
 
 public class PresenterWake {
 
@@ -17,7 +18,7 @@ public class PresenterWake {
 
     private List<Question> questions;
     private int currentQuestion = 0;
-    // todo score = MAX_SCORE
+    private int completedQuestions = 0;
 
     public PresenterWake(ViewWake view, InteractorWake interactor) {
         this.view = view;
@@ -27,51 +28,104 @@ public class PresenterWake {
     public void setData(String programmingLanguage, int difficult) {
         Disposable d = interactor.getQuestions(programmingLanguage, difficult)
                 .subscribe(questions -> {
+                    // Set local values
                     this.questions = questions;
-                    view.updateQuestion(questions.get(currentQuestion));
+                    // Update view
+                    this.view.updateQuestion(questions.get(currentQuestion));
+                    this.view.updateCompletedQuestions(completedQuestions + "/"
+                            + getNumberOfQuestions());
+                    this.view.updateBalance(interactor.getBalance());
                 }, Throwable::printStackTrace);
     }
 
     public void checkAnswer(int selectedPosition) {
-        // Get correct answer position
         int correctPosition = questions.get(currentQuestion)
                 .getTrueAnswerPosition();
 
-        // Show correct answer
-        view.showCorrectAnswer(correctPosition);
+        this.view.showCorrectAnswer(correctPosition);
 
-        // If user select incorrect, show mistake
         if(correctPosition != selectedPosition) {
-            //todo score--
-            view.showMistake(selectedPosition);
+            this.view.showMistake(selectedPosition);
+        }else {
+            this.completedQuestions++;
         }
 
-        // Disable next/pay buttons
-        view.disableActionButtons();
+        if(!isTaskCompleted()) {
+            updateQuestion();
+        }
+    }
 
-        // Wait 3 seconds, then update screen
+    public void showTransitionAcceptDialog() {
+        this.view.showPayTransactionDialog(getPriceFromDifficult());
+    }
+
+    public void doPayTransaction() {
+        this.interactor.reduceBalance(getPriceFromDifficult());
+        this.view.updateBalance(interactor.getBalance());
+        checkAnswer(questions.get(currentQuestion).getTrueAnswerPosition());
+    }
+
+    public void timeOut() {
+        view.showTimeOutDialog();
+    }
+
+    public void goToNextQuestion() {
+        int correctPosition = questions.get(currentQuestion)
+                .getTrueAnswerPosition();
+        this.view.showCorrectAnswer(correctPosition);
+        if(!isTaskCompleted()) {
+            updateQuestion();
+        }
+    }
+
+    public void closeTask() {
+        view.closeActivity();
+    }
+
+    private void updateQuestion() {
+        this.view.pauseTimer();
+        this.view.disableActionButtons();
+        // Wait 3 seconds, then update view
         Disposable d = Completable.timer(3, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    currentQuestion++;
-                    view.updateQuestion(questions.get(currentQuestion));
-                    view.enableActionButtons();
+                    this.currentQuestion++;
+                    this.view.updateQuestion(questions.get(currentQuestion));
+                    this.view.updateCompletedQuestions(completedQuestions + "/"
+                            + getNumberOfQuestions());
+                    this.view.enableActionButtons();
+                    this.view.startTimer();
                 });
     }
 
-    public void showTransitionAcceptDialog(int difficult) {
-        view.showPayTransactionDialog(getPriceFromDifficult(difficult));
+    private boolean isTaskCompleted() {
+        if(currentQuestion == (questions.size() - 1)) {
+            if(completedQuestions < getNumberOfQuestions()) {
+                this.view.showFailedDialog();
+                return true;
+            }
+        }
+        if(completedQuestions >= getNumberOfQuestions()) {
+            this.interactor.increaseBalance(getAwardFromDifficult());
+            this.view.showCompletedDialog(getAwardFromDifficult());
+            this.view.updateCompletedQuestions(completedQuestions + "/"
+                    + getNumberOfQuestions());
+            return true;
+        }
+        return false;
     }
 
-    public void doPayTransaction(int difficult) {
-        // todo getPriceFromDifficult(difficult)
-        // interactor.do . . .
-        // balance - getPriceFromDifficult(difficult)
-        // balance to shared prefs
-        currentQuestion++;
-        view.updateQuestion(questions.get(currentQuestion));
+    private int getAwardFromDifficult() {
+        int difficult = questions.get(FIRST_QUESTION).getDifficult();
+        return ((difficult < 1) ? 2 : (difficult > 1) ? 4 : 3);
     }
 
-    private int getPriceFromDifficult(int difficult) {
+    private int getPriceFromDifficult() {
+        int difficult = questions.get(FIRST_QUESTION).getDifficult();
         return ((difficult < 1) ? 1 : (difficult > 1) ? 5 : 2);
+    }
+
+    private int getNumberOfQuestions() {
+        int difficult = questions.get(FIRST_QUESTION).getDifficult();
+        return ((difficult < 1) ? 3 : (difficult > 1) ? 1 : 2);
     }
 }

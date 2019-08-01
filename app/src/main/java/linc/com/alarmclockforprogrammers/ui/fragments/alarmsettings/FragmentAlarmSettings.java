@@ -181,8 +181,7 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
                     this.dayPicker.setText(
                             Alarm.getDaysMarks(this.alarm.getDays(), getResources()));
                 })
-                .setNegativeButton(R.string.dialog_cancel, (dialog, id) -> dialog.cancel());
-        dialogBuilder.create()
+                .setNegativeButton(R.string.dialog_cancel, (dialog, id) -> dialog.cancel())
                 .show();
     }
 
@@ -202,8 +201,7 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
                     this.selectedDifficultMode.setText(
                             Alarm.getDifficultMode(this.alarm.getDifficult(), getResources()));
                 })
-                .setNegativeButton(R.string.dialog_cancel, (dialog, id) -> dialog.cancel());
-        dialogBuilder.create()
+                .setNegativeButton(R.string.dialog_cancel, (dialog, id) -> dialog.cancel())
                 .show();
     }
 
@@ -223,8 +221,7 @@ public class FragmentAlarmSettings extends Fragment implements ViewAlarmSettings
                     this.selectedLanguage.setText(
                             Alarm.getProgrammingsLanguage(this.alarm.getLanguage(), getResources()));
                 })
-                .setNegativeButton(R.string.dialog_cancel, (dialog, id) -> dialog.cancel());
-        dialogBuilder.create()
+                .setNegativeButton(R.string.dialog_cancel, (dialog, id) -> dialog.cancel())
                 .show();
     }
 

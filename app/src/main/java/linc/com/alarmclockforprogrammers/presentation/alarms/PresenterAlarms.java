@@ -17,34 +17,35 @@ public class PresenterAlarms {
     }
 
     public void setAlarms() {
-        Disposable d = interactor.getAlarms()
+        Disposable d = this.interactor.getAlarms()
                 .subscribe(alarms ->
-                    view.setAlarmsData(alarms)
+                        this.view.setAlarmsData(alarms)
                 );
     }
 
     public void openAlarmCreator() {
-        view.openAlarmCreator();
+        this.view.openAlarmCreator();
     }
 
     public void openAlarmEditor(int alarmId) {
-        view.openAlarmEditor(alarmId);
+        this.view.openAlarmEditor(alarmId);
     }
 
     public void openBottomSheetDialog(Alarm alarm) {
-        view.openBottomSheetDialog(alarm);
+        this.view.openBottomSheetDialog(alarm);
     }
 
     public void deleteAlarm(Alarm alarm, Context context) {
-        interactor.deleteAlarm(alarm, context);
+        this.interactor.deleteAlarm(alarm, context);
+        setAlarms();
     }
 
     public void updateAlarm(Alarm alarm, Context context) {
-        interactor.updateAlarm(alarm, context);
+        this.interactor.updateAlarm(alarm, context);
     }
 
     public void updateQuestionsInLocal() {
-        interactor.updateQuestionInLocal();
+        this.interactor.updateQuestionInLocal();
     }
 }
 

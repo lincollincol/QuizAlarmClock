@@ -5,6 +5,7 @@ public final class Consts {
     // FragmentTimer constants
     public static final long ONE_HOUR = 3600000;
     public static final long ONE_MINUTE = 60000;
+    public static final long TWO_MINUTES = 120000;
     public static final long ONE_SECOND = 1000;
     public static final long ONE_TICK = 500;
     public static final int PICKER_HOURS_MAX = 23;
@@ -16,7 +17,7 @@ public final class Consts {
     // FragmentStopwatch
     public static final int MILLISECOND = 17;
     public static final int ANIMATION_START = 0;
-    public static final int ANIMATION_END = 0;
+    public static final int ANIMATION_END = 100;
     public static final int DEFAULT_TIME = 0;
 
 
@@ -32,5 +33,7 @@ public final class Consts {
     public static final float PERCENT_HUNDRED = 1.0f;
 
 
+    // Wake activity
+    public static final int FIRST_QUESTION = 0;
 
 }

@@ -32,6 +32,8 @@ import linc.com.alarmclockforprogrammers.ui.fragments.settings.FragmentSettings;
 import linc.com.alarmclockforprogrammers.ui.fragments.stopwatch.FragmentStopwatch;
 import linc.com.alarmclockforprogrammers.ui.fragments.timer.FragmentTimer;
 
+import static linc.com.alarmclockforprogrammers.utils.Consts.*;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
@@ -143,30 +145,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //todo param diff transitions
     private void replaceFragment(Fragment fragment) {
-
-        // todo 800 milli transition
-
         Transition enterAnimation = new TransitionSet()
                 .setOrdering(TransitionSet.ORDERING_TOGETHER)
                 .addTransition(new Fade(Fade.IN)
                         .addTarget(R.id.alarms__list_of_alarms)
                         .setInterpolator(new FastOutSlowInInterpolator())
-                        .setDuration(1500))
+                        .setDuration(NORMAL_SPEED))
                 .addTransition(new Slide(Gravity.BOTTOM)
                         .addTarget(R.id.alarms__add_alarm)
                         .setInterpolator(new FastOutSlowInInterpolator())
-                        .setDuration(1500));
+                        .setDuration(NORMAL_SPEED));
 
 
         Transition exitAnimation = new TransitionSet()
                 .addTransition(new Fade(Fade.OUT)
                         .addTarget(R.id.alarms__list_of_alarms)
                         .setInterpolator(new FastOutLinearInInterpolator())
-                        .setDuration(1000))
+                        .setDuration(FAST_SPEED))
                 .addTransition(new Slide(Gravity.BOTTOM)
                         .addTarget(R.id.alarms__add_alarm)
                         .setInterpolator(new FastOutSlowInInterpolator())
-                        .setDuration(1500));
+                        .setDuration(NORMAL_SPEED));
 
 
         fragment.setExitTransition(exitAnimation);

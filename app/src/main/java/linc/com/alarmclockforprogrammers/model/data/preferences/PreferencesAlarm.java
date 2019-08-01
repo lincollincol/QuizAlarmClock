@@ -6,6 +6,8 @@ import android.preference.PreferenceManager;
 
 public class PreferencesAlarm {
 
+    // todo replace hardcoded IDs to constants
+
     private Context context;
 
     public PreferencesAlarm(Context context) {
@@ -30,6 +32,16 @@ public class PreferencesAlarm {
         return getDefaultPreferences().getString("REMOTE_VERSION", "0");
     }
 
+    /** Balance*/
+
+    public void saveBalance(int balance) {
+        getPrefsEditor().putInt("BALANCE", balance)
+                .apply();
+    }
+
+    public int getBalance() {
+        return getDefaultPreferences().getInt("BALANCE", 20);
+    }
 
     private SharedPreferences.Editor getPrefsEditor(){
         return PreferenceManager

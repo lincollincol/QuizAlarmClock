@@ -14,24 +14,26 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.entity.Question;
+import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.model.repository.wake.RepositoryWake;
 
 public class InteractorWake {
 
     private RepositoryWake repository;
+    private PreferencesAlarm preferences;
 
-    public InteractorWake(RepositoryWake repository) {
+    public InteractorWake(RepositoryWake repository, PreferencesAlarm preferences) {
         this.repository = repository;
+        this.preferences = preferences;
     }
 
     public Observable<List<Question>> getQuestions(String programmingLanguage, int difficult) {
-        int numberOfQuestions = ((difficult < 1) ? 3 : (difficult > 1) ? 1 : 2);
         return repository.getQuestions(programmingLanguage, difficult)
                 .map(questions -> {
                     List<Question> randomQuestions = new ArrayList<>();
                     Set<Integer> randomIds = new LinkedHashSet<>();
                     Random r = new Random();
-                    while (randomIds.size() < numberOfQuestions) {
+                    while (randomIds.size() < getNumberOfQuestions(difficult)*2) {
                         Integer next = r.nextInt(questions.size());
                         randomIds.add(next);
                     }
@@ -51,7 +53,23 @@ public class InteractorWake {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public int getBalance() {
+        return preferences.getBalance();
+    }
 
+    public void reduceBalance(int price) {
+        int newBalance = preferences.getBalance() - price;
+        preferences.saveBalance(newBalance);
+    }
+
+    public void increaseBalance(int award) {
+        int newBalance = preferences.getBalance() + award;
+        preferences.saveBalance(newBalance);
+    }
+
+    private int getNumberOfQuestions(int difficult) {
+        return ((difficult < 1) ? 3 : (difficult > 1) ? 1 : 2);
+    }
 
     private List<String> fromJson(String answersJson) {
         return new Gson().fromJson(answersJson, ArrayList.class);
