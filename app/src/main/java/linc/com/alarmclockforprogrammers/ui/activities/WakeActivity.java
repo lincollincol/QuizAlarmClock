@@ -51,6 +51,8 @@ public class WakeActivity extends AppCompatActivity implements ViewWake, View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wake);
 
+        // todo if alarm.getTaskEnable == false --> start alarm and return from method
+
         ProgressBar progressBar = findViewById(R.id.wake__time_for_answer);
         this.balance = findViewById(R.id.wake__balance);
         this.completedQuestions = findViewById(R.id.wake__completed_questions);

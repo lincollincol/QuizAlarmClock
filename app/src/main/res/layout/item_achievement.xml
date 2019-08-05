@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginEnd="@dimen/margin_small"
+    app:cardCornerRadius="@dimen/corners_default"
+    app:cardElevation="@dimen/elevation_card">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/item_achievement__language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="C++"
+            android:textSize="@dimen/text_medium"
+            android:textColor="@color/text_dark"
+            android:fontFamily="sans-serif-black"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/item_achievement__task_condition"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/item_achievement__vertical_fix_line"
+            app:layout_constraintVertical_chainStyle="spread"/>
+
+        <TextView
+            android:id="@+id/item_achievement__task_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Complete 20 easy tasks "
+            android:textSize="@dimen/text_small"
+            android:textColor="@color/text_dark"
+            android:maxLines="3"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintTop_toBottomOf="@id/item_achievement__language"
+            app:layout_constraintBottom_toTopOf="@id/item_achievement__progress"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/item_achievement__vertical_fix_line"/>
+
+        <ProgressBar
+            android:id="@+id/item_achievement__progress"
+            android:layout_width="150dp"
+            android:layout_height="5dp"
+            android:indeterminate="false"
+            android:progress="50"
+            android:progressDrawable="@drawable/progress_time_for_answer_gradient"
+            android:background="@drawable/progress_bar_achievement_shape"
+            style="?android:attr/progressBarStyleHorizontal"
+            app:layout_constraintTop_toBottomOf="@id/item_achievement__task_condition"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/item_achievement__completed_tasks"
+            app:layout_constraintHorizontal_chainStyle="spread"/>
+
+        <TextView
+            android:id="@+id/item_achievement__completed_tasks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="21/50"
+            android:textColor="@color/text_dark"
+            app:layout_constraintTop_toTopOf="@id/item_achievement__progress"
+            app:layout_constraintBottom_toBottomOf="@id/item_achievement__progress"
+            app:layout_constraintLeft_toRightOf="@id/item_achievement__progress"
+            app:layout_constraintRight_toLeftOf="@id/item_achievement__vertical_fix_line"/>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/item_achievement__vertical_fix_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.75"/>
+
+        <LinearLayout
+            android:id="@+id/item_achievement__receive"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:gravity="center"
+            android:background="@drawable/item_achievement_recieve"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/item_achievement__vertical_fix_line">
+
+            <TextView
+                android:id="@+id/item_achievement_receive__award"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_small"
+                android:textColor="@color/text_light"
+                android:fontFamily="sans-serif-medium"
+                android:text="20"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_pay"
+                android:tint="@color/text_light"/>
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

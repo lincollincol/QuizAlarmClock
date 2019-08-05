@@ -27,6 +27,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import linc.com.alarmclockforprogrammers.R;
+import linc.com.alarmclockforprogrammers.ui.fragments.achievements.FragmentAchievements;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.settings.FragmentSettings;
 import linc.com.alarmclockforprogrammers.ui.fragments.stopwatch.FragmentStopwatch;
@@ -128,6 +129,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .replace(R.id.container, stopwatch)
                         .commit();
                 break;
+            case R.id.menu_achievements:
+
+                FragmentAchievements fra = new FragmentAchievements();
+
+                // Clear back stack
+                FragmentManager fda = getSupportFragmentManager();
+                for(int i = 0; i < fda.getBackStackEntryCount(); ++i) {
+                    fda.popBackStack();
+                }
+
+                // Start new fragment
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, fra)
+                        .commit();
+                break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -155,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .addTarget(R.id.alarms__add_alarm)
                         .setInterpolator(new FastOutSlowInInterpolator())
                         .setDuration(NORMAL_SPEED));
-
 
         Transition exitAnimation = new TransitionSet()
                 .addTransition(new Fade(Fade.OUT)

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!--Global-->
     <dimen name="padding_small">10dp</dimen>
     <dimen name="padding_medium">20dp</dimen>
@@ -30,6 +29,7 @@
 
     <!--Alarm recycler view item-->
     <dimen name="layout_alarm_height">200dp</dimen>
+    <dimen name="margin_alarm_item">5dp</dimen>
 
     <!--Alarm layout-->
     <dimen name="card_editor_height">200dp</dimen>
@@ -41,5 +41,8 @@
 
     <!--Wake activity-->
     <dimen name="image_currency_size">30dp</dimen>
+
+    <!--Achievement item-->
+    <dimen name="card_achievement_height">100dp</dimen>
 
 </resources>

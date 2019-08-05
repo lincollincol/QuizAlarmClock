@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/layout_alarm_height"
     android:layout_marginStart="@dimen/margin_small"
-    android:layout_marginTop="@dimen/margin_small"
+    android:layout_marginTop="@dimen/margin_alarm_item"
+    android:layout_marginBottom="@dimen/margin_alarm_item"
     android:layout_marginEnd="@dimen/margin_small"
-    android:layout_marginBottom="@dimen/margin_small"
     app:cardCornerRadius="@dimen/corners_default"
     app:cardElevation="@dimen/elevation_card">
 

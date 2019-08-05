@@ -21,6 +21,7 @@ public class PresenterAlarms {
                 .subscribe(alarms ->
                         this.view.setAlarmsData(alarms)
                 );
+        this.view.setBalance(interactor.getBalance());
     }
 
     public void openAlarmCreator() {

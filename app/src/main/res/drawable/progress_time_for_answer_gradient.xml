@@ -3,7 +3,7 @@
     <item android:id="@android:id/progress">
         <clip>
             <shape
-                android:useLevel="true">
+                android:useLevel="false">
                 <corners android:radius="5dp"/>
                 <gradient
                     android:endColor="@color/progress_bar_gradient_end"

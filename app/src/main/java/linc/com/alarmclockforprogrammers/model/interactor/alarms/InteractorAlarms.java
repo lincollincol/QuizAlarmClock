@@ -49,4 +49,8 @@ public class InteractorAlarms {
         });
     }
 
+    public int getBalance() {
+        return preferences.getBalance();
+    }
+
 }

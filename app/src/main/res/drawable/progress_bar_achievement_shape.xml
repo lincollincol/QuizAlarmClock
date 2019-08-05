@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+    android:innerRadiusRatio="2.5"
+    android:thickness="5dp"
+    android:useLevel="false">
+    <corners android:radius="@dimen/corners_default"></corners>
+    <solid android:color="@color/progress_bar_track" />
+</shape>

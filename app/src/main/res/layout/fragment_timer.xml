@@ -47,7 +47,7 @@
         android:indeterminate="false"
         android:progress="0"
         android:progressDrawable="@drawable/progress_bar_gradient"
-        android:background="@drawable/progress_bar_shape"
+        android:background="@drawable/progress_bar_timer_shape"
         android:visibility="gone"
         style="?android:attr/progressBarStyleHorizontal"
         app:layout_constraintTop_toTopOf="parent"
