@@ -1,23 +1,43 @@
 package linc.com.alarmclockforprogrammers.entity;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
+import static android.arch.persistence.room.ColumnInfo.INTEGER;
+import static android.arch.persistence.room.ColumnInfo.TEXT;
+
+@Entity(tableName = "achievements")
 public class Achievement {
+    @PrimaryKey
+    @ColumnInfo(name = "_id")
+    private int id;
 
-    private int id;// todo primary key without auto generate
+    @ColumnInfo(name = "award", typeAffinity = INTEGER)
     private int award;
+
+    @ColumnInfo(name = "tasks_to_complete", typeAffinity = INTEGER)
     private int tasksToComplete;
+
     @Ignore
     private int completedTasks;
-    private String task;
+
+    @ColumnInfo(name = "achievement_task", typeAffinity = TEXT)
+    private String achievementTask;
+
+    @ColumnInfo(name = "language", typeAffinity = TEXT)
     private String language;
+
+    @ColumnInfo(name = "completed", typeAffinity = INTEGER)
     private boolean completed;
 
-    public Achievement(int id, int award, int tasksToComplete, String task, String language, boolean completed) {
+
+    public Achievement(int id, int award, int tasksToComplete, String achievementTask, String language, boolean completed) {
         this.id = id;
         this.award = award;
         this.tasksToComplete = tasksToComplete;
-        this.task = task;
+        this.achievementTask = achievementTask;
         this.language = language;
         this.completed = completed;
     }
@@ -54,12 +74,12 @@ public class Achievement {
         this.tasksToComplete = tasksToComplete;
     }
 
-    public String getTask() {
-        return task;
+    public String getAchievementTask() {
+        return achievementTask;
     }
 
-    public void setTask(String task) {
-        this.task = task;
+    public void setAchievementTask(String achievementTask) {
+        this.achievementTask = achievementTask;
     }
 
     public String getLanguage() {

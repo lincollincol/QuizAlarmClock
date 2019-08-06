@@ -49,7 +49,7 @@
     <string name="dialog_message_pay_transaction">Are you sure? Pay %1$d</string>
     <string name="dialog_message_completed">Task completed!
         <br/>You have earned %1$d on your balance %1$d</string>
-    <string name="dialog_message_failed">You didn"'"t complete the task!</string>
+    <string name="dialog_message_failed">You didn"'"t complete the achievementTask!</string>
     <string name="title_dialog_skip_question">Skip</string>
     <string name="dialog_yes_positive">Yes</string>
     <string name="dialog_no_negative">No</string>

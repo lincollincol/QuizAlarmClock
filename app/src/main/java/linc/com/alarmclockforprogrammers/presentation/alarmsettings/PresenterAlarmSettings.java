@@ -3,7 +3,7 @@ package linc.com.alarmclockforprogrammers.presentation.alarmsettings;
 import android.content.Context;
 
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.model.interactor.alarmsettings.InteractorAlarmSettings;
 
 public class PresenterAlarmSettings {

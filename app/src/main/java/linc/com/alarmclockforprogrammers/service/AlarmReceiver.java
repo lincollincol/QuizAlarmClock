@@ -3,11 +3,10 @@ package linc.com.alarmclockforprogrammers.service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
-import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.ui.activities.WakeActivity;
 import linc.com.alarmclockforprogrammers.utils.AlarmHandler;
 

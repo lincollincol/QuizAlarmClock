@@ -4,7 +4,7 @@ import android.content.Context;
 
 import io.reactivex.Single;
 import linc.com.alarmclockforprogrammers.utils.AlarmHandler;
-import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.model.repository.alarmsettings.RepositoryAlarmSettings;
 
 public class InteractorAlarmSettings {

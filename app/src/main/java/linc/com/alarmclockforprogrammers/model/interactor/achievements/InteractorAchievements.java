@@ -18,8 +18,16 @@ public class InteractorAchievements {
     }
 
     public Observable<List<Achievement>> getAchievements() {
-        // todo implements data retrieving
-        return null;
+        return repository.getAchievements();
+    }
+
+    public void updateAcgievementsInLocal() {
+        repository.updateLocalAchievementsVersion((remoteVersion) -> {
+            if(!preferences.getLocalAchievementsVersion().equals(remoteVersion)) {
+                repository.updateLocalAcgievements();
+                preferences.saveLocalAchievementsVersion(remoteVersion);
+            }
+        });
     }
 
     public int getBalance() {

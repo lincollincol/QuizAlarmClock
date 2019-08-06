@@ -21,7 +21,7 @@ import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.entity.Question;
 import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
-import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.model.interactor.wake.InteractorWake;
 import linc.com.alarmclockforprogrammers.model.repository.wake.RepositoryWake;

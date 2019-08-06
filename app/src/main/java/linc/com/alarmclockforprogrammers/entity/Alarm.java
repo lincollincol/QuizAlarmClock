@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.model.data.database.alarms;
+package linc.com.alarmclockforprogrammers.entity;
 
 
 import android.arch.persistence.room.ColumnInfo;
@@ -6,7 +6,6 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.content.res.Resources;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;

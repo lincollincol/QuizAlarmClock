@@ -16,8 +16,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.entity.Achievement;
+import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
 import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.model.interactor.achievements.InteractorAchievements;
 import linc.com.alarmclockforprogrammers.model.repository.achievements.RepositoryAchievements;
@@ -37,9 +39,11 @@ public class FragmentAchievements extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        AppDatabase database = AlarmApp.getInstance().getDatabase();
+
         if(presenter == null) {
             presenter = new PresenterAchievements(this,
-                    new InteractorAchievements(new RepositoryAchievements(),
+                    new InteractorAchievements(new RepositoryAchievements(database.achievementsDao()),
                     new PreferencesAlarm(getActivity()))
             );
         }
@@ -74,15 +78,7 @@ public class FragmentAchievements extends Fragment implements
 
     @Override
     public void setAchievements(List<Achievement> achievements) {
-
-        List<Achievement> ac = new ArrayList<>();
-
-        for(int i = 0; i < 20; i++) {
-            ac.add(new Achievement(i, 12, 54, "Complete " + i,
-                    "Java", false));
-        }
-
-        adapter.setAchievements(ac);
+        adapter.setAchievements(achievements);
     }
 
     @Override

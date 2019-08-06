@@ -14,26 +14,28 @@ public class PreferencesAlarm {
         this.context = context;
     }
 
+    /** Questions*/
     public void saveLocalQuestionsVersion(String version) {
-        getPrefsEditor().putString("LOCAL_VERSION", version)
-                .apply();
-    }
-
-    public void saveRemoteQuestionsVersion(String version) {
-        getPrefsEditor().putString("REMOTE_VERSION", version)
+        getPrefsEditor().putString("LOCAL_QUESTIONS_VERSION", version)
                 .apply();
     }
 
     public String getLocalQuestionsVersion() {
-        return getDefaultPreferences().getString("LOCAL_VERSION", "0");
+        return getDefaultPreferences().getString("LOCAL_QUESTIONS_VERSION", "0");
     }
 
-    public String getRemoteQuestionsVersion() {
-        return getDefaultPreferences().getString("REMOTE_VERSION", "0");
+    /** Achievements*/
+    public void saveLocalAchievementsVersion(String version) {
+        getPrefsEditor().putString("LOCAL_ACHIEVEMENTS_VERSION", version)
+                .apply();
     }
+
+    public String getLocalAchievementsVersion() {
+        return getDefaultPreferences().getString("LOCAL_ACHIEVEMENTS_VERSION", "0");
+    }
+
 
     /** Balance*/
-
     public void saveBalance(int balance) {
         getPrefsEditor().putInt("BALANCE", balance)
                 .apply();

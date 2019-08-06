@@ -77,7 +77,7 @@ public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievement
         void setAchievement(Achievement achievement) {
             this.progLanguage.setText(achievement.getLanguage());
             this.completedTasks.setText((achievement.getCompletedTasks()+"/"+achievement.getTasksToComplete()));
-            this.taskCondition.setText(achievement.getTask());
+            this.taskCondition.setText(achievement.getAchievementTask());
             this.award.setText(String.valueOf(achievement.getAward()));
             this.progress.setProgress(achievement.getCompletedTasks());
         }

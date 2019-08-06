@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.R;
 
 public class FragmentBottomDialog extends BottomSheetDialogFragment implements View.OnClickListener,

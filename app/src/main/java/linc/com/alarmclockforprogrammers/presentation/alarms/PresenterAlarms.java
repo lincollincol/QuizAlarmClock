@@ -3,7 +3,7 @@ package linc.com.alarmclockforprogrammers.presentation.alarms;
 import android.content.Context;
 
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.model.interactor.alarms.InteractorAlarms;
 
 public class PresenterAlarms {
@@ -16,12 +16,14 @@ public class PresenterAlarms {
         this.interactor = interactor;
     }
 
-    public void setAlarms() {
+    public void setData() {
         Disposable d = this.interactor.getAlarms()
                 .subscribe(alarms ->
                         this.view.setAlarmsData(alarms)
                 );
         this.view.setBalance(interactor.getBalance());
+        this.interactor.updateQuestionInLocal();
+
     }
 
     public void openAlarmCreator() {
@@ -38,15 +40,11 @@ public class PresenterAlarms {
 
     public void deleteAlarm(Alarm alarm, Context context) {
         this.interactor.deleteAlarm(alarm, context);
-        setAlarms();
+        setData();
     }
 
     public void updateAlarm(Alarm alarm, Context context) {
         this.interactor.updateAlarm(alarm, context);
-    }
-
-    public void updateQuestionsInLocal() {
-        this.interactor.updateQuestionInLocal();
     }
 }
 

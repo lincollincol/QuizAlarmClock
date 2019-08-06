@@ -1,6 +1,6 @@
 package linc.com.alarmclockforprogrammers.presentation.alarmsettings;
 
-import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.entity.Alarm;
 
 public interface ViewAlarmSettings {
 

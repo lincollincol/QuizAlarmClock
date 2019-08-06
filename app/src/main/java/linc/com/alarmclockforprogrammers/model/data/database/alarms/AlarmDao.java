@@ -9,6 +9,8 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
+import linc.com.alarmclockforprogrammers.entity.Alarm;
+
 @Dao
 public interface AlarmDao {
 

@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 
 import java.util.Calendar;
 
-import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.service.AlarmReceiver;
 
 public class AlarmHandler {

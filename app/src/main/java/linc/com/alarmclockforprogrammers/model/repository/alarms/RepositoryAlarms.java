@@ -20,7 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.entity.Question;
-import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.AlarmDao;
 import linc.com.alarmclockforprogrammers.model.data.database.questions.QuestionsDao;
 import linc.com.alarmclockforprogrammers.utils.callbacks.VersionUpdateCallback;
@@ -39,7 +39,6 @@ public class RepositoryAlarms {
     }
 
     /** Alarms*/
-
     public Observable<List<Alarm>> getAlarms() {
         return Observable.create((ObservableOnSubscribe<List<Alarm>>) emitter -> {
             try{
@@ -67,10 +66,11 @@ public class RepositoryAlarms {
     }
 
     /** Questions*/
-
+//todo replace to questions repos
+    /** !!==!!==!!==!!*/
     // todo replace to firebase package
     public void updateLocalQuestionsVersion(VersionUpdateCallback callback) {
-        this.databaseReference = this.firebaseDatabase.getReference("version");
+        this.databaseReference = this.firebaseDatabase.getReference("questions_version");
         this.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -100,22 +100,22 @@ public class RepositoryAlarms {
                                     (String) (ds.child("htmlCodeSnippet").getValue()),
                                     ((Boolean) (ds.child("completed").getValue()))));
                 }
-                Disposable d = updateLocalQuestion(questions)
+                Disposable d = updateQuestions(questions)
                         .subscribe(() -> {}, e -> e.printStackTrace());
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
+            public void onCancelled(@NonNull DatabaseError databaseError) {/** Not implemented*/}
         });
     }
 
-    private Completable updateLocalQuestion(List<Question> questions) {
+    private Completable updateQuestions(List<Question> questions) {
         return Completable.fromAction(() -> {
             for(Question q : questions) {
                 try {
                     questionsDao.insert(q);
                 }catch (Exception e) {
-                    Log.d("EZIST", "updateLocalQuestion:exist " );
+                    Log.d("ELEMENT EXIST", ""+q.getId() );
                 }
             }
         })

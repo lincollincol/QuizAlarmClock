@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,14 +26,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
-import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.model.interactor.alarmsettings.InteractorAlarmSettings;
 import linc.com.alarmclockforprogrammers.model.repository.alarmsettings.RepositoryAlarmSettings;
 import linc.com.alarmclockforprogrammers.presentation.alarmsettings.PresenterAlarmSettings;

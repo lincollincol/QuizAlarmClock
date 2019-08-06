@@ -24,7 +24,7 @@ import java.util.List;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
-import linc.com.alarmclockforprogrammers.model.data.database.alarms.Alarm;
+import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.model.interactor.alarms.InteractorAlarms;
@@ -58,8 +58,6 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
                     new PreferencesAlarm(getActivity())
             ));
         }
-
-        this.presenter.updateQuestionsInLocal();
 
         this.enterAnimation = new Explode()
                 .setInterpolator(new FastOutSlowInInterpolator())
@@ -96,7 +94,7 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
         alarmsListRV.setAdapter(adapterAlarms);
         fab.setOnClickListener(this);
 
-        this.presenter.setAlarms();
+        this.presenter.setData();
         return view;
     }
 
