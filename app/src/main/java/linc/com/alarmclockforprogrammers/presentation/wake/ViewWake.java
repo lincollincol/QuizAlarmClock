@@ -3,6 +3,7 @@ package linc.com.alarmclockforprogrammers.presentation.wake;
 import linc.com.alarmclockforprogrammers.entity.Question;
 
 public interface ViewWake {
+
     void updateQuestion(Question question);
     void updateCompletedQuestions(String completedQuestions);
     void updateBalance(int balance);

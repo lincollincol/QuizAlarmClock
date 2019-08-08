@@ -1,240 +1,91 @@
 package linc.com.alarmclockforprogrammers.ui.activities;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
+import android.app.KeyguardManager;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
+import android.util.Log;
+import android.view.WindowManager;
 
 import com.google.gson.Gson;
 
-import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.entity.Question;
-import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
 import linc.com.alarmclockforprogrammers.entity.Alarm;
-import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
-import linc.com.alarmclockforprogrammers.model.interactor.wake.InteractorWake;
-import linc.com.alarmclockforprogrammers.model.repository.wake.RepositoryWake;
-import linc.com.alarmclockforprogrammers.presentation.wake.PresenterWake;
-import linc.com.alarmclockforprogrammers.presentation.wake.ViewWake;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
+import linc.com.alarmclockforprogrammers.ui.fragments.dismiss.FragmentDismiss;
+import linc.com.alarmclockforprogrammers.ui.fragments.waketask.FragmentWakeTask;
 
-import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
-public class WakeActivity extends AppCompatActivity implements ViewWake, View.OnClickListener,
-        Animator.AnimatorListener {
+public class WakeActivity extends AppCompatActivity  {
 
-    private TextView balance;
-    private TextView completedQuestions;
-    private TextView preQuestion;
-    private TextView postQuestion;
-    private WebView codeSnippet;
-    private RadioGroup answersGroup;
-    private FloatingActionButton nextQuestion;
-    private FloatingActionButton payForQuestion;
 
-    private ObjectAnimator progressAnimation;
-    private PresenterWake presenter;
+    private boolean testCompleted;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wake);
 
-        // todo if alarm.getTaskEnable == false --> start alarm and return from method
+        // Check for turned on screen
+        if( !((PowerManager) getSystemService(POWER_SERVICE)).isInteractive() ) {
+            // Turn on screen, if it's turned off
+            screenTurnOn();
+        }
 
-        ProgressBar progressBar = findViewById(R.id.wake__time_for_answer);
-        this.balance = findViewById(R.id.wake__balance);
-        this.completedQuestions = findViewById(R.id.wake__completed_questions);
-        this.preQuestion = findViewById(R.id.wake__pre_question);
-        this.postQuestion = findViewById(R.id.wake__post_question);
-        this.codeSnippet = findViewById(R.id.wake__code_snippet);
-        this.answersGroup = findViewById(R.id.wake__answers_group);
-        this.nextQuestion = findViewById(R.id.wake__next_question);
-        this.payForQuestion = findViewById(R.id.wake__pay_for_answer);
-
-        this.nextQuestion.setOnClickListener(this);
-        this.payForQuestion.setOnClickListener(this);
-
-        AppDatabase database = AlarmApp.getInstance().getDatabase();
         Alarm alarm = new Gson().fromJson(
                 getIntent().getStringExtra("ALARM_JSON"), Alarm.class);
+        Fragment wakeFragment;
 
-        if(presenter == null) {
-            this.presenter = new PresenterWake(this,
-                    new InteractorWake(new RepositoryWake(database.questionsDao()),
-                            new PreferencesAlarm(this))
-            );
+        if(!alarm.hasTask()) {
+            wakeFragment = new FragmentDismiss();
+
+        }else {
+            wakeFragment = new FragmentWakeTask();
+            Bundle data = new Bundle();
+            data.putInt("LANGUAGE", alarm.getLanguage());
+            data.putInt("DIFFICULT", alarm.getDifficult());
+
+            wakeFragment.setArguments(data);
+
         }
 
-        this.progressAnimation = ObjectAnimator.ofInt(progressBar,
-                getResources().getString(R.string.animator_property_progress), ANIMATION_END, ANIMATION_START);
-        this.presenter.setData(ResUtil.getLanguage(this,
-                alarm.getLanguage()), alarm.getDifficult());
-
-        this.progressAnimation.addListener(this);
-        this.progressAnimation.setDuration(60000);
-        this.progressAnimation.start();
-
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.wake_container, wakeFragment)
+                .commit();
     }
 
+
     @Override
-    public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.wake__next_question:
-                // Get selected
-                RadioButton radioButton = findViewById(answersGroup.getCheckedRadioButtonId());
-                // Check answer by position
-                this.presenter.checkAnswer(answersGroup.indexOfChild(radioButton));
-                break;
-            case R.id.wake__pay_for_answer:
-                this.presenter.showTransitionAcceptDialog();
-                break;
+    protected void onStop() {
+        super.onStop();
+        if(!testCompleted) {
+            Intent intent = getIntent().
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
     }
 
-    @Override
-    public void updateQuestion(Question question) {
-        this.preQuestion.setText(String.valueOf(question.getId()));
-        this.postQuestion.setText(question.getPostQuestion());
-        this.codeSnippet.loadData(question.getHtmlCodeSnippet(), "text/html", "utf-8");
-        this.answersGroup.clearCheck();
-        // Reset radio buttons
-        for(int i = 0; i < answersGroup.getChildCount(); i++) {
-            RadioButton answer = (RadioButton)answersGroup.getChildAt(i);
-            answer.setText(question.getAnswersList().get(i));
-            answer.setTextColor(getResources().getColor(R.color.text_dark));
-        }
-    }
-
-    @Override
-    public void updateCompletedQuestions(String completedQuestions) {
-        this.completedQuestions.setText(completedQuestions);
-    }
-
-    @Override
-    public void updateBalance(int balance) {
-        this.balance.setText(String.valueOf(balance));
-    }
-
-    @Override
-    public void showCorrectAnswer(int selectedPosition) {
-        RadioButton answer = (RadioButton) answersGroup.getChildAt(selectedPosition);
-        answer.setTextColor(ResUtil.getTextColor(this, R.color.answer_correct));
-    }
-
-    @Override
-    public void showMistake(int selectedPosition) {
-        RadioButton answer = (RadioButton) answersGroup.getChildAt(selectedPosition);
-        answer.setTextColor(ResUtil.getTextColor(this, R.color.answer_incorrect));
-    }
-
-    @Override
-    public void disableActionButtons() {
-        this.nextQuestion.setEnabled(false);
-        this.payForQuestion.setEnabled(false);
-        this.nextQuestion.setBackgroundTintList(ResUtil.
-                getButtonColor(this, R.color.button_disable));
-        this.payForQuestion.setBackgroundTintList(ResUtil.
-                getButtonColor(this, R.color.button_disable));
-    }
-
-    @Override
-    public void enableActionButtons() {
-        this.nextQuestion.setEnabled(true);
-        this.payForQuestion.setEnabled(true);
-        this.nextQuestion.setBackgroundTintList(ResUtil.
-                getButtonColor(this, R.color.button_enable));
-        this.payForQuestion.setBackgroundTintList(ResUtil.
-                getButtonColor(this, R.color.button_enable));
-    }
-
-    @Override
-    public void showPayTransactionDialog(int price) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.AlertDialogStyle));
-        dialogBuilder.setCancelable(false)
-                .setTitle(R.string.title_dialog_skip_question)
-                .setMessage(getResources().getString(R.string.dialog_message_pay_transaction, price))
-                .setPositiveButton(R.string.dialog_yes_positive, (dialog, id) ->
-                    this.presenter.doPayTransaction())
-                .setNegativeButton(R.string.dialog_no_negative, (dialog, id) -> dialog.cancel())
-                .show();
-    }
-
-    @Override
-    public void showCompletedDialog(int award) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.AlertDialogStyle));
-        dialogBuilder.setCancelable(false)
-                .setTitle(R.string.title_dialog_completed)
-                .setMessage(getResources().getString(R.string.dialog_message_completed, award))
-                .setPositiveButton(R.string.dialog_got_it_positive, (dialog, id) ->
-                    this.presenter.closeTask())
-                .show();
-    }
-
-    @Override
-    public void showFailedDialog() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.AlertDialogStyle));
-        dialogBuilder.setCancelable(false)
-                .setTitle(R.string.title_dialog_failed)
-                .setMessage(R.string.dialog_message_failed)
-                .setPositiveButton(R.string.dialog_got_it_positive, (dialog, id) ->
-                        this.presenter.closeTask())
-                .show();
-    }
-
-    @Override
-    public void showTimeOutDialog() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.AlertDialogStyle));
-        dialogBuilder.setCancelable(false)
-                .setTitle(R.string.title_dialog_time_out)
-                .setMessage(R.string.dialog_message_time_out)
-                .setPositiveButton(R.string.dialog_got_it_positive, (dialog, id) ->
-                        presenter.goToNextQuestion())
-                .show();
-    }
-
-    @Override
-    public void startTimer() {
-        this.progressAnimation.setCurrentPlayTime(ANIMATION_START);
-        this.progressAnimation.start();
-    }
-
-    @Override
-    public void pauseTimer() {
-        this.progressAnimation.pause();
-    }
-
-    @Override
-    public void closeActivity() {
+    public void finishTask() {
+        this.testCompleted = true;
         finish();
     }
 
-    @Override
-    public void onAnimationStart(Animator animation) {/** Not implemented*/}
-
-    @Override
-    public void onAnimationEnd(Animator animation) {
-        presenter.timeOut();
+    private void screenTurnOn() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setTurnScreenOn(true);
+            setShowWhenLocked(true);
+            getSystemService(KeyguardManager.class)
+                    .requestDismissKeyguard(this, new KeyguardManager.KeyguardDismissCallback() {});
+        } else {
+            getWindow().addFlags( WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                    WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON );
+        }
     }
 
-    @Override
-    public void onAnimationCancel(Animator animation) {/** Not implemented*/}
-
-    @Override
-    public void onAnimationRepeat(Animator animation) {/** Not implemented*/}
 }

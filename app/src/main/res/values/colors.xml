@@ -6,6 +6,7 @@
     <color name="colorAccent">#470D9D</color>
 
     <color name="text_light">#E2E5FF</color>
+    <color name="text_standard">#470D9D</color>
     <color name="text_dark">#1A023B</color>
 
     <!--Alert dialog days picker-->
@@ -51,6 +52,7 @@
     <color name="progress_bar_gradient_end">#1A023B</color>
 
     <!--Wake activity-->
+    <color name="shape_dismiss_circle">#470D9D</color>
     <color name="image_currency">#470D9D</color>
     <color name="value_currency">#470D9D</color>
     <color name="button_enable">#470D9D</color>
