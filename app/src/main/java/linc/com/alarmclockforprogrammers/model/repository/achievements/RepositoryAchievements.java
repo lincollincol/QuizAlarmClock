@@ -60,7 +60,7 @@ public class RepositoryAchievements {
         });
     }
 
-    public void updateLocalAcgievements() {
+    public void updateLocalAchievements() {
         List<Achievement> achievements = new ArrayList<>();
         this.databaseReference = this.firebaseDatabase.getReference("achievements");
         this.databaseReference.addValueEventListener(new ValueEventListener() {
@@ -71,6 +71,7 @@ public class RepositoryAchievements {
                             ((Long) (ds.child("id").getValue())).intValue(),
                             ((Long) (ds.child("award").getValue())).intValue(),
                             ((Long) (ds.child("tasksToComplete").getValue())).intValue(),
+                            ((Long) (ds.child("completedTasks").getValue())).intValue(),
                             (String) (ds.child("achievementTask").getValue()),
                             (String) (ds.child("language").getValue()),
                             ((Boolean) (ds.child("completed").getValue()))));

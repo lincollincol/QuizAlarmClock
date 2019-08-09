@@ -2,6 +2,7 @@ package linc.com.alarmclockforprogrammers.ui.fragments.achievements.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,9 +80,9 @@ public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievement
             this.completedTasks.setText((achievement.getCompletedTasks()+"/"+achievement.getTasksToComplete()));
             this.taskCondition.setText(achievement.getAchievementTask());
             this.award.setText(String.valueOf(achievement.getAward()));
+            this.progress.setMax(achievement.getTasksToComplete());
             this.progress.setProgress(achievement.getCompletedTasks());
         }
-
 
         @Override
         public void onClick(View v) {

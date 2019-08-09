@@ -16,10 +16,13 @@ public interface AchievementsDao {
     @Query("SELECT * FROM achievements")
     List<Achievement> getAll();
 
+    @Query("SELECT * FROM achievements WHERE language = :language")
+    List<Achievement> getByLanguage(String language);
+
     @Insert(onConflict = OnConflictStrategy.FAIL)
     void insert(Achievement achievement);
 
     @Update
-    void update(List<Achievement> questions);
+    void update(Achievement achievement);
 
 }

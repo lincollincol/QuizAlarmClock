@@ -24,17 +24,17 @@ import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.entity.Question;
 import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
 import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
-import linc.com.alarmclockforprogrammers.model.interactor.wake.InteractorWake;
-import linc.com.alarmclockforprogrammers.model.repository.wake.RepositoryWake;
-import linc.com.alarmclockforprogrammers.presentation.wake.PresenterWake;
-import linc.com.alarmclockforprogrammers.presentation.wake.ViewWake;
+import linc.com.alarmclockforprogrammers.model.interactor.waketask.InteractorWakeTask;
+import linc.com.alarmclockforprogrammers.model.repository.waketask.RepositoryWakeTask;
+import linc.com.alarmclockforprogrammers.presentation.waketask.PresenterWakeTask;
+import linc.com.alarmclockforprogrammers.presentation.waketask.ViewWakeTask;
 import linc.com.alarmclockforprogrammers.ui.activities.WakeActivity;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.ANIMATION_END;
 import static linc.com.alarmclockforprogrammers.utils.Consts.ANIMATION_START;
 
-public class FragmentWakeTask extends Fragment implements ViewWake, View.OnClickListener,
+public class FragmentWakeTaskTask extends Fragment implements ViewWakeTask, View.OnClickListener,
         Animator.AnimatorListener{
 
     private TextView balance;
@@ -47,7 +47,7 @@ public class FragmentWakeTask extends Fragment implements ViewWake, View.OnClick
     private FloatingActionButton payForQuestion;
 
     private ObjectAnimator progressAnimation;
-    private PresenterWake presenter;
+    private PresenterWakeTask presenter;
 
 
     @Override
@@ -59,8 +59,8 @@ public class FragmentWakeTask extends Fragment implements ViewWake, View.OnClick
         int languagePosition = getArguments().getInt("LANGUAGE");
 
         if(presenter == null) {
-            this.presenter = new PresenterWake(this,
-                    new InteractorWake(new RepositoryWake(database.questionsDao()),
+            this.presenter = new PresenterWakeTask(this, new InteractorWakeTask(
+                            new RepositoryWakeTask(database.questionsDao(), database.achievementsDao()),
                             new PreferencesAlarm(getActivity()))
             );
         }

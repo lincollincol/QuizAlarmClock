@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.model.interactor.wake;
+package linc.com.alarmclockforprogrammers.model.interactor.waketask;
 
 import android.util.Log;
 
@@ -15,14 +15,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.entity.Question;
 import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
-import linc.com.alarmclockforprogrammers.model.repository.wake.RepositoryWake;
+import linc.com.alarmclockforprogrammers.model.repository.waketask.RepositoryWakeTask;
 
-public class InteractorWake {
+public class InteractorWakeTask {
 
-    private RepositoryWake repository;
+    private RepositoryWakeTask repository;
     private PreferencesAlarm preferences;
 
-    public InteractorWake(RepositoryWake repository, PreferencesAlarm preferences) {
+    public InteractorWakeTask(RepositoryWakeTask repository, PreferencesAlarm preferences) {
         this.repository = repository;
         this.preferences = preferences;
     }
@@ -51,6 +51,13 @@ public class InteractorWake {
                 .toObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public void setQuestionCompleted(Question question) {
+        Log.d("INTERACTOR_LAYER", "setQuestionCompleted: "  + question.isCompleted() + " " + question.getId());
+        question.setCompleted(true);
+        this.repository.setQuestionCompleted(question)
+            .subscribe();
     }
 
     public int getBalance() {

@@ -10,6 +10,7 @@ import static android.arch.persistence.room.ColumnInfo.TEXT;
 
 @Entity(tableName = "achievements")
 public class Achievement {
+
     @PrimaryKey
     @ColumnInfo(name = "_id")
     private int id;
@@ -20,7 +21,7 @@ public class Achievement {
     @ColumnInfo(name = "tasks_to_complete", typeAffinity = INTEGER)
     private int tasksToComplete;
 
-    @Ignore
+    @ColumnInfo(name = "completed_tasks", typeAffinity = INTEGER)
     private int completedTasks;
 
     @ColumnInfo(name = "achievement_task", typeAffinity = TEXT)
@@ -33,10 +34,12 @@ public class Achievement {
     private boolean completed;
 
 
-    public Achievement(int id, int award, int tasksToComplete, String achievementTask, String language, boolean completed) {
+    public Achievement(int id, int award, int tasksToComplete, int completedTasks,
+                       String achievementTask, String language, boolean completed) {
         this.id = id;
         this.award = award;
         this.tasksToComplete = tasksToComplete;
+        this.completedTasks = completedTasks;
         this.achievementTask = achievementTask;
         this.language = language;
         this.completed = completed;

@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.presentation.wake;
+package linc.com.alarmclockforprogrammers.presentation.waketask;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -7,20 +7,20 @@ import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.entity.Question;
-import linc.com.alarmclockforprogrammers.model.interactor.wake.InteractorWake;
+import linc.com.alarmclockforprogrammers.model.interactor.waketask.InteractorWakeTask;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.FIRST_QUESTION;
 
-public class PresenterWake {
+public class PresenterWakeTask {
 
-    private ViewWake view;
-    private InteractorWake interactor;
+    private ViewWakeTask view;
+    private InteractorWakeTask interactor;
 
     private List<Question> questions;
     private int currentQuestion = 0;
     private int completedQuestions = 0;
 
-    public PresenterWake(ViewWake view, InteractorWake interactor) {
+    public PresenterWakeTask(ViewWakeTask view, InteractorWakeTask interactor) {
         this.view = view;
         this.interactor = interactor;
     }
@@ -48,6 +48,7 @@ public class PresenterWake {
             this.view.showMistake(selectedPosition);
         }else {
             this.completedQuestions++;
+            this.interactor.setQuestionCompleted(questions.get(currentQuestion));
         }
 
         if(!isTaskCompleted()) {

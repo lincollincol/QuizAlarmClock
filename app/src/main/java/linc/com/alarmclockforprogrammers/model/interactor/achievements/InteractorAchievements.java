@@ -24,7 +24,7 @@ public class InteractorAchievements {
     public void updateAcgievementsInLocal() {
         repository.updateLocalAchievementsVersion((remoteVersion) -> {
             if(!preferences.getLocalAchievementsVersion().equals(remoteVersion)) {
-                repository.updateLocalAcgievements();
+                repository.updateLocalAchievements();
                 preferences.saveLocalAchievementsVersion(remoteVersion);
             }
         });

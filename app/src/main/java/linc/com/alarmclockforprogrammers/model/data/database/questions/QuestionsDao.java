@@ -23,6 +23,6 @@ public interface QuestionsDao {
     void insert(Question question);
 
     @Update
-    void update(List<Question> questions);
+    void update(Question question);
 
 }

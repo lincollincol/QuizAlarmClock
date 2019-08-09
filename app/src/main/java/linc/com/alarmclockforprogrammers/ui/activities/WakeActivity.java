@@ -8,7 +8,6 @@ import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.WindowManager;
 
 import com.google.gson.Gson;
@@ -16,7 +15,7 @@ import com.google.gson.Gson;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.ui.fragments.dismiss.FragmentDismiss;
-import linc.com.alarmclockforprogrammers.ui.fragments.waketask.FragmentWakeTask;
+import linc.com.alarmclockforprogrammers.ui.fragments.waketask.FragmentWakeTaskTask;
 
 
 public class WakeActivity extends AppCompatActivity  {
@@ -43,7 +42,7 @@ public class WakeActivity extends AppCompatActivity  {
             wakeFragment = new FragmentDismiss();
 
         }else {
-            wakeFragment = new FragmentWakeTask();
+            wakeFragment = new FragmentWakeTaskTask();
             Bundle data = new Bundle();
             data.putInt("LANGUAGE", alarm.getLanguage());
             data.putInt("DIFFICULT", alarm.getDifficult());

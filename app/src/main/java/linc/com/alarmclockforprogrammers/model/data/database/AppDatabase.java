@@ -12,7 +12,7 @@ import linc.com.alarmclockforprogrammers.model.data.database.achievements.Achiev
 import linc.com.alarmclockforprogrammers.model.data.database.alarms.AlarmDao;
 import linc.com.alarmclockforprogrammers.model.data.database.questions.QuestionsDao;
 
-@Database(entities = {Alarm.class, Question.class, Achievement.class}, version = 5, exportSchema = false)
+@Database(entities = {Alarm.class, Question.class, Achievement.class}, version = 6, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract AlarmDao alarmDao();
