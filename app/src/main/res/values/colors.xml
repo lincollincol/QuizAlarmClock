@@ -62,6 +62,8 @@
 
     <!--Achievements-->
     <color name="button_receive">#470D9D</color>
+    <color name="view_completed_achievement">#99747474</color>
+    <color name="image_completed_achievement">#470D9D</color>
 
     <color name="NONAME">#907FFC</color>
     <color name="NONAME_2">#4D907FFC</color>

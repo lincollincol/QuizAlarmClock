@@ -82,7 +82,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:gravity="center"
-            android:background="@drawable/item_achievement_recieve"
+            android:background="@drawable/item_achievement_receive"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -103,6 +103,29 @@
                 android:src="@drawable/ic_pay"
                 android:tint="@color/text_light"/>
         </LinearLayout>
+
+        <View
+            android:id="@+id/item_achievement__completed_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            android:background="@color/view_completed_achievement"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <ImageView
+            android:id="@+id/item_achievement_completed_icon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            android:src="@drawable/ic_check"
+            android:tint="@color/image_completed_achievement"
+            app:layout_constraintTop_toTopOf="@id/item_achievement__completed_view"
+            app:layout_constraintBottom_toBottomOf="@id/item_achievement__completed_view"
+            app:layout_constraintLeft_toLeftOf="@id/item_achievement__completed_view"
+            app:layout_constraintRight_toRightOf="@id/item_achievement__completed_view"/>
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

@@ -2,10 +2,10 @@ package linc.com.alarmclockforprogrammers.ui.fragments.achievements.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,10 +19,10 @@ import linc.com.alarmclockforprogrammers.entity.Achievement;
 public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievements.AchievementHolder>{
 
     private List<Achievement> achievements;
-    private OnRecieveClickListener onRecieveClickListener;
+    private OnReceiveClickListener onReceiveClickListener;
 
-    public AdapterAchievements(OnRecieveClickListener onRecieveClickListener) {
-        this.onRecieveClickListener = onRecieveClickListener;
+    public AdapterAchievements(OnReceiveClickListener onReceiveClickListener) {
+        this.onReceiveClickListener = onReceiveClickListener;
         this.achievements = new ArrayList<>();
     }
 
@@ -36,7 +36,7 @@ public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievement
     @Override
     public AchievementHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_achievement, viewGroup, false);
-        return new AchievementHolder(view, onRecieveClickListener);
+        return new AchievementHolder(view, onReceiveClickListener);
     }
 
     @Override
@@ -49,30 +49,35 @@ public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievement
         return this.achievements.size();
     }
 
-    public interface OnRecieveClickListener {
+    public interface OnReceiveClickListener {
         void onClick(int position);
     }
 
 
     class AchievementHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private View completedView;
+        private ImageView completedIcon;
         private TextView progLanguage;
         private TextView completedTasks;
         private TextView taskCondition;
         private TextView award;
         private ProgressBar progress;
-        private LinearLayout recieveButton;
-        private OnRecieveClickListener onRecieve;
+        private LinearLayout receiveButton;
+        private OnReceiveClickListener onReceive;
 
-        public AchievementHolder(@NonNull View itemView, OnRecieveClickListener onRecieve) {
+        public AchievementHolder(@NonNull View itemView, OnReceiveClickListener onRecieve) {
             super(itemView);
+            this.completedView = itemView.findViewById(R.id.item_achievement__completed_view);
+            this.completedIcon = itemView.findViewById(R.id.item_achievement_completed_icon);
             this.progLanguage = itemView.findViewById(R.id.item_achievement__language);
             this.completedTasks = itemView.findViewById(R.id.item_achievement__completed_tasks);
             this.taskCondition = itemView.findViewById(R.id.item_achievement__task_condition);
             this.award = itemView.findViewById(R.id.item_achievement_receive__award);
             this.progress = itemView.findViewById(R.id.item_achievement__progress);
-            this.recieveButton = itemView.findViewById(R.id.item_achievement__receive);
-            this.recieveButton.setOnClickListener(this);
-            this.onRecieve = onRecieve;
+            this.receiveButton = itemView.findViewById(R.id.item_achievement__receive);
+            this.receiveButton.setOnClickListener(this);
+            this.onReceive = onRecieve;
         }
 
         void setAchievement(Achievement achievement) {
@@ -82,11 +87,17 @@ public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievement
             this.award.setText(String.valueOf(achievement.getAward()));
             this.progress.setMax(achievement.getTasksToComplete());
             this.progress.setProgress(achievement.getCompletedTasks());
+
+            if(achievement.isCompleted()) {
+                this.receiveButton.setEnabled(false);
+                this.completedView.setVisibility(View.VISIBLE);
+                this.completedIcon.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
         public void onClick(View v) {
-            this.onRecieve.onClick(getAdapterPosition());
+            this.onReceive.onClick(getAdapterPosition());
         }
     }
 }
