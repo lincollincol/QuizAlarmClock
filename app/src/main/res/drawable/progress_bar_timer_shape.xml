@@ -6,6 +6,6 @@
     android:thickness="5dp"
     android:useLevel="false">
 
-    <solid android:color="@color/progress_bar_track" />
+    <solid android:color="?attr/progress_track_color" />
 
 </shape>

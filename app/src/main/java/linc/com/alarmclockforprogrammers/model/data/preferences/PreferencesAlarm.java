@@ -45,6 +45,26 @@ public class PreferencesAlarm {
         return getDefaultPreferences().getInt("BALANCE", 20);
     }
 
+    /** Theme*/
+    public void saveAppTheme(String theme, boolean isChecked) {
+        getPrefsEditor().putString("APP_THEME", theme)
+                .apply();
+        getPrefsEditor().putBoolean("DARK_THEME_CHECKED", isChecked)
+                .apply();
+    }
+
+    public String getAppTheme() {
+        return getDefaultPreferences()
+                .getString("APP_THEME", "LIGHT");
+    }
+
+    public boolean getCheckedTheme() {
+        return getDefaultPreferences()
+                .getBoolean("DARK_THEME_CHECKED", false);
+    }
+
+
+    /** Default methods*/
     private SharedPreferences.Editor getPrefsEditor(){
         return PreferenceManager
                 .getDefaultSharedPreferences(this.context)

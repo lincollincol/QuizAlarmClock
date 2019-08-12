@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="theme" >
+
+        <!--Buttons-->
+        <attr name="button_disable_color" format="color" />
+        <attr name="button_default_color" format="color"/>
+
+        <!--Text-->
+        <attr name="text_default_color" format="color"/>
+        <attr name="text_secondary_color" format="color"/>
+
+        <!--Icons-->
+        <attr name="icon_default_color" format="color"/>
+
+        <!--Card background-->
+        <attr name="background_card_color" format="color"/>
+
+        <!--Alert dialog days picker-->
+        <attr name="dialog_background_color" format="color" />
+        <attr name="dialog_positive_color" format="color" />
+        <attr name="dialog_negative_color" format="color" />
+        <attr name="dialog_checked_color" format="color" />
+        <attr name="dialog_unchecked_color" format="color" />
+
+        <!--Nav menu item color-->
+        <attr name="menu_selected_shape_color" format="color" />
+        <attr name="menu_shape_translucent_color" format="color" />
+        <attr name="menu_item_color" format="color" />
+        <attr name="menu_item_selected_color" format="color" />
+        
+        <!--Switch toggles color-->
+        <attr name="switch_thumb_color" format="color" />
+        <attr name="switch_track_enable_color" format="color" />
+        <attr name="switch_track_disable_color" format="color" />
+
+        <!--Progress bar-->
+        <attr name="progress_track_color" format="color" />
+        <attr name="progress_gradient_start_color" format="color" />
+        <attr name="progress_gradient_center_color" format="color" />
+        <attr name="progress_gradient_end_color" format="color" />
+
+        <!--App background gradient-->
+        <attr name="app_gradient_start_color" format="color"/>
+        <attr name="app_gradient_end_color" format="color"/>
+
+        <!--Wake activity-->
+        <attr name="dismiss_shape_color" format="color" />
+        <attr name="correct_color" format="color" />
+        <attr name="incorrect_color" format="color" />
+
+        <!--Achievements-->
+        <attr name="view_completed_color" format="color" />
+        <attr name="icon_completed_color" format="color" />
+
+    </declare-styleable>
+</resources>

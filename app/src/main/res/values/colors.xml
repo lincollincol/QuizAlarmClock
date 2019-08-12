@@ -5,67 +5,31 @@
     <color name="colorPrimaryDark">#E2E5FF</color>
     <color name="colorAccent">#470D9D</color>
 
-    <color name="text_light">#E2E5FF</color>
-    <color name="text_standard">#470D9D</color>
-    <color name="text_dark">#1A023B</color>
+    <color name="correct">#8AE261</color>
+    <color name="incorrect">#E74F4F</color>
+    <color name="item_silver_translucent">#99747474</color>
+    <color name="item_gray_translucent">#4D000000</color>
 
-    <!--Alert dialog days picker-->
-    <color name="dialog_style_light">#E2E5FF</color>
-    <color name="dialog_button_positive">#470D9D</color>
-    <color name="dialog_button_negative">#7126EE</color>
-    <color name="dialog_check_active">#470D9D</color>
-    <color name="dialog_check_normal">#7126EE</color>
+    <!--Light theme-->
+    <color name="violet_translucent">#B3470D9D</color>
+    <color name="text_default_color_light">#575757</color>
+    <color name="theme_light_start">#F9F9FF</color>
+    <color name="theme_light_end">#E2E5FF</color>
+    <color name="card_light">#ffffff</color>
+    <color name="violet_light">#907FFC</color>
+    <color name="violet_default">#7126EE</color>
+    <color name="violet_dark">#470D9D</color>
+    <color name="progress_track_light">#337126EE</color>
 
-    <!--Nav menu item color-->
-    <color name="nav_menu_shape">#7126EE</color>
-    <color name="nav_menu_shape_opacity">#4D000000</color>
-    <color name="nav_menu_item">#8D8D8D</color>
-    <color name="nav_menu_item_checked">#470D9D</color>
-    <color name="nav_menu_icon">#470D9D</color>
+    <!-- Dark theme -->
+    <color name="green_translucent">#B330CE88</color>
+    <color name="text_default_color_dark">#b4b4b4</color>
+    <color name="theme_dark_start">#313131</color>
+    <color name="theme_dark_end">#121212</color>
+    <color name="card_dark">#343434</color>
+    <color name="green_light">#62D9B1</color>
+    <color name="green_default">#24B383</color>
+    <color name="green_dark">#14664A</color>
+    <color name="progress_track_dark">#3330CE88</color>
 
-    <!--Fragment alarms-->
-    <color name="button_add_alarms">#470D9D</color>
-    <color name="toggle_alarms">#470D9D</color>
-    <color name="button_day">#7126EE</color>
-    <color name="button_day_active">#470D9D</color>
-    <color name="screen_block_dark">#944A4A4A</color>
-
-    <!--Dialog(fragment) alarm editor-->
-    <color name="button_delete">#470D9D</color>
-
-    <!--Fragment alarm settings-->
-    <color name="fab_button">#470D9D</color>
-    <color name="fab_button_day_passive">#907FFC</color>
-
-    <!--Switch toggles color-->
-    <color name="switch_thumb_enable">#470D9D</color>
-    <color name="switch_thumb_disable">#7126EE</color>
-    <color name="switch_track_enable">#7126EE</color>
-    <color name="switch_track_disable">#E2E5FF</color>
-
-    <!--Fragment timer-->
-    <color name="button_start">#470D9D</color>
-    <color name="button_start_disable">#B3470D9D</color>
-    <color name="progress_bar_track">#337126EE</color>
-    <color name="progress_bar_gradient_start">#7126EE</color>
-    <color name="progress_bar_gradient_center">#470D9D</color>
-    <color name="progress_bar_gradient_end">#1A023B</color>
-
-    <!--Wake activity-->
-    <color name="shape_dismiss_circle">#470D9D</color>
-    <color name="image_currency">#470D9D</color>
-    <color name="value_currency">#470D9D</color>
-    <color name="button_enable">#470D9D</color>
-    <color name="button_disable">#B3470D9D</color>
-    <color name="answer_correct">#8AE261</color>
-    <color name="answer_incorrect">#E74F4F</color>
-
-    <!--Achievements-->
-    <color name="button_receive">#470D9D</color>
-    <color name="view_completed_achievement">#99747474</color>
-    <color name="image_completed_achievement">#470D9D</color>
-
-    <color name="NONAME">#907FFC</color>
-    <color name="NONAME_2">#4D907FFC</color>
-    <color name="NONAME_3">#66E2E5FF</color>
 </resources>

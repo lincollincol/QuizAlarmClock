@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape android:shape="rectangle"
-    android:tint="@color/nav_menu_shape"
+    android:tint="?attr/menu_selected_shape_color"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <corners android:bottomRightRadius="100dp"
         android:topRightRadius="100dp"/>
-    <solid android:color="@color/nav_menu_shape_opacity" />
+    <solid android:color="?attr/menu_shape_translucent_color" />
 </shape>

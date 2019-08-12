@@ -6,6 +6,6 @@
     android:thickness="5dp"
     android:useLevel="false">
 
-    <solid android:color="@color/shape_dismiss_circle" />
+    <solid android:color="?attr/dismiss_shape_color" />
 
 </shape>

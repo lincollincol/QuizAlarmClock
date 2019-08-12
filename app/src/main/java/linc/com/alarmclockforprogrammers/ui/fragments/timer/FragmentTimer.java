@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.presentation.timer.PresenterTimer;
 import linc.com.alarmclockforprogrammers.presentation.timer.ViewTimer;
+import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
@@ -186,15 +187,15 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
     @Override
     public void setStartEnable() {
         this.startPauseTimer.setEnabled(true);
-        this.startPauseTimer.setBackgroundTintList(ColorStateList.valueOf(getResources()
-                .getColor(R.color.button_start)));
+        this.startPauseTimer.setBackgroundTintList(ResUtil.getThemeColor(getActivity(),
+                R.attr.button_default_color));
     }
 //todo rename from set
     @Override
     public void setStartDisable() {
         this.startPauseTimer.setEnabled(false);
-        this.startPauseTimer.setBackgroundTintList(ColorStateList.valueOf(getResources()
-                .getColor(R.color.button_start_disable)));
+        this.startPauseTimer.setBackgroundTintList(ResUtil.getThemeColor(getActivity(),
+                R.attr.button_disable_color));
     }
 
     @Override

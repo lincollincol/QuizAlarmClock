@@ -10,9 +10,9 @@
 
         <gradient
             android:angle="0"
-            android:endColor="@color/progress_bar_gradient_end"
-            android:centerColor="@color/progress_bar_gradient_center"
-            android:startColor="@color/progress_bar_gradient_start"
+            android:endColor="?attr/progress_gradient_end_color"
+            android:centerColor="?attr/progress_gradient_center_color"
+            android:startColor="?attr/progress_gradient_start_color"
             android:type="sweep"
             android:useLevel="false" />
     </shape>

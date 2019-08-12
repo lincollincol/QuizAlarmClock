@@ -125,7 +125,7 @@ public class FragmentWakeTaskTask extends Fragment implements ViewWakeTask, View
         for(int i = 0; i < answersGroup.getChildCount(); i++) {
             RadioButton answer = (RadioButton)answersGroup.getChildAt(i);
             answer.setText(question.getAnswersList().get(i));
-            answer.setTextColor(getResources().getColor(R.color.text_dark));
+            answer.setTextColor(ResUtil.getTextColor(getActivity(), R.attr.text_default_color));
         }
     }
 
@@ -142,13 +142,13 @@ public class FragmentWakeTaskTask extends Fragment implements ViewWakeTask, View
     @Override
     public void showCorrectAnswer(int selectedPosition) {
         RadioButton answer = (RadioButton) answersGroup.getChildAt(selectedPosition);
-        answer.setTextColor(ResUtil.getTextColor(getActivity(), R.color.answer_correct));
+        answer.setTextColor(ResUtil.getTextColor(getActivity(), R.attr.correct_color));
     }
 
     @Override
     public void showMistake(int selectedPosition) {
         RadioButton answer = (RadioButton) answersGroup.getChildAt(selectedPosition);
-        answer.setTextColor(ResUtil.getTextColor(getActivity(), R.color.answer_incorrect));
+        answer.setTextColor(ResUtil.getTextColor(getActivity(), R.attr.incorrect_color));
     }
 
     @Override
@@ -156,9 +156,9 @@ public class FragmentWakeTaskTask extends Fragment implements ViewWakeTask, View
         this.nextQuestion.setEnabled(false);
         this.payForQuestion.setEnabled(false);
         this.nextQuestion.setBackgroundTintList(ResUtil.
-                getButtonColor(getActivity(), R.color.button_disable));
+                getButtonColor(getActivity(), R.attr.button_disable_color));
         this.payForQuestion.setBackgroundTintList(ResUtil.
-                getButtonColor(getActivity(), R.color.button_disable));
+                getButtonColor(getActivity(), R.attr.button_disable_color));
     }
 
     @Override
@@ -166,9 +166,9 @@ public class FragmentWakeTaskTask extends Fragment implements ViewWakeTask, View
         this.nextQuestion.setEnabled(true);
         this.payForQuestion.setEnabled(true);
         this.nextQuestion.setBackgroundTintList(ResUtil.
-                getButtonColor(getActivity(), R.color.button_enable));
+                getButtonColor(getActivity(), R.attr.button_default_color));
         this.payForQuestion.setBackgroundTintList(ResUtil.
-                getButtonColor(getActivity(), R.color.button_enable));
+                getButtonColor(getActivity(), R.attr.button_default_color));
     }
 
     @Override

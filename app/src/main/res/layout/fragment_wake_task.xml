@@ -28,7 +28,7 @@
             android:layout_height="@dimen/image_currency_size"
             android:layout_marginStart="@dimen/margin_small"
             android:src="@drawable/ic_pay"
-            android:tint="@color/image_currency"
+            android:tint="?attr/text_default_color"
             app:layout_constraintBottom_toBottomOf="@+id/wake__balance"
             app:layout_constraintTop_toTopOf="@+id/wake__balance"
             app:layout_constraintRight_toLeftOf="@id/wake__balance"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="20"
             android:textSize="@dimen/text_medium"
-            android:textColor="@color/value_currency"
+            android:textColor="?attr/text_default_color"
             app:layout_constraintBottom_toTopOf="@id/wake__pre_question"
             app:layout_constraintTop_toBottomOf="@id/wake__time_for_answer"
             app:layout_constraintLeft_toRightOf="@id/wake__balance_image"/>
@@ -52,7 +52,7 @@
             android:layout_marginEnd="@dimen/margin_medium"
             android:text="1/3"
             android:textSize="@dimen/text_medium"
-            android:textColor="@color/value_currency"
+            android:textColor="?attr/text_default_color"
             app:layout_constraintTop_toTopOf="@id/wake__balance"
             app:layout_constraintBottom_toBottomOf="@id/wake__balance"
             app:layout_constraintRight_toRightOf="parent"/>
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:text="Pre answer"
             android:textSize="@dimen/text_medium"
-            android:textColor="@color/value_currency"
+            android:textColor="?attr/text_default_color"
             app:layout_constraintBottom_toTopOf="@id/wake__code_snippet"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@id/wake__time_for_answer"
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:text="Post answer"
             android:textSize="@dimen/text_medium"
-            android:textColor="@color/value_currency"
+            android:textColor="?attr/text_default_color"
             app:layout_constraintBottom_toTopOf="@id/wake__answers_group"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/wake__code_snippet" />
@@ -102,7 +102,7 @@
                 android:id="@+id/wake__answer_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/value_currency"
+                android:textColor="?attr/text_default_color"
                 android:layout_marginTop="@dimen/margin_small"
                 android:textSize="@dimen/text_medium" />
 
@@ -110,7 +110,7 @@
                 android:id="@+id/wake__answer_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/value_currency"
+                android:textColor="?attr/text_default_color"
                 android:layout_marginTop="@dimen/margin_small"
                 android:textSize="@dimen/text_medium" />
 
@@ -118,7 +118,7 @@
                 android:id="@+id/wake__answer_three"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/value_currency"
+                android:textColor="?attr/text_default_color"
                 android:layout_marginTop="@dimen/margin_small"
                 android:textSize="@dimen/text_medium" />
 
@@ -126,7 +126,7 @@
                 android:id="@+id/wake__answer_four"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/value_currency"
+                android:textColor="?attr/text_default_color"
                 android:layout_marginTop="@dimen/margin_small"
                 android:textSize="@dimen/text_medium" />
         </RadioGroup>
@@ -136,7 +136,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_pay"
-            app:backgroundTint="@color/fab_button"
+            app:backgroundTint="?attr/button_default_color"
             app:elevation="@dimen/elevation_default"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="@id/wake__next_question"
@@ -150,7 +150,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_continue"
-            app:backgroundTint="@color/fab_button"
+            app:backgroundTint="?attr/button_default_color"
             app:elevation="@dimen/elevation_default"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"

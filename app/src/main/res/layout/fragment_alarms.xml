@@ -10,6 +10,7 @@
         android:id="@+id/alarms__list_of_alarms"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_small"
         android:overScrollMode="never"
         app:layout_constraintTop_toBottomOf="@id/alarms__balance_image"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -25,7 +26,7 @@
         android:src="@drawable/ic_add"
         app:elevation="@dimen/elevation_default"
         app:fabSize="normal"
-        app:backgroundTint="@color/button_add_alarms"
+        app:backgroundTint="?attr/button_default_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -35,7 +36,7 @@
         android:layout_height="@dimen/image_currency_size"
         android:layout_marginTop="@dimen/margin_medium"
         android:src="@drawable/ic_pay"
-        android:tint="@color/image_currency"
+        android:tint="?attr/button_default_color"
         app:layout_constraintRight_toLeftOf="@+id/alarms__balance"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -46,7 +47,7 @@
         android:layout_marginEnd="@dimen/margin_medium"
         android:text="20"
         android:textSize="@dimen/text_medium"
-        android:textColor="@color/value_currency"
+        android:textColor="?attr/text_secondary_color"
         app:layout_constraintTop_toTopOf="@id/alarms__balance_image"
         app:layout_constraintBottom_toBottomOf="@id/alarms__balance_image"
         app:layout_constraintRight_toRightOf="parent"/>

@@ -107,7 +107,7 @@
             android:layout_marginEnd="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_medium"
             app:trackTint="@drawable/switch_toggle_track"
-            app:thumbTint="@drawable/switch_toggle_thumb"
+            app:thumbTint="?attr/switch_thumb_color"
             app:layout_constraintLeft_toRightOf="@id/alarm_settings__alarm_enable_title"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/alarm_settings__alarm_enable_title"
@@ -128,6 +128,7 @@
             app:layout_constraintRight_toLeftOf="@id/alarm_settings__toggle_task_enable"
             app:layout_constraintTop_toBottomOf="@id/alarm_settings__alarm_enable_title" />
 
+        <!--todo change margins to guidelines-->
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/alarm_settings__toggle_task_enable"
             android:layout_width="wrap_content"
@@ -136,7 +137,7 @@
             android:layout_marginBottom="@dimen/margin_medium"
             android:layout_marginEnd="@dimen/margin_medium"
             app:trackTint="@drawable/switch_toggle_track"
-            app:thumbTint="@drawable/switch_toggle_thumb"
+            app:thumbTint="?attr/switch_thumb_color"
             app:layout_constraintLeft_toRightOf="@id/alarm_settings__task_enable_title"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/alarm_settings__task_enable_title"
@@ -236,7 +237,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_medium"
             android:src="@drawable/ic_close"
-            app:backgroundTint="@color/fab_button"
+            app:backgroundTint="?attr/button_default_color"
             app:elevation="@dimen/elevation_default"
             app:fabSize="normal"
             app:layout_constraintTop_toBottomOf="@+id/alarm_settings_task_expand__language_layout"
@@ -252,7 +253,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_medium"
             android:src="@drawable/ic_check"
-            app:backgroundTint="@color/fab_button"
+            app:backgroundTint="?attr/button_default_color"
             app:elevation="@dimen/elevation_default"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"

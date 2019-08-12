@@ -6,5 +6,5 @@
     android:thickness="5dp"
     android:useLevel="false">
     <corners android:radius="@dimen/corners_default"/>
-    <solid android:color="@color/progress_bar_track" />
+    <solid android:color="?attr/progress_track_color" />
 </shape>

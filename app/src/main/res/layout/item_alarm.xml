@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_alarm"
     android:layout_width="match_parent"
+    app:cardBackgroundColor="?attr/background_card_color"
     android:layout_height="@dimen/layout_alarm_height"
     android:layout_marginStart="@dimen/margin_small"
     android:layout_marginTop="@dimen/margin_alarm_item"
@@ -14,7 +15,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/selectableItemBackground"
+        android:background="?android:attr/selectableItemBackground"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:text="Java"
             android:textSize="@dimen/text_medium"
+            android:textColor="?attr/text_default_color"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/item_alarm__time"
             app:layout_constraintRight_toRightOf="@id/item_alarm_am_pm"
@@ -37,6 +39,7 @@
             android:fontFamily="sans-serif-black"
             android:text="9:00"
             android:textSize="@dimen/text_large"
+            android:textColor="?attr/text_default_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -50,6 +53,7 @@
             android:layout_marginStart="@dimen/margin_small"
             android:text="AM"
             android:textSize="@dimen/text_medium"
+            android:textColor="?attr/text_default_color"
             app:layout_constraintBottom_toBottomOf="@id/item_alarm__time"
             app:layout_constraintLeft_toRightOf="@id/item_alarm__time"
             app:layout_constraintRight_toRightOf="parent"
@@ -64,6 +68,7 @@
             android:maxLines="2"
             android:text="weekdays"
             android:textSize="@dimen/text_small"
+            android:textColor="?attr/text_default_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/item_alarm__programming_language"
             app:layout_constraintRight_toRightOf="@id/item_alarm__programming_language"

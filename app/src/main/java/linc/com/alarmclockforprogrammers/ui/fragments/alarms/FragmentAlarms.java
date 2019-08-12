@@ -31,8 +31,10 @@ import linc.com.alarmclockforprogrammers.model.interactor.alarms.InteractorAlarm
 import linc.com.alarmclockforprogrammers.model.repository.alarms.RepositoryAlarms;
 import linc.com.alarmclockforprogrammers.presentation.alarms.PresenterAlarms;
 import linc.com.alarmclockforprogrammers.presentation.alarms.ViewAlarms;
+import linc.com.alarmclockforprogrammers.ui.activities.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarms.adapters.AdapterAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarmsettings.FragmentAlarmSettings;
+import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 
 public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmClicked,

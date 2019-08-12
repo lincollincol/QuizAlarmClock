@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_checked="true"
-        android:color="@color/switch_track_enable"/>
-    <item android:color="@color/switch_track_disable"/>
+        android:color="?attr/switch_track_enable_color"/>
+    <item android:color="?attr/switch_track_disable_color"/>
 
 </selector>

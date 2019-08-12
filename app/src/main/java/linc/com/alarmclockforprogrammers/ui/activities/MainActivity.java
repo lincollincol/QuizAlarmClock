@@ -1,11 +1,9 @@
 package linc.com.alarmclockforprogrammers.ui.activities;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 
-import android.support.transition.Explode;
 import android.support.transition.Fade;
 import android.support.transition.Slide;
 import android.support.transition.Transition;
@@ -27,31 +25,37 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import linc.com.alarmclockforprogrammers.R;
+import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
+import linc.com.alarmclockforprogrammers.model.interactor.mainactivity.InteractorMainActivity;
+import linc.com.alarmclockforprogrammers.presentation.mainactivity.PresenterMainActivity;
+import linc.com.alarmclockforprogrammers.presentation.mainactivity.ViewMainActivity;
 import linc.com.alarmclockforprogrammers.ui.fragments.achievements.FragmentAchievements;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.settings.FragmentSettings;
 import linc.com.alarmclockforprogrammers.ui.fragments.stopwatch.FragmentStopwatch;
 import linc.com.alarmclockforprogrammers.ui.fragments.timer.FragmentTimer;
+import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements ViewMainActivity,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
+    private PresenterMainActivity presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if(presenter == null) {
+            presenter = new PresenterMainActivity(this,
+                    new InteractorMainActivity(new PreferencesAlarm(this))
+            );
+        }
+
+        this.presenter.setupActivity();
+
         super.onCreate(savedInstanceState);
-
-        // Status bar trans
-        getWindow().getDecorView()
-                .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
-        setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
-        getWindow().setStatusBarColor(Color.TRANSPARENT);
-
-
         setContentView(R.layout.activity_main);
 
         // Set fragment content
@@ -60,34 +64,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        NavigationView navMenu = findViewById(R.id.main__navigation_drawer_menu);
+        this.drawer = findViewById(R.id.main__drawer_layout);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        drawer = findViewById(R.id.main__drawer_layout);
-
-        NavigationView navMenu = findViewById(R.id.main__navigation_drawer_menu);
-        navMenu.setNavigationItemSelectedListener(this);
-        navMenu.setCheckedItem(R.id.menu_alarms);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+
+        navMenu.setNavigationItemSelectedListener(this);
+        navMenu.setCheckedItem(R.id.menu_alarms);
+        this.drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-
 
     }
 
+    @Override
+    public void setTheme(String theme) {
+        setTheme(ResUtil.getTheme("LIGHT"));
+    }
 
-    public static void setWindowFlag(Activity activity, final int bits, boolean on) {
-        Window win = activity.getWindow();
+    @Override
+    public void setupWindow() {
+        // Toolbar transparent
+        Window win = getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
+        winParams.flags &= ~WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
         win.setAttributes(winParams);
+        // Status bar transparent
+        win.getDecorView()
+                .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        win.setStatusBarColor(Color.TRANSPARENT);
     }
 
     @Override
@@ -198,4 +207,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .replace(R.id.container, fragment)
                 .commit();
     }
+
+
 }
