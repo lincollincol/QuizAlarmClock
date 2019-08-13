@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.ui.activities.WakeActivity;
+import linc.com.alarmclockforprogrammers.ui.activities.wake.WakeActivity;
 
 public class FragmentDismiss extends Fragment implements View.OnClickListener{
 

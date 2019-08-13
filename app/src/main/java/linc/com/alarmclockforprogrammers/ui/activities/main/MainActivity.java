@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.ui.activities;
+package linc.com.alarmclockforprogrammers.ui.activities.main;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -23,6 +23,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import java.util.List;
 
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
@@ -31,6 +34,7 @@ import linc.com.alarmclockforprogrammers.presentation.mainactivity.PresenterMain
 import linc.com.alarmclockforprogrammers.presentation.mainactivity.ViewMainActivity;
 import linc.com.alarmclockforprogrammers.ui.fragments.achievements.FragmentAchievements;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
+import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
 import linc.com.alarmclockforprogrammers.ui.fragments.settings.FragmentSettings;
 import linc.com.alarmclockforprogrammers.ui.fragments.stopwatch.FragmentStopwatch;
 import linc.com.alarmclockforprogrammers.ui.fragments.timer.FragmentTimer;
@@ -43,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
 
     private DrawerLayout drawer;
     private PresenterMainActivity presenter;
+    private ActionBarDrawerToggle toggle;
+    NavigationView navMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,26 +69,42 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
             replaceFragment(new FragmentAlarms());
         }
 
+
         Toolbar toolbar = findViewById(R.id.toolbar);
-        NavigationView navMenu = findViewById(R.id.main__navigation_drawer_menu);
+        this.navMenu = findViewById(R.id.main__navigation_drawer_menu);
         this.drawer = findViewById(R.id.main__drawer_layout);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+        this.toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
-        navMenu.setNavigationItemSelectedListener(this);
-        navMenu.setCheckedItem(R.id.menu_alarms);
+        this.navMenu.setNavigationItemSelectedListener(this);
+        this.navMenu.setCheckedItem(R.id.menu_alarms);
         this.drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        this.toggle.syncState();
 
     }
 
     @Override
-    public void setTheme(String theme) {
-        setTheme(ResUtil.getTheme("LIGHT"));
+    public void setDrawerEnabled(boolean enabled) {
+        int lockMode = enabled ? DrawerLayout.LOCK_MODE_UNLOCKED :
+                DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
+        drawer.setDrawerLockMode(lockMode);
+        toggle.setDrawerIndicatorEnabled(enabled);
+    }
+
+    @Override
+    public void changeTheme(boolean isDarkTheme) {
+        setTheme(ResUtil.getTheme(isDarkTheme));
+        finish();
+        startActivity(getIntent());
+    }
+
+    @Override
+    public void setTheme(boolean isDarkTheme) {
+        setTheme(ResUtil.getTheme(isDarkTheme));
     }
 
     @Override
@@ -109,45 +131,21 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
                 replaceFragment(new FragmentSettings());
                 break;
             case  R.id.menu_timer:
-
                 FragmentTimer fragmentTimer = new FragmentTimer();
-
-                // Clear back stack
-                FragmentManager fm = getSupportFragmentManager();
-                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-                    fm.popBackStack();
-                }
-
                 // Start new fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fragmentTimer)
                         .commit();
-
                 break;
             case R.id.menu_stopwatch:
                 FragmentStopwatch stopwatch = new FragmentStopwatch();
-
-                // Clear back stack
-                FragmentManager fms = getSupportFragmentManager();
-                for(int i = 0; i < fms.getBackStackEntryCount(); ++i) {
-                    fms.popBackStack();
-                }
-
                 // Start new fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, stopwatch)
                         .commit();
                 break;
             case R.id.menu_achievements:
-
                 FragmentAchievements fra = new FragmentAchievements();
-
-                // Clear back stack
-                FragmentManager fda = getSupportFragmentManager();
-                for(int i = 0; i < fda.getBackStackEntryCount(); ++i) {
-                    fda.popBackStack();
-                }
-
                 // Start new fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fra)
@@ -163,9 +161,27 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+            return;
         }
+
+        // Close app, when back pressed from FragmentAlarms
+        if(fragmentsOnBackPressed()) {
+            return;
+        }
+
+        super.onBackPressed();
+    }
+
+    public void setCheckedMenuItem(int itemId) {
+        this.navMenu.setCheckedItem(itemId);
+    }
+
+    private boolean fragmentsOnBackPressed(){
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for(Fragment fragment : fragments){
+            ((BaseFragment)fragment).onBackPressed();
+        }
+        return !fragments.isEmpty();
     }
 
     //todo param diff transitions
@@ -191,22 +207,14 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
                         .setInterpolator(new FastOutSlowInInterpolator())
                         .setDuration(NORMAL_SPEED));
 
-
         fragment.setExitTransition(exitAnimation);
         fragment.setReenterTransition(enterAnimation);
         fragment.setEnterTransition(enterAnimation);
-
-        // Clear back stack
-        FragmentManager fm = getSupportFragmentManager();
-        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-            fm.popBackStack();
-        }
 
         // Start new fragment
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
     }
-
 
 }

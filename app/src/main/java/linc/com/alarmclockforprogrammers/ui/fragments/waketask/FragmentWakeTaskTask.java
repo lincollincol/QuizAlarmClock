@@ -28,7 +28,7 @@ import linc.com.alarmclockforprogrammers.model.interactor.waketask.InteractorWak
 import linc.com.alarmclockforprogrammers.model.repository.waketask.RepositoryWakeTask;
 import linc.com.alarmclockforprogrammers.presentation.waketask.PresenterWakeTask;
 import linc.com.alarmclockforprogrammers.presentation.waketask.ViewWakeTask;
-import linc.com.alarmclockforprogrammers.ui.activities.WakeActivity;
+import linc.com.alarmclockforprogrammers.ui.activities.wake.WakeActivity;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.ANIMATION_END;

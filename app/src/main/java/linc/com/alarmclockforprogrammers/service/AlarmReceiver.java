@@ -7,7 +7,7 @@ import android.content.Intent;
 import com.google.gson.Gson;
 
 import linc.com.alarmclockforprogrammers.entity.Alarm;
-import linc.com.alarmclockforprogrammers.ui.activities.WakeActivity;
+import linc.com.alarmclockforprogrammers.ui.activities.wake.WakeActivity;
 import linc.com.alarmclockforprogrammers.utils.AlarmHandler;
 
 public class AlarmReceiver extends BroadcastReceiver {

@@ -24,6 +24,14 @@ public class PresenterStopwatch {
         this.view = view;
     }
 
+    public void setData() {
+        view.disableDrawerMenu();
+    }
+
+    public void returnToAlarms() {
+        this.view.openAlarmsFragment();
+    }
+
     public void startOrPauseStopwatch() {
         if(!running) {
             view.startStopwatch();

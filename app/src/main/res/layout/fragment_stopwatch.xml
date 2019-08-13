@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/stopwatch__toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:theme="@style/ThemeToolbar"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:navigationIcon="@drawable/ic_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
     <ProgressBar
         android:id="@+id/stopwatch__progress_bar"
         android:layout_width="@dimen/progress_bar_size"
@@ -28,6 +39,7 @@
         android:text="@string/time_default"
         android:textSize="@dimen/text_large"
         android:fontFamily="sans-serif-black"
+        android:textColor="?attr/text_default_color"
         app:layout_constraintTop_toTopOf="@id/stopwatch__progress_bar"
         app:layout_constraintBottom_toBottomOf="@id/stopwatch__progress_bar"
         app:layout_constraintLeft_toLeftOf="@id/stopwatch__progress_bar"
@@ -63,6 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:src="@drawable/ic_start"
+        app:backgroundTint="?attr/button_default_color"
         app:elevation="@dimen/elevation_default"
         app:layout_constraintTop_toTopOf="@id/stopwatch__horizontal_fix_line"
         app:layout_constraintBottom_toBottomOf="@id/stopwatch__horizontal_fix_line"
@@ -76,6 +89,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_stopwatch_lap"
         android:visibility="gone"
+        app:backgroundTint="?attr/button_default_color"
         app:elevation="@dimen/elevation_default"
         app:layout_constraintTop_toTopOf="@id/stopwatch__start_pause"
         app:layout_constraintBottom_toBottomOf="@id/stopwatch__start_pause"

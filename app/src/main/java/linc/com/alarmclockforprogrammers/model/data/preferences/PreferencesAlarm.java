@@ -46,19 +46,12 @@ public class PreferencesAlarm {
     }
 
     /** Theme*/
-    public void saveAppTheme(String theme, boolean isChecked) {
-        getPrefsEditor().putString("APP_THEME", theme)
-                .apply();
+    public void saveAppTheme(boolean isChecked) {
         getPrefsEditor().putBoolean("DARK_THEME_CHECKED", isChecked)
                 .apply();
     }
 
-    public String getAppTheme() {
-        return getDefaultPreferences()
-                .getString("APP_THEME", "LIGHT");
-    }
-
-    public boolean getCheckedTheme() {
+    public boolean getTheme() {
         return getDefaultPreferences()
                 .getBoolean("DARK_THEME_CHECKED", false);
     }

@@ -32,8 +32,11 @@ public final class Consts {
     public static final float PERCENT_FIFTY = 0.5f;
     public static final float PERCENT_HUNDRED = 1.0f;
 
-
     // Wake activity
     public static final int FIRST_QUESTION = 0;
+
+    // Settings
+    public static final boolean DISABLE = false;
+    public static final boolean ENABLE = true;
 
 }

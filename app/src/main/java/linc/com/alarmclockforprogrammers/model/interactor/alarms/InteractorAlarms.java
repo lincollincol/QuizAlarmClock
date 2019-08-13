@@ -52,8 +52,4 @@ public class InteractorAlarms {
         return preferences.getBalance();
     }
 
-    public String getTheme() {
-        return preferences.getAppTheme();
-    }
-
 }

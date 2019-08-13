@@ -5,7 +5,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="drawerArrowStyle">@style/DrawerIcon</item>
     </style>
 
     <!--Main activity light theme-->
@@ -13,6 +12,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
 
         <item name="colorControlNormal">@color/violet_default</item>
         <item name="android:colorControlNormal">@color/violet_default</item>
@@ -35,7 +35,7 @@
         <item name="switch_thumb_color">@color/violet_dark</item>
         <item name="switch_track_enable_color">@color/violet_default</item>
         <item name="switch_track_disable_color">@color/violet_light</item>
-        <item name="progress_track_color">@color/violet_translucent</item>
+        <item name="progress_track_color">@color/progress_track_light</item>
         <item name="progress_gradient_start_color">@color/violet_light</item>
         <item name="progress_gradient_center_color">@color/violet_default</item>
         <item name="progress_gradient_end_color">@color/violet_dark</item>
@@ -54,6 +54,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
 
         <item name="colorControlNormal">@color/green_default</item>
         <item name="android:colorControlNormal">@color/green_default</item>
@@ -76,7 +77,7 @@
         <item name="switch_thumb_color">@color/green_dark</item>
         <item name="switch_track_enable_color">@color/green_default</item>
         <item name="switch_track_disable_color">@color/green_light</item>
-        <item name="progress_track_color">@color/green_translucent</item>
+        <item name="progress_track_color">@color/progress_track_dark</item>
         <item name="progress_gradient_start_color">@color/green_light</item>
         <item name="progress_gradient_center_color">@color/green_default</item>
         <item name="progress_gradient_end_color">@color/green_dark</item>
@@ -88,11 +89,6 @@
         <item name="view_completed_color">@color/item_silver_translucent</item>
         <item name="icon_completed_color">@color/green_default</item>
 
-    </style>
-
-    <!--Hamburger button style-->
-    <style name="DrawerIcon" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/violet_default</item>
     </style>
 
     <!--Alert dialog style-->
@@ -124,6 +120,17 @@
     <style name="DefaultNumberPickerTheme" parent="AppTheme">
         <item name="colorControlNormal">@android:color/transparent</item>
         <item name="android:textColorPrimary">?attr/text_default_color</item>
+    </style>
+
+    <!--Toolbar back arrow color-->
+    <style name="ThemeToolbar" parent="Theme.AppCompat.Light">
+        <item name="android:tint">?attr/icon_default_color</item>
+    </style>
+
+    <!-- Activity restart animation-->
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation" >@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
 </resources>

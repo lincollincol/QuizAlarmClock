@@ -2,6 +2,7 @@ package linc.com.alarmclockforprogrammers.presentation.timer;
 
 public interface ViewTimer {
 
+    void disableDrawerMenu();
     void openProgressLayout();
     void closeProgressLayout();
     void setIntroducedTime();
@@ -11,5 +12,6 @@ public interface ViewTimer {
     void pauseTimer();
     void updateProgressBar(String time);
     void startAlarm();
+    void openAlarmsFragment();
 
 }

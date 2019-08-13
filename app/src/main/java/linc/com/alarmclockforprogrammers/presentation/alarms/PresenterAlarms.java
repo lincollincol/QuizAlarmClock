@@ -17,10 +17,8 @@ public class PresenterAlarms {
     }
 
     public void setData() {
-        Disposable d = this.interactor.getAlarms()
-                .subscribe(alarms ->
-                        this.view.setAlarmsData(alarms)
-                );
+        updateAlarms();
+        this.view.enableDrawerMenu();
         this.view.setBalance(interactor.getBalance());
         this.interactor.updateQuestionInLocal();
 
@@ -40,12 +38,18 @@ public class PresenterAlarms {
 
     public void deleteAlarm(Alarm alarm, Context context) {
         this.interactor.deleteAlarm(alarm, context);
-        setData();
+        updateAlarms();
     }
 
     public void updateAlarm(Alarm alarm, Context context) {
         this.interactor.updateAlarm(alarm, context);
     }
 
+    private void updateAlarms() {
+        Disposable d = this.interactor.getAlarms()
+                .subscribe(alarms ->
+                        this.view.setAlarmsData(alarms)
+                );
+    }
 }
 

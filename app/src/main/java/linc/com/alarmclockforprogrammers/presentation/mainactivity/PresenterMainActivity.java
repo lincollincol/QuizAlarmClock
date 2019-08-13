@@ -13,7 +13,7 @@ public class PresenterMainActivity {
     }
 
     public void setupActivity() {
-        this.view.setTheme(interactor.getAppTheme());
+        this.view.setTheme(interactor.getTheme());
         this.view.setupWindow();
     }
 

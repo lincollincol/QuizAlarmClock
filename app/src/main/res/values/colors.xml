@@ -27,9 +27,9 @@
     <color name="theme_dark_start">#313131</color>
     <color name="theme_dark_end">#121212</color>
     <color name="card_dark">#343434</color>
-    <color name="green_light">#62D9B1</color>
-    <color name="green_default">#24B383</color>
-    <color name="green_dark">#14664A</color>
-    <color name="progress_track_dark">#3330CE88</color>
+    <color name="green_light">#42F778</color>
+    <color name="green_default">#0D973C</color>
+    <color name="green_dark">#16C44F</color>
+    <color name="progress_track_dark">#334EECA4</color>
 
 </resources>

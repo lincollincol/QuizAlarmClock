@@ -14,13 +14,16 @@ public class PresenterAchievements {
     }
 
     public void setData() {
-        Disposable d =interactor.getAchievements()
-                .subscribe(achievements -> {
-                    view.setAchievements(achievements);
+        Disposable d = this.interactor.getAchievements()
+                .subscribe(achievements ->
+                        this.view.setAchievements(achievements));
+        this.view.disableDrawerMenu();
+        this.view.setBalance(interactor.getBalance());
+        this.interactor.updateAcgievementsInLocal();
+    }
 
-                });
-        view.setBalance(interactor.getBalance());
-        interactor.updateAcgievementsInLocal();
+    public void returnToAlarms() {
+        this.view.openAlarmsFragment();
     }
 
 }

@@ -34,10 +34,10 @@ public class ResUtil {
         return ColorStateList.valueOf(typedValue.data);
     }
 
-    public static int getTheme(String theme) {
-        if(theme.equals("LIGHT")) {
-            return R.style.LightTheme;
+    public static int getTheme(boolean isDarkTheme) {
+        if(isDarkTheme) {
+            return R.style.DarkTheme;
         }
-        return R.style.DarkTheme;
+        return R.style.LightTheme;
     }
 }

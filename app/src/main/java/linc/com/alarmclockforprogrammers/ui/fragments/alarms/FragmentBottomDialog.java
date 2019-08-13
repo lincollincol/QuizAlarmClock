@@ -20,7 +20,6 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
         CompoundButton.OnCheckedChangeListener {
 
     private BottomDialogStateListener dialogStateListener;
-    private SwitchCompat enableAlarm;
     private Alarm alarm;
 
 
@@ -38,7 +37,7 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
         View view = inflater.inflate(R.layout.fragment_alarms_bottom_dialog, container, false);
 
         FloatingActionButton deleteButton = view.findViewById(R.id.alarms_dialog_delete_alarm);
-        enableAlarm = view.findViewById(R.id.alarms_dialog__toggle_alarm_enable);
+        SwitchCompat enableAlarm = view.findViewById(R.id.alarms_dialog__toggle_alarm_enable);
         TextView alarmTime = view.findViewById(R.id.alarms_dialog__alarm_time);
         TextView alarmTimeAmPm = view.findViewById(R.id.alarms_dialog__time_am_pm);
         TextView alarmDetails = view.findViewById(R.id.alarms_dialog__alarm_details);

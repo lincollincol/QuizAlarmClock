@@ -18,6 +18,10 @@ public class PresenterTimer {
         this.view = view;
     }
 
+    public void setData() {
+        this.view.disableDrawerMenu();
+    }
+
     public void startOrPauseTimer() {
         if(!isProgressLayout) {
             view.openProgressLayout();
@@ -71,4 +75,9 @@ public class PresenterTimer {
         view.startAlarm();
 //        view.pauseTimer();
     }
+
+    public void returnToAlarms() {
+        this.view.openAlarmsFragment();
+    }
+
 }

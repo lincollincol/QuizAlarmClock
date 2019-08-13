@@ -31,13 +31,16 @@ import linc.com.alarmclockforprogrammers.model.interactor.alarms.InteractorAlarm
 import linc.com.alarmclockforprogrammers.model.repository.alarms.RepositoryAlarms;
 import linc.com.alarmclockforprogrammers.presentation.alarms.PresenterAlarms;
 import linc.com.alarmclockforprogrammers.presentation.alarms.ViewAlarms;
-import linc.com.alarmclockforprogrammers.ui.activities.MainActivity;
+import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarms.adapters.AdapterAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.alarmsettings.FragmentAlarmSettings;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
+import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
+
+import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
+import static linc.com.alarmclockforprogrammers.utils.Consts.ENABLE;
 
 
-public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmClicked,
+public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlarmClicked,
         View.OnClickListener, FragmentBottomDialog.BottomDialogStateListener, ViewAlarms {
 
     private TextView balance;
@@ -112,6 +115,11 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
     }
 
     @Override
+    public void enableDrawerMenu() {
+        ((MainActivity) getActivity()).setDrawerEnabled(ENABLE);
+    }
+
+    @Override
     public void openAlarmEditor(int alarmId) {
         FragmentAlarmSettings alarmSettings = new FragmentAlarmSettings();
         Bundle data = new Bundle();
@@ -175,4 +183,11 @@ public class FragmentAlarms extends Fragment implements AdapterAlarms.OnAlarmCli
     public void onDialogDestroyed(Alarm alarm) {
         this.presenter.updateAlarm(alarm, getActivity());
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        getActivity().finish();
+    }
 }
+

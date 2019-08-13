@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +25,14 @@ import linc.com.alarmclockforprogrammers.model.interactor.achievements.Interacto
 import linc.com.alarmclockforprogrammers.model.repository.achievements.RepositoryAchievements;
 import linc.com.alarmclockforprogrammers.presentation.achievements.PresenterAchievements;
 import linc.com.alarmclockforprogrammers.presentation.achievements.ViewAchievements;
+import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.fragments.achievements.adapters.AdapterAchievements;
+import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
+import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
 
-public class FragmentAchievements extends Fragment implements
+import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
+
+public class FragmentAchievements extends BaseFragment implements
         AdapterAchievements.OnReceiveClickListener, ViewAchievements {
 
     private TextView balance;
@@ -54,6 +60,7 @@ public class FragmentAchievements extends Fragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_achievements, container, false);
 
+        Toolbar toolbar = view.findViewById(R.id.achievements__toolbar);
         RecyclerView achievementsList = view.findViewById(R.id.achievements__list_of_achievements);
         this.balance = view.findViewById(R.id.achievements__balance);
 
@@ -65,6 +72,8 @@ public class FragmentAchievements extends Fragment implements
         achievementsList.setLayoutManager(layoutManager);
         achievementsList.setAdapter(adapter);
 
+        toolbar.setNavigationOnClickListener(v -> this.presenter.returnToAlarms());
+
         presenter.setData();
 
         return view;
@@ -72,7 +81,12 @@ public class FragmentAchievements extends Fragment implements
 
     @Override
     public void onClick(int position) {
+        // todo implement award receiving
+    }
 
+    @Override
+    public void disableDrawerMenu() {
+        ((MainActivity) getActivity()).setDrawerEnabled(DISABLE);
     }
 
     @Override
@@ -83,5 +97,20 @@ public class FragmentAchievements extends Fragment implements
     @Override
     public void setBalance(int balance) {
         this.balance.setText(String.valueOf(balance));
+    }
+
+    @Override
+    public void openAlarmsFragment() {
+        ((MainActivity)getActivity()).setCheckedMenuItem(R.id.menu_alarms);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, new FragmentAlarms())
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.presenter.returnToAlarms();
     }
 }

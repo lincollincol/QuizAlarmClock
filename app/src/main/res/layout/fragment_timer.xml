@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/timer__toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:theme="@style/ThemeToolbar"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_small"
+        app:navigationIcon="@drawable/ic_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
     <NumberPicker
         android:id="@+id/timer__hour_picker"
         android:layout_width="wrap_content"
@@ -62,6 +74,7 @@
         android:text="@string/time_default"
         android:textSize="@dimen/text_large"
         android:fontFamily="sans-serif-black"
+        android:textColor="?attr/text_default_color"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="@id/timer__progress_bar"
         app:layout_constraintBottom_toBottomOf="@id/timer__progress_bar"
@@ -81,6 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:src="@drawable/ic_start"
+        app:backgroundTint="?attr/button_default_color"
         app:elevation="@dimen/elevation_default"
         app:layout_constraintTop_toBottomOf="@id/timer__horizontal_fix_line"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -95,6 +109,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_stop"
         android:visibility="gone"
+        app:backgroundTint="?attr/button_default_color"
         app:elevation="@dimen/elevation_default"
         app:layout_constraintTop_toTopOf="@id/timer__start"
         app:layout_constraintBottom_toBottomOf="@id/timer__start"

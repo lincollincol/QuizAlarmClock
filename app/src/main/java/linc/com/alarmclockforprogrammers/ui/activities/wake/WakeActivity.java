@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.ui.activities;
+package linc.com.alarmclockforprogrammers.ui.activities.wake;
 
 import android.app.KeyguardManager;
 import android.content.Intent;

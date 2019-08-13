@@ -10,11 +10,12 @@ import android.support.constraint.ConstraintSet;
 import android.support.design.widget.FloatingActionButton;
 import android.support.transition.AutoTransition;
 import android.support.transition.TransitionManager;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +27,14 @@ import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.entity.Lap;
 import linc.com.alarmclockforprogrammers.presentation.stopwatch.PresenterStopwatch;
 import linc.com.alarmclockforprogrammers.presentation.stopwatch.ViewStopwatch;
+import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
+import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
+import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
 import linc.com.alarmclockforprogrammers.ui.fragments.stopwatch.adapters.AdapterLaps;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
-public class FragmentStopwatch extends Fragment implements ViewStopwatch, View.OnClickListener {
+public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, View.OnClickListener {
 
     private FloatingActionButton startPauseStopwatch;
     private FloatingActionButton lapStopStopwatch;
@@ -59,6 +63,7 @@ public class FragmentStopwatch extends Fragment implements ViewStopwatch, View.O
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stopwatch, container, false);
 
+        Toolbar toolbar = view.findViewById(R.id.stopwatch__toolbar);
         ProgressBar progressBar = view.findViewById(R.id.stopwatch__progress_bar);
         this.time = view.findViewById(R.id.stow);
         this.lapsInfo = view.findViewById(R.id.stopwatch__lap_info);
@@ -80,6 +85,7 @@ public class FragmentStopwatch extends Fragment implements ViewStopwatch, View.O
         this.lapsInfo.setLayoutManager(layoutManager);
         this.lapsInfo.setAdapter(adapter);
 
+        toolbar.setNavigationOnClickListener(v -> this.presenter.returnToAlarms());
         this.startPauseStopwatch.setOnClickListener(this);
         this.lapStopStopwatch.setOnClickListener(this);
 
@@ -88,6 +94,8 @@ public class FragmentStopwatch extends Fragment implements ViewStopwatch, View.O
         this.progressAnimation.setRepeatCount(ValueAnimator.INFINITE);
 
         this.constraintSet.clone(layout);
+
+        this.presenter.setData();
 
         return view;
     }
@@ -102,6 +110,11 @@ public class FragmentStopwatch extends Fragment implements ViewStopwatch, View.O
                 this.presenter.stopOrLapStopwatch();
                 break;
         }
+    }
+
+    @Override
+    public void disableDrawerMenu() {
+        ((MainActivity) getActivity()).setDrawerEnabled(DISABLE);
     }
 
     @Override
@@ -155,5 +168,20 @@ public class FragmentStopwatch extends Fragment implements ViewStopwatch, View.O
     @Override
     public void updateTime(long timeInMillis) {
         this.time.setText(Lap.getReadableTime(timeInMillis));
+    }
+
+    @Override
+    public void openAlarmsFragment() {
+        ((MainActivity)getActivity()).setCheckedMenuItem(R.id.menu_alarms);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, new FragmentAlarms())
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.presenter.returnToAlarms();
     }
 }

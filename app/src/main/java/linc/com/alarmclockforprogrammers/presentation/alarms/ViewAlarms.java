@@ -8,6 +8,7 @@ public interface ViewAlarms {
 
     void setAlarmsData(List<Alarm> alarms);
     void setBalance(int balance);
+    void enableDrawerMenu();
     void openAlarmEditor(int alarmId);
     void openAlarmCreator();
     void openBottomSheetDialog(Alarm alarm);

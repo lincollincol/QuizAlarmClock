@@ -4,26 +4,37 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/achievements__toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:theme="@style/ThemeToolbar"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_small"
+        app:navigationIcon="@drawable/ic_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/achievements__list_of_achievements"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="50dp"
         android:overScrollMode="never"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/achievements__toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <ImageView
         android:id="@+id/achievements__balance_image"
-        android:layout_width="@dimen/image_currency_size"
-        android:layout_height="@dimen/image_currency_size"
-        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_pay"
         android:tint="?attr/icon_default_color"
         app:layout_constraintRight_toLeftOf="@+id/achievements__balance"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/achievements__toolbar"
+        app:layout_constraintBottom_toBottomOf="@id/achievements__toolbar"/>
 
     <TextView
         android:id="@+id/achievements__balance"

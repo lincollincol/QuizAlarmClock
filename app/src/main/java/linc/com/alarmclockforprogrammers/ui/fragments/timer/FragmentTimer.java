@@ -14,6 +14,7 @@ import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
 import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,11 +30,14 @@ import java.util.concurrent.TimeUnit;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.presentation.timer.PresenterTimer;
 import linc.com.alarmclockforprogrammers.presentation.timer.ViewTimer;
+import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
+import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
+import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
-public class FragmentTimer extends Fragment implements View.OnClickListener, ViewTimer,
+public class FragmentTimer extends BaseFragment implements View.OnClickListener, ViewTimer,
         NumberPicker.OnScrollListener {
 
     private NumberPicker hourPicker;
@@ -88,6 +92,7 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
 
+        Toolbar toolbar = view.findViewById(R.id.timer__toolbar);
         FloatingActionButton stopTimer = view.findViewById(R.id.timer__stop);
         this.layout = view.findViewById(R.id.timer__layout);
         this.hourPicker = view.findViewById(R.id.timer__hour_picker);
@@ -108,6 +113,7 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
         this.secondPicker.setMaxValue(PICKER_SECONDS_MAX);
         this.secondPicker.setMinValue(PICKERS_MIN);
 
+        toolbar.setNavigationOnClickListener(v -> this.presenter.returnToAlarms());
         stopTimer.setOnClickListener(this);
         this.startPauseTimer.setOnClickListener(this);
         this.hourPicker.setOnScrollListener(this);
@@ -116,6 +122,7 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
 
         // Disable start button first time
         this.presenter.setStartEnable(PICKERS_MIN);
+        this.presenter.setData();
 
         return view;
     }
@@ -145,6 +152,11 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
                 this.presenter.setStartEnable(secondPicker.getValue());
                 break;
         }
+    }
+
+    @Override
+    public void disableDrawerMenu() {
+        ((MainActivity) getActivity()).setDrawerEnabled(DISABLE);
     }
 
     @Override
@@ -232,5 +244,21 @@ public class FragmentTimer extends Fragment implements View.OnClickListener, Vie
     public void startAlarm() {
         this.progressBar.setProgress(PROGRESS_MIN);
         this.startPauseTimer.setImageResource(R.drawable.ic_start);
+    }
+
+    @Override
+    public void openAlarmsFragment() {
+        ((MainActivity)getActivity()).setCheckedMenuItem(R.id.menu_alarms);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, new FragmentAlarms())
+                .commit();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.presenter.returnToAlarms();
     }
 }

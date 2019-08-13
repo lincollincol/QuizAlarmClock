@@ -9,8 +9,8 @@ public class InteractorMainActivity {
         this.preferences = preferences;
     }
 
-    public String getAppTheme() {
-        return preferences.getAppTheme();
+    public boolean getTheme() {
+        return preferences.getTheme();
     }
 
 }

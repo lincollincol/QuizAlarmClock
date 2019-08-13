@@ -17,7 +17,7 @@
     <dimen name="elevation_default">10dp</dimen>
     <dimen name="corners_default">20dp</dimen>
 
-    <!--Nav menu-->
+    <!--Nav menu todo remove-->
     <dimen name="margin_top_toolbar">20dp</dimen>
     <dimen name="margin_start_toolbar">10dp</dimen>
     <dimen name="padding_start_item_menu">0dp</dimen>
