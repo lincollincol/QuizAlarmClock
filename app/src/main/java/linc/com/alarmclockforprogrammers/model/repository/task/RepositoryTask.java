@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.model.repository.waketask;
+package linc.com.alarmclockforprogrammers.model.repository.task;
 
 import android.util.Log;
 
@@ -14,12 +14,12 @@ import linc.com.alarmclockforprogrammers.entity.Question;
 import linc.com.alarmclockforprogrammers.model.data.database.achievements.AchievementsDao;
 import linc.com.alarmclockforprogrammers.model.data.database.questions.QuestionsDao;
 
-public class RepositoryWakeTask {
+public class RepositoryTask {
 
     private QuestionsDao questionsDao;
     private AchievementsDao achievementsDao;
 
-    public RepositoryWakeTask(QuestionsDao questionsDao, AchievementsDao achievementsDao) {
+    public RepositoryTask(QuestionsDao questionsDao, AchievementsDao achievementsDao) {
         this.questionsDao = questionsDao;
         this.achievementsDao = achievementsDao;
     }

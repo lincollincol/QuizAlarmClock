@@ -90,8 +90,7 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
         public void setAlarm(Alarm alarm) {
             this.time.setText(Alarm.getReadableTime(alarm.getTime()));
             this.timeAmPm.setText(Alarm.getAmPm(alarm.getTime()));
-//            this.programmingLanguage.setText((Alarm.getProgrammingsLanguage(alarm.getLanguage(), context.getResources())));
-            this.programmingLanguage.setText(String.valueOf(alarm.getId()));
+            this.programmingLanguage.setText((Alarm.getProgrammingsLanguage(alarm.getLanguage(), context.getResources())));
             this.days.setText(Alarm.getDaysMarks(alarm.getDays(), context.getResources()));
         }
 

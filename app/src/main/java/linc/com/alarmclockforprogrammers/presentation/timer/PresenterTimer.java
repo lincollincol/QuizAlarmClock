@@ -48,9 +48,9 @@ public class PresenterTimer {
 
     public void setStartEnable(int value) {
         if(value > Consts.PICKERS_MIN) {
-            view.setStartEnable();
+            view.enableStartButton();
         }else {
-            view.setStartDisable();
+            view.disableStartButton();
         }
     }
 

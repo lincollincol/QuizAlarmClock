@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.model.interactor.waketask;
+package linc.com.alarmclockforprogrammers.model.interactor.task;
 
 import android.util.Log;
 
@@ -15,14 +15,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.entity.Question;
 import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
-import linc.com.alarmclockforprogrammers.model.repository.waketask.RepositoryWakeTask;
+import linc.com.alarmclockforprogrammers.model.repository.task.RepositoryTask;
 
-public class InteractorWakeTask {
+public class InteractorTask {
 
-    private RepositoryWakeTask repository;
+    private RepositoryTask repository;
     private PreferencesAlarm preferences;
 
-    public InteractorWakeTask(RepositoryWakeTask repository, PreferencesAlarm preferences) {
+    public InteractorTask(RepositoryTask repository, PreferencesAlarm preferences) {
         this.repository = repository;
         this.preferences = preferences;
     }

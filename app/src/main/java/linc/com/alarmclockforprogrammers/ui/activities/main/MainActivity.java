@@ -9,7 +9,6 @@ import android.support.transition.Slide;
 import android.support.transition.Transition;
 import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -23,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -134,21 +132,21 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
                 FragmentTimer fragmentTimer = new FragmentTimer();
                 // Start new fragment
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fragmentTimer)
+                        .replace(R.id.alarms_container, fragmentTimer)
                         .commit();
                 break;
             case R.id.menu_stopwatch:
                 FragmentStopwatch stopwatch = new FragmentStopwatch();
                 // Start new fragment
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, stopwatch)
+                        .replace(R.id.alarms_container, stopwatch)
                         .commit();
                 break;
             case R.id.menu_achievements:
                 FragmentAchievements fra = new FragmentAchievements();
                 // Start new fragment
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fra)
+                        .replace(R.id.alarms_container, fra)
                         .commit();
                 break;
         }
@@ -213,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
 
         // Start new fragment
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, fragment)
+                .replace(R.id.alarms_container, fragment)
                 .commit();
     }
 

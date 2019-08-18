@@ -33,7 +33,7 @@
     <ImageView
         android:id="@+id/alarms__balance_image"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/image_currency_size"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_medium"
         android:src="@drawable/ic_pay"
         android:tint="?attr/button_default_color"

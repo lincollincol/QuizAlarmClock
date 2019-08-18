@@ -26,7 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.wake.WakeActivity" android:launchMode="singleTask"/>
+        <activity android:name=".ui.activities.wake.WakeActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/LightTheme"/>
         <receiver android:name=".service.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

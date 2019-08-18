@@ -6,8 +6,8 @@ public interface ViewTimer {
     void openProgressLayout();
     void closeProgressLayout();
     void setIntroducedTime();
-    void setStartEnable();
-    void setStartDisable();
+    void enableStartButton();
+    void disableStartButton();
     void startTimer();
     void pauseTimer();
     void updateProgressBar(String time);

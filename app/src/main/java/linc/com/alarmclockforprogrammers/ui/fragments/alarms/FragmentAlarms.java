@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.transition.Explode;
 import android.support.transition.Transition;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
@@ -36,7 +35,6 @@ import linc.com.alarmclockforprogrammers.ui.fragments.alarms.adapters.AdapterAla
 import linc.com.alarmclockforprogrammers.ui.fragments.alarmsettings.FragmentAlarmSettings;
 import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
 
-import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
 import static linc.com.alarmclockforprogrammers.utils.Consts.ENABLE;
 
 
@@ -130,7 +128,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
         alarmSettings.setArguments(data);
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.container, alarmSettings)
+                .replace(R.id.alarms_container, alarmSettings)
                 .addToBackStack(null)
                 .commit();
     }
@@ -143,7 +141,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
         alarmSettings.setReturnTransition(returnAnimation);
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.container, alarmSettings)
+                .replace(R.id.alarms_container, alarmSettings)
                 .addToBackStack(null)
                 .commit();
 

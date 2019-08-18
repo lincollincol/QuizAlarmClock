@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.ui.fragments.waketask;
+package linc.com.alarmclockforprogrammers.ui.fragments.task;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -24,17 +24,18 @@ import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.entity.Question;
 import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
 import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
-import linc.com.alarmclockforprogrammers.model.interactor.waketask.InteractorWakeTask;
-import linc.com.alarmclockforprogrammers.model.repository.waketask.RepositoryWakeTask;
-import linc.com.alarmclockforprogrammers.presentation.waketask.PresenterWakeTask;
-import linc.com.alarmclockforprogrammers.presentation.waketask.ViewWakeTask;
+import linc.com.alarmclockforprogrammers.model.interactor.task.InteractorTask;
+import linc.com.alarmclockforprogrammers.model.repository.task.RepositoryTask;
+import linc.com.alarmclockforprogrammers.presentation.task.PresenterTask;
+import linc.com.alarmclockforprogrammers.presentation.task.ViewTask;
 import linc.com.alarmclockforprogrammers.ui.activities.wake.WakeActivity;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.ANIMATION_END;
 import static linc.com.alarmclockforprogrammers.utils.Consts.ANIMATION_START;
+import static linc.com.alarmclockforprogrammers.utils.Consts.TWO_MINUTES;
 
-public class FragmentWakeTaskTask extends Fragment implements ViewWakeTask, View.OnClickListener,
+public class FragmentTask extends Fragment implements ViewTask, View.OnClickListener,
         Animator.AnimatorListener{
 
     private TextView balance;
@@ -47,7 +48,7 @@ public class FragmentWakeTaskTask extends Fragment implements ViewWakeTask, View
     private FloatingActionButton payForQuestion;
 
     private ObjectAnimator progressAnimation;
-    private PresenterWakeTask presenter;
+    private PresenterTask presenter;
 
 
     @Override
@@ -59,21 +60,20 @@ public class FragmentWakeTaskTask extends Fragment implements ViewWakeTask, View
         int languagePosition = getArguments().getInt("LANGUAGE");
 
         if(presenter == null) {
-            this.presenter = new PresenterWakeTask(this, new InteractorWakeTask(
-                            new RepositoryWakeTask(database.questionsDao(), database.achievementsDao()),
+            this.presenter = new PresenterTask(this, new InteractorTask(
+                            new RepositoryTask(database.questionsDao(), database.achievementsDao()),
                             new PreferencesAlarm(getActivity()))
             );
         }
 
         this.presenter.setData(ResUtil.getLanguage(getActivity(), languagePosition), difficult);
 
-        Log.d("LIFE_CYCLE", "onCreate: FRAGMENT");
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wake_task, container, false);
+        View view = inflater.inflate(R.layout.fragment_task, container, false);
 
         ProgressBar progressBar = view.findViewById(R.id.wake__time_for_answer);
         this.balance = view.findViewById(R.id.wake__balance);
@@ -92,7 +92,7 @@ public class FragmentWakeTaskTask extends Fragment implements ViewWakeTask, View
                 getResources().getString(R.string.animator_property_progress), ANIMATION_END, ANIMATION_START);
 
         this.progressAnimation.addListener(this);
-        this.progressAnimation.setDuration(60000);
+        this.progressAnimation.setDuration(TWO_MINUTES);
         this.progressAnimation.start();
 
         Log.d("LIFE_CYCLE", "onCreateView: FRAGMENT");

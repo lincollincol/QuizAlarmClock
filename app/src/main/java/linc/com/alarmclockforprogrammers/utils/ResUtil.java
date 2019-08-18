@@ -17,21 +17,15 @@ public class ResUtil {
     }
 
     public static ColorStateList getButtonColor(Context context, int color) {
-        return ColorStateList.valueOf(context.getResources().getColor(color));
+        return ColorStateList.valueOf(getAttrColor(context, color));
     }
 
     public static int getTextColor(Context context, @ColorInt int color) {
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(color, typedValue, true);
-        return ContextCompat.getColor(context, typedValue.data);
+        return getAttrColor(context, color);
     }
 
     public static ColorStateList getThemeColor(Context context, @ColorInt int color) {
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(color, typedValue, true);
-        return ColorStateList.valueOf(typedValue.data);
+        return ColorStateList.valueOf(getAttrColor(context, color));
     }
 
     public static int getTheme(boolean isDarkTheme) {
@@ -39,5 +33,12 @@ public class ResUtil {
             return R.style.DarkTheme;
         }
         return R.style.LightTheme;
+    }
+
+    private static int getAttrColor(Context context, @ColorInt int color) {
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(color, typedValue, true);
+        return typedValue.data;
     }
 }

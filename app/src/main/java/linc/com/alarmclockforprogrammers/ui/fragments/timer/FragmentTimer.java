@@ -1,6 +1,5 @@
 package linc.com.alarmclockforprogrammers.ui.fragments.timer;
 
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -13,7 +12,6 @@ import android.support.transition.Slide;
 import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
 import android.support.transition.TransitionSet;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,8 +20,6 @@ import android.view.ViewGroup;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import java.util.Locale;
 
 import java.util.concurrent.TimeUnit;
 
@@ -141,17 +137,20 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void onScrollStateChange(NumberPicker view, int scrollState) {
-        switch(view.getId()) {
+        int selectedTime = hourPicker.getValue() + minutePicker.getValue()
+                + secondPicker.getValue();
+        presenter.setStartEnable(selectedTime);
+        /*switch(view.getId()) {
             case R.id.timer__hour_picker:
-                this.presenter.setStartEnable(hourPicker.getValue());
+                this.presenter.setStartEnable();
                 break;
             case R.id.timer__minute_picker:
-                this.presenter.setStartEnable(minutePicker.getValue());
+                this.presenter.setStartEnable();
                 break;
             case R.id.timer__second_picker:
-                this.presenter.setStartEnable(secondPicker.getValue());
+                this.presenter.setStartEnable();
                 break;
-        }
+        }*/
     }
 
     @Override
@@ -195,16 +194,14 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
         this.progressBar.setMax((int)timeLeftInMillis);
     }
 
-    //todo rename from set
     @Override
-    public void setStartEnable() {
+    public void enableStartButton() {
         this.startPauseTimer.setEnabled(true);
         this.startPauseTimer.setBackgroundTintList(ResUtil.getThemeColor(getActivity(),
                 R.attr.button_default_color));
     }
-//todo rename from set
     @Override
-    public void setStartDisable() {
+    public void disableStartButton() {
         this.startPauseTimer.setEnabled(false);
         this.startPauseTimer.setBackgroundTintList(ResUtil.getThemeColor(getActivity(),
                 R.attr.button_disable_color));
@@ -212,7 +209,7 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void startTimer() {
-        this.timer = new CountDownTimer(timeLeftInMillis, ONE_TICK) {
+        this.timer = new CountDownTimer(timeLeftInMillis, 100) {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeLeftInMillis = millisUntilFinished;
@@ -251,10 +248,9 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
         ((MainActivity)getActivity()).setCheckedMenuItem(R.id.menu_alarms);
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, new FragmentAlarms())
+                .replace(R.id.alarms_container, new FragmentAlarms())
                 .commit();
     }
-
 
     @Override
     public void onBackPressed() {

@@ -1,8 +1,8 @@
-package linc.com.alarmclockforprogrammers.presentation.waketask;
+package linc.com.alarmclockforprogrammers.presentation.task;
 
 import linc.com.alarmclockforprogrammers.entity.Question;
 
-public interface ViewWakeTask {
+public interface ViewTask {
 
     void updateQuestion(Question question);
     void updateCompletedQuestions(String completedQuestions);

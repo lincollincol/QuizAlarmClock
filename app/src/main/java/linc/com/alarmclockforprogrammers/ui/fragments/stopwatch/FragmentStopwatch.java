@@ -15,7 +15,6 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -175,7 +174,7 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
         ((MainActivity)getActivity()).setCheckedMenuItem(R.id.menu_alarms);
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, new FragmentAlarms())
+                .replace(R.id.alarms_container, new FragmentAlarms())
                 .commit();
     }
 
