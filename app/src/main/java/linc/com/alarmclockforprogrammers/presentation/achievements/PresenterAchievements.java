@@ -22,9 +22,5 @@ public class PresenterAchievements {
         this.interactor.updateAcgievementsInLocal();
     }
 
-    public void returnToAlarms() {
-        this.view.openAlarmsFragment();
-    }
-
 }
 

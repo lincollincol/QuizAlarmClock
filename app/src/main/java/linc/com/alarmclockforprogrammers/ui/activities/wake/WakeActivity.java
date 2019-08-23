@@ -27,7 +27,6 @@ public class WakeActivity extends AppCompatActivity implements ViewWakeActivity 
 
     private PresenterWakeActivity presenter;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

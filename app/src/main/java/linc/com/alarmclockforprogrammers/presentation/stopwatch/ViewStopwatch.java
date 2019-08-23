@@ -12,6 +12,5 @@ public interface ViewStopwatch {
     void runProgressBar();
     void pauseProgressBar();
     void updateTime(long timeInMillis);
-    void openAlarmsFragment();
 
 }

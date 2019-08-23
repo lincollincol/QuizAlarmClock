@@ -6,6 +6,5 @@ public interface ViewSettings {
     void setSelectedTheme(boolean isDarkTheme);
     void disableDrawerMenu();
     void restartActivity();
-    void openAlarmsFragment();
 
 }

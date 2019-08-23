@@ -14,6 +14,7 @@ import java.util.List;
 
 import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.R;
+import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHolder> {
 
@@ -59,7 +60,6 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
     class AlarmsHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private TextView programmingLanguage;
         private TextView time;
-        private TextView timeAmPm;
         private TextView days;
         private CardView layout;
         private OnAlarmClicked alarmClicked;
@@ -68,7 +68,6 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
             super(itemView);
             this.programmingLanguage = itemView.findViewById(R.id.item_alarm__programming_language);
             this.time = itemView.findViewById(R.id.item_alarm__time);
-            this.timeAmPm = itemView.findViewById(R.id.item_alarm_am_pm);
             this.days = itemView.findViewById(R.id.item_alarm__days);
             this.layout = itemView.findViewById(R.id.layout_alarm);
             this.alarmClicked = alarmClicked;
@@ -89,9 +88,8 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
 
         public void setAlarm(Alarm alarm) {
             this.time.setText(Alarm.getReadableTime(alarm.getTime()));
-            this.timeAmPm.setText(Alarm.getAmPm(alarm.getTime()));
-            this.programmingLanguage.setText((Alarm.getProgrammingsLanguage(alarm.getLanguage(), context.getResources())));
-            this.days.setText(Alarm.getDaysMarks(alarm.getDays(), context.getResources()));
+            this.programmingLanguage.setText((ResUtil.getLanguage(context, alarm.getLanguage())));
+            this.days.setText(ResUtil.getDaysMarks(context, alarm.getDays()));
         }
 
     }

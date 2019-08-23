@@ -9,6 +9,5 @@ public interface ViewAchievements {
     void disableDrawerMenu();
     void setAchievements(List<Achievement> achievements);
     void setBalance(int balance);
-    void openAlarmsFragment();
 
 }

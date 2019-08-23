@@ -28,10 +28,6 @@ public class PresenterStopwatch {
         view.disableDrawerMenu();
     }
 
-    public void returnToAlarms() {
-        this.view.openAlarmsFragment();
-    }
-
     public void startOrPauseStopwatch() {
         if(!running) {
             view.startStopwatch();

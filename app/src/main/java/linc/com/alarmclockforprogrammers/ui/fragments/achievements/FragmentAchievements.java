@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,9 +72,9 @@ public class FragmentAchievements extends BaseFragment implements
         achievementsList.setLayoutManager(layoutManager);
         achievementsList.setAdapter(adapter);
 
-        toolbar.setNavigationOnClickListener(v -> this.presenter.returnToAlarms());
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        presenter.setData();
+        this.presenter.setData();
 
         return view;
     }
@@ -81,6 +82,7 @@ public class FragmentAchievements extends BaseFragment implements
     @Override
     public void onClick(int position) {
         // todo implement award receiving
+//        Log.d(TAG, "onClick/: ");
     }
 
     @Override
@@ -90,7 +92,7 @@ public class FragmentAchievements extends BaseFragment implements
 
     @Override
     public void setAchievements(List<Achievement> achievements) {
-        adapter.setAchievements(achievements);
+        this.adapter.setAchievements(achievements);
     }
 
     @Override
@@ -98,18 +100,9 @@ public class FragmentAchievements extends BaseFragment implements
         this.balance.setText(String.valueOf(balance));
     }
 
-    @Override
-    public void openAlarmsFragment() {
-        ((MainActivity)getActivity()).setCheckedMenuItem(R.id.menu_alarms);
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.alarms_container, new FragmentAlarms())
-                .commit();
-    }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        this.presenter.returnToAlarms();
     }
 }

@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import linc.com.alarmclockforprogrammers.R;
+import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
+import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
+
 public class BaseFragment extends Fragment {
 
     @Override
@@ -22,5 +26,11 @@ public class BaseFragment extends Fragment {
     }
 
 
-    public void onBackPressed() {}
+    public void onBackPressed() {
+        ((MainActivity)getActivity()).setCheckedMenuItem(R.id.menu_alarms);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.alarms_container, new FragmentAlarms())
+                .commit();
+    }
 }

@@ -16,6 +16,38 @@ public class ResUtil {
                 .getStringArray(R.array.programming_languages)[position];
     }
 
+    public static String getDifficult(Context context, int position) {
+        return context.getResources()
+                .getStringArray(R.array.difficult_modes)[position];
+    }
+
+    public static String[] getDifficultModes(Context context) {
+        return context.getResources().getStringArray(R.array.difficult_modes);
+    }
+
+    public static String[] getWeekDays(Context context) {
+        return context.getResources().getStringArray(R.array.week_days);
+    }
+
+    public static String[] getProgrammingLanguages(Context context) {
+        return context.getResources().getStringArray(R.array.programming_languages);
+    }
+
+    /** Return String with selected days in mark format: Mn(Monday), Fr (Friday)*/
+    public static String getDaysMarks(Context context, String days) {
+        StringBuilder marks = new StringBuilder();
+        String[] weekDays = context.getResources().getStringArray(R.array.week_days_marks);
+
+        for(int i = 0; i < days.length(); i++) {
+            int day = Character.getNumericValue(days.charAt(i));
+            marks.append(weekDays[day]);
+            marks.append((i == (days.length()-1) ? "" : ", "));
+            marks.append( ((i == 3) && (i < days.length() - 1) ? "\n\t\t\t" : "") );
+        }
+
+        return marks.toString().isEmpty() ? "Select days" : marks.toString();
+    }
+
     public static ColorStateList getButtonColor(Context context, int color) {
         return ColorStateList.valueOf(getAttrColor(context, color));
     }

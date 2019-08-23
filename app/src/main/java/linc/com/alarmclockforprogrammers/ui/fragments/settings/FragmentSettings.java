@@ -15,7 +15,7 @@ import linc.com.alarmclockforprogrammers.model.interactor.settings.InteractorSet
 import linc.com.alarmclockforprogrammers.presentation.settings.PresenterSettings;
 import linc.com.alarmclockforprogrammers.presentation.settings.ViewSettings;
 import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
-import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
+
 import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
@@ -66,22 +66,13 @@ public class FragmentSettings extends BaseFragment implements ViewSettings,
     }
 
     @Override
-    public void openAlarmsFragment() {
-        ((MainActivity)getActivity()).setCheckedMenuItem(R.id.menu_alarms);
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.alarms_container, new FragmentAlarms())
-                .commit();
-    }
-
-    @Override
     public void onClick(View v) {
-        this.presenter.saveTheme(switchTheme.isChecked());
+        onBackPressed();
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         this.presenter.saveTheme(switchTheme.isChecked());
+        super.onBackPressed();
     }
 }

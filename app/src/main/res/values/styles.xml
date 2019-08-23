@@ -120,6 +120,7 @@
     <style name="DefaultNumberPickerTheme" parent="AppTheme">
         <item name="colorControlNormal">@android:color/transparent</item>
         <item name="android:textColorPrimary">?attr/text_default_color</item>
+        <item name="android:textSize">@dimen/text_medium</item>
     </style>
 
     <!--Toolbar back arrow color-->

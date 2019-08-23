@@ -108,13 +108,18 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
         this.minutePicker.setMinValue(PICKERS_MIN);
         this.secondPicker.setMaxValue(PICKER_SECONDS_MAX);
         this.secondPicker.setMinValue(PICKERS_MIN);
+        this.hourPicker.setFormatter(i -> String.format("%02d", i));
+        this.minutePicker.setFormatter(i -> String.format("%02d", i));
+        this.secondPicker.setFormatter(i -> String.format("%02d", i));
 
-        toolbar.setNavigationOnClickListener(v -> this.presenter.returnToAlarms());
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         stopTimer.setOnClickListener(this);
         this.startPauseTimer.setOnClickListener(this);
         this.hourPicker.setOnScrollListener(this);
         this.minutePicker.setOnScrollListener(this);
         this.secondPicker.setOnScrollListener(this);
+
+
 
         // Disable start button first time
         this.presenter.setStartEnable(PICKERS_MIN);
@@ -137,20 +142,10 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void onScrollStateChange(NumberPicker view, int scrollState) {
-        int selectedTime = hourPicker.getValue() + minutePicker.getValue()
-                + secondPicker.getValue();
-        presenter.setStartEnable(selectedTime);
-        /*switch(view.getId()) {
-            case R.id.timer__hour_picker:
-                this.presenter.setStartEnable();
-                break;
-            case R.id.timer__minute_picker:
-                this.presenter.setStartEnable();
-                break;
-            case R.id.timer__second_picker:
-                this.presenter.setStartEnable();
-                break;
-        }*/
+        int selectedTime = hourPicker.getValue()
+                        + minutePicker.getValue()
+                        + secondPicker.getValue();
+        this.presenter.setStartEnable(selectedTime);
     }
 
     @Override
@@ -244,17 +239,7 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
-    public void openAlarmsFragment() {
-        ((MainActivity)getActivity()).setCheckedMenuItem(R.id.menu_alarms);
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.alarms_container, new FragmentAlarms())
-                .commit();
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
-        this.presenter.returnToAlarms();
     }
 }

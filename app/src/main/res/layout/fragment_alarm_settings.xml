@@ -10,16 +10,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TimePicker
-            android:id="@+id/alarm_settings__timePicker"
+        <!--todo guide as a toolbar-->
+
+        <NumberPicker
+            android:id="@+id/alarm_settings__hour_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
-            android:timePickerMode="spinner"
+            android:layout_marginEnd="@dimen/margin_small"
             android:theme="@style/DefaultNumberPickerTheme"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintRight_toLeftOf="@id/alarm_settings__minute_picker"
+            app:layout_constraintHorizontal_chainStyle="packed"/>
+
+        <NumberPicker
+            android:id="@+id/alarm_settings__minute_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:theme="@style/DefaultNumberPickerTheme"
+            app:layout_constraintTop_toTopOf="@id/alarm_settings__hour_picker"
+            app:layout_constraintBottom_toBottomOf="@id/alarm_settings__hour_picker"
+            app:layout_constraintLeft_toRightOf="@id/alarm_settings__hour_picker"
+            app:layout_constraintRight_toRightOf="parent"/>
 
         <!--Alarm name-->
         <EditText
@@ -32,7 +45,7 @@
             android:textColor="?attr/text_default_color"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/alarm_settings__timePicker" />
+            app:layout_constraintTop_toBottomOf="@id/alarm_settings__hour_picker" />
 
         <!--Alarm days-->
         <TextView

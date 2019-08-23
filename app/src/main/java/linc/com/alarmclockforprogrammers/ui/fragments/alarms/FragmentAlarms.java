@@ -184,7 +184,6 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         getActivity().finish();
     }
 }

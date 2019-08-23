@@ -137,22 +137,6 @@ public class Alarm {
                 "default", 0,0,false, false);
     }
 
-    /** Return String with selected days in mark format: Mn(Monday), Fr (Friday)*/
-    @Ignore
-    public static String getDaysMarks(String days, Resources resources) {
-        StringBuilder marks = new StringBuilder();
-        String[] weekDays = resources.getStringArray(R.array.week_days_marks);
-
-        for(int i = 0; i < days.length(); i++) {
-            int day = Character.getNumericValue(days.charAt(i));
-            marks.append(weekDays[day]);
-            marks.append((i == (days.length()-1) ? "" : ", "));
-            marks.append( ((i == 3) && (i < days.length() - 1) ? "\n\t\t\t" : "") );
-        }
-
-        return marks.toString().isEmpty() ? "Select days" : marks.toString();
-    }
-
     /** Retrieve song name from path */
     @Ignore
     public static String getSongName(String path) {
@@ -164,27 +148,10 @@ public class Alarm {
     }
 
     @Ignore
-    public static String getDifficultMode(int position, Resources resources) {
-        String[] difficultModes = resources.getStringArray(R.array.difficult_modes);
-        return difficultModes[position];
-    }
-
-    @Ignore
-    public static String getProgrammingsLanguage(int position, Resources resources) {
-        String[] languages = resources.getStringArray(R.array.programming_languages);
-        return languages[position];
-    }
-
-    @Ignore
     public static String getReadableTime(long time) {
-        return new SimpleDateFormat("h:mm", Locale.getDefault())
+        return new SimpleDateFormat("HH:mm", Locale.getDefault())
                 .format(time);
     }
 
-    @Ignore
-    public static String getAmPm(long time) {
-        return new SimpleDateFormat("a", Locale.getDefault())
-                .format(time);
-    }
 }
 

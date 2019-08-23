@@ -28,7 +28,7 @@
             android:textColor="?attr/text_default_color"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/item_alarm__time"
-            app:layout_constraintRight_toRightOf="@id/item_alarm_am_pm"
+            app:layout_constraintRight_toRightOf="@id/item_alarm__time"
             app:layout_constraintBottom_toTopOf="@id/item_alarm__time"
             app:layout_constraintVertical_bias="0.9"/>
 
@@ -41,23 +41,9 @@
             android:textSize="@dimen/text_large"
             android:textColor="?attr/text_default_color"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/item_alarm_am_pm"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/item_alarm_am_pm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_small"
-            android:text="AM"
-            android:textSize="@dimen/text_medium"
-            android:textColor="?attr/text_default_color"
-            app:layout_constraintBottom_toBottomOf="@id/item_alarm__time"
-            app:layout_constraintLeft_toRightOf="@id/item_alarm__time"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/item_alarm__time" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/item_alarm__days"
@@ -70,8 +56,8 @@
             android:textSize="@dimen/text_small"
             android:textColor="?attr/text_default_color"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@id/item_alarm__programming_language"
-            app:layout_constraintRight_toRightOf="@id/item_alarm__programming_language"
+            app:layout_constraintLeft_toLeftOf="@id/item_alarm__time"
+            app:layout_constraintRight_toRightOf="@id/item_alarm__time"
             app:layout_constraintTop_toBottomOf="@id/item_alarm__time"
             app:layout_constraintVertical_bias="0.1" />
 

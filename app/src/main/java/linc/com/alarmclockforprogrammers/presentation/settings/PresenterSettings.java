@@ -21,8 +21,6 @@ public class PresenterSettings {
         if(interactor.getTheme() != isDarkTheme) {
             this.interactor.saveTheme(isDarkTheme);
             this.view.restartActivity();
-        }else {
-            view.openAlarmsFragment();
         }
     }
 }

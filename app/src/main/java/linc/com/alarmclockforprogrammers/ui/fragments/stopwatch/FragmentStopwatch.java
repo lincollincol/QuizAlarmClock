@@ -84,18 +84,14 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
         this.lapsInfo.setLayoutManager(layoutManager);
         this.lapsInfo.setAdapter(adapter);
 
-        toolbar.setNavigationOnClickListener(v -> this.presenter.returnToAlarms());
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         this.startPauseStopwatch.setOnClickListener(this);
         this.lapStopStopwatch.setOnClickListener(this);
-
         this.progressAnimation.setDuration(ONE_MINUTE);
         this.progressAnimation.setInterpolator(new LinearInterpolator());
         this.progressAnimation.setRepeatCount(ValueAnimator.INFINITE);
-
         this.constraintSet.clone(layout);
-
         this.presenter.setData();
-
         return view;
     }
 
@@ -170,17 +166,7 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
     }
 
     @Override
-    public void openAlarmsFragment() {
-        ((MainActivity)getActivity()).setCheckedMenuItem(R.id.menu_alarms);
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.alarms_container, new FragmentAlarms())
-                .commit();
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
-        this.presenter.returnToAlarms();
     }
 }

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import linc.com.alarmclockforprogrammers.entity.Alarm;
 import linc.com.alarmclockforprogrammers.R;
+import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class FragmentBottomDialog extends BottomSheetDialogFragment implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
@@ -34,24 +35,22 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_alarms_bottom_dialog, container, false);
+        View view = inflater.inflate(R.layout.fragment_alarm_bottom_dialog, container, false);
 
-        FloatingActionButton deleteButton = view.findViewById(R.id.alarms_dialog_delete_alarm);
-        SwitchCompat enableAlarm = view.findViewById(R.id.alarms_dialog__toggle_alarm_enable);
-        TextView alarmTime = view.findViewById(R.id.alarms_dialog__alarm_time);
-        TextView alarmTimeAmPm = view.findViewById(R.id.alarms_dialog__time_am_pm);
-        TextView alarmDetails = view.findViewById(R.id.alarms_dialog__alarm_details);
+        FloatingActionButton deleteButton = view.findViewById(R.id.alarm_dialog_delete_alarm);
+        SwitchCompat enableAlarm = view.findViewById(R.id.alarm_dialog__toggle_alarm_enable);
+        TextView alarmTime = view.findViewById(R.id.alarm_dialog__alarm_time);
+        TextView alarmDetails = view.findViewById(R.id.alarm_dialog__alarm_details);
 
         deleteButton.setOnClickListener(this);
         enableAlarm.setChecked(alarm.isEnable());
         enableAlarm.setOnCheckedChangeListener(this);
 
         alarmTime.setText(Alarm.getReadableTime(alarm.getTime()));
-        alarmTimeAmPm.setText(Alarm.getAmPm(alarm.getTime()));
         alarmDetails.setText((
-                Alarm.getProgrammingsLanguage(alarm.getLanguage(), getResources()) + "/" +
-                Alarm.getDifficultMode(alarm.getDifficult(), getResources()) + "\n" +
-                Alarm.getDaysMarks(alarm.getDays(), getResources())
+                ResUtil.getLanguage(getActivity(), alarm.getLanguage()) + "/" +
+                ResUtil.getDifficult(getActivity(), alarm.getDifficult()) + "\n" +
+                ResUtil.getDaysMarks(getActivity(), alarm.getDays())
         ));
 
 

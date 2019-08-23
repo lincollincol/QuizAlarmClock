@@ -12,6 +12,5 @@ public interface ViewTimer {
     void pauseTimer();
     void updateProgressBar(String time);
     void startAlarm();
-    void openAlarmsFragment();
 
 }

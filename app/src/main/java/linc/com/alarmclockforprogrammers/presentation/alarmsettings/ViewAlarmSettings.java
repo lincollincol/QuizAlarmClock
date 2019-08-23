@@ -1,16 +1,19 @@
 package linc.com.alarmclockforprogrammers.presentation.alarmsettings;
 
-import linc.com.alarmclockforprogrammers.entity.Alarm;
-
 public interface ViewAlarmSettings {
 
     void openExpandedSettings(boolean isChecked);
-    void showWeekDaysDialog();
-    void showDifficultModeDialog(int position);
-    void showLanguageDialog(int position);
+    void setTime(int hour, int minute);
+    void setWeekDays(String days);
+    void setAlarmSong(String songName);
+    void setDifficultMode(String difficult);
+    void setLanguage(String language);
+    void setEnableState(boolean isEnabled);
+    void setTaskState(boolean hasTask);
+    void showWeekDaysDialog(String[] weekDays, boolean[] checkedDays);
+    void showDifficultModeDialog(String[] difficultModes, int position);
+    void showLanguageDialog(String[] languages, int position);
     void askForReadWritePermission();
     void getSongFile();
-    void setAlarmData(Alarm alarm);
-    void saveChanges();
-    void closeAlarmSettings();
+    void openAlarmsFragment();
 }

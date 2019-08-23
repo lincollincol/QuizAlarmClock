@@ -76,8 +76,4 @@ public class PresenterTimer {
 //        view.pauseTimer();
     }
 
-    public void returnToAlarms() {
-        this.view.openAlarmsFragment();
-    }
-
 }
