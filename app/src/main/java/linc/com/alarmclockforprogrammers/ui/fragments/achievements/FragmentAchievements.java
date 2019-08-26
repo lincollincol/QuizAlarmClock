@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,6 @@ import linc.com.alarmclockforprogrammers.presentation.achievements.PresenterAchi
 import linc.com.alarmclockforprogrammers.presentation.achievements.ViewAchievements;
 import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.fragments.achievements.adapters.AdapterAchievements;
-import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
@@ -72,7 +70,7 @@ public class FragmentAchievements extends BaseFragment implements
         achievementsList.setLayoutManager(layoutManager);
         achievementsList.setAdapter(adapter);
 
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> presenter.returnToAlarms());
 
         this.presenter.setData();
 
@@ -100,9 +98,13 @@ public class FragmentAchievements extends BaseFragment implements
         this.balance.setText(String.valueOf(balance));
     }
 
+    @Override
+    public void openAlarmsFragment() {
+        super.onBackPressed();
+    }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        this.presenter.returnToAlarms();
     }
 }

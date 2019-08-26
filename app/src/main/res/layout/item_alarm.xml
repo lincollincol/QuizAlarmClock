@@ -19,6 +19,20 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <android.support.constraint.Guideline
+            android:id="@+id/item_alarms__margin_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="50dp"/>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/item_alarms__margin_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="50dp"/>
+
         <TextView
             android:id="@+id/item_alarm__programming_language"
             android:layout_width="wrap_content"
@@ -60,6 +74,17 @@
             app:layout_constraintRight_toRightOf="@id/item_alarm__time"
             app:layout_constraintTop_toBottomOf="@id/item_alarm__time"
             app:layout_constraintVertical_bias="0.1" />
+
+
+        <View
+            android:id="@+id/item_alarm__enable_indicator"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:background="@drawable/shape_enable_indicator"
+            app:layout_constraintTop_toBottomOf="@id/item_alarm__days"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/item_alarms__margin_start"
+            app:layout_constraintRight_toLeftOf="@id/item_alarms__margin_end"/>
 
     </android.support.constraint.ConstraintLayout>
 

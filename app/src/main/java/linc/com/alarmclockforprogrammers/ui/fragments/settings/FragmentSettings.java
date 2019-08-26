@@ -51,6 +51,11 @@ public class FragmentSettings extends BaseFragment implements ViewSettings,
     }
 
     @Override
+    public void onClick(View v) {
+        this.presenter.saveTheme(switchTheme.isChecked());
+    }
+
+    @Override
     public void setSelectedTheme(boolean isDarkTheme) {
         this.switchTheme.setChecked(isDarkTheme);
     }
@@ -66,13 +71,12 @@ public class FragmentSettings extends BaseFragment implements ViewSettings,
     }
 
     @Override
-    public void onClick(View v) {
-        onBackPressed();
+    public void openAlarmsFragment() {
+        super.onBackPressed();
     }
 
     @Override
     public void onBackPressed() {
         this.presenter.saveTheme(switchTheme.isChecked());
-        super.onBackPressed();
     }
 }

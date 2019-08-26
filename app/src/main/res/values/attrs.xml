@@ -15,6 +15,7 @@
 
         <!--Card background-->
         <attr name="background_card_color" format="color"/>
+        <attr name="background_card_alarm_enable" format="color"/>
 
         <!--Alert dialog days picker-->
         <attr name="dialog_background_color" format="color" />

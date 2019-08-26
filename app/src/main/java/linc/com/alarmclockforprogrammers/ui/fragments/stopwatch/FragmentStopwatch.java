@@ -84,7 +84,7 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
         this.lapsInfo.setLayoutManager(layoutManager);
         this.lapsInfo.setAdapter(adapter);
 
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> presenter.returnToAlarms());
         this.startPauseStopwatch.setOnClickListener(this);
         this.lapStopStopwatch.setOnClickListener(this);
         this.progressAnimation.setDuration(ONE_MINUTE);
@@ -166,7 +166,12 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
     }
 
     @Override
-    public void onBackPressed() {
+    public void openAlarmsFragment() {
         super.onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.presenter.returnToAlarms();
     }
 }

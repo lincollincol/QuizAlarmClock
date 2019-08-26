@@ -23,6 +23,8 @@
         <item name="text_secondary_color">@color/violet_default</item>
         <item name="icon_default_color">@color/violet_default</item>
         <item name="background_card_color">@color/card_light</item>
+        <item name="background_card_alarm_enable">@color/alarm_enable_light</item>
+
         <item name="dialog_background_color">@color/theme_light_end</item>
         <item name="dialog_positive_color">@color/violet_dark</item>
         <item name="dialog_negative_color">@color/violet_default</item>
@@ -65,6 +67,8 @@
         <item name="text_secondary_color">@color/green_default</item>
         <item name="icon_default_color">@color/green_default</item>
         <item name="background_card_color">@color/card_dark</item>
+        <item name="background_card_alarm_enable">@color/alarm_enable_dark</item>
+
         <item name="dialog_background_color">@color/theme_dark_start</item>
         <item name="dialog_positive_color">@color/green_dark</item>
         <item name="dialog_negative_color">@color/green_default</item>

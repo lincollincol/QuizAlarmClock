@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="ring"
-    android:innerRadiusRatio="2.5"
+    android:shape="rectangle"
     android:thickness="5dp"
     android:useLevel="false">
-    <solid android:color="?attr/dismiss_shape_color" />
+
+    <corners android:radius="@dimen/corners_default"/>
+    <solid android:color="?attr/button_default_color"/>
+
 </shape>

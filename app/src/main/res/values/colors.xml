@@ -32,4 +32,7 @@
     <color name="green_dark">#16C44F</color>
     <color name="progress_track_dark">#334EECA4</color>
 
+    <color name="alarm_enable_light">#0D470D9D</color>
+    <color name="alarm_enable_dark">#2616C44F</color>
+
 </resources>

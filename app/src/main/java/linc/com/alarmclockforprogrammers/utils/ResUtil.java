@@ -67,7 +67,7 @@ public class ResUtil {
         return R.style.LightTheme;
     }
 
-    private static int getAttrColor(Context context, @ColorInt int color) {
+    public static int getAttrColor(Context context, @ColorInt int color) {
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
         theme.resolveAttribute(color, typedValue, true);

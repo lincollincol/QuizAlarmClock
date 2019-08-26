@@ -112,14 +112,12 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
         this.minutePicker.setFormatter(i -> String.format("%02d", i));
         this.secondPicker.setFormatter(i -> String.format("%02d", i));
 
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> presenter.returnToAlarms());
         stopTimer.setOnClickListener(this);
         this.startPauseTimer.setOnClickListener(this);
         this.hourPicker.setOnScrollListener(this);
         this.minutePicker.setOnScrollListener(this);
         this.secondPicker.setOnScrollListener(this);
-
-
 
         // Disable start button first time
         this.presenter.setStartEnable(PICKERS_MIN);
@@ -239,7 +237,13 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
-    public void onBackPressed() {
+    public void openAlarmsFragment() {
         super.onBackPressed();
     }
+
+    @Override
+    public void onBackPressed() {
+        this.presenter.returnToAlarms();
+    }
+
 }

@@ -1,7 +1,13 @@
 package linc.com.alarmclockforprogrammers.ui.fragments.alarms.adapters;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,10 +50,6 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
     @Override
     public void onBindViewHolder(@NonNull AlarmsHolder alarmsHolder, int i) {
         alarmsHolder.setAlarm(alarms.get(i));
-
-//        if(alarms.get(i).isEnable()) {
-//            alarmsHolder.layout.setCardBackgroundColor(ContextCompat.getButtonColor(context, R.color.NONAME_3));
-//        }
     }
 
     @Override
@@ -62,6 +64,7 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
         private TextView time;
         private TextView days;
         private CardView layout;
+        private View enableIndicator;
         private OnAlarmClicked alarmClicked;
 
         public AlarmsHolder(@NonNull View itemView, OnAlarmClicked alarmClicked) {
@@ -70,6 +73,7 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
             this.time = itemView.findViewById(R.id.item_alarm__time);
             this.days = itemView.findViewById(R.id.item_alarm__days);
             this.layout = itemView.findViewById(R.id.layout_alarm);
+            this.enableIndicator = itemView.findViewById(R.id.item_alarm__enable_indicator);
             this.alarmClicked = alarmClicked;
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
@@ -90,6 +94,15 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
             this.time.setText(Alarm.getReadableTime(alarm.getTime()));
             this.programmingLanguage.setText((ResUtil.getLanguage(context, alarm.getLanguage())));
             this.days.setText(ResUtil.getDaysMarks(context, alarm.getDays()));
+            setIndicatorColor(alarm.isEnable());
+        }
+
+        private void setIndicatorColor(boolean isEnable) {
+            // todo change colors
+            GradientDrawable background = (GradientDrawable) enableIndicator.getBackground();
+            int color = ResUtil.getAttrColor(context, isEnable ?
+                    R.attr.button_default_color : R.attr.view_completed_color);
+            background.setColor(color);
         }
 
     }

@@ -81,4 +81,7 @@ public class PresenterStopwatch {
         this.currentTime = DEFAULT_TIME;
     }
 
+    public void returnToAlarms() {
+        this.view.openAlarmsFragment();
+    }
 }
