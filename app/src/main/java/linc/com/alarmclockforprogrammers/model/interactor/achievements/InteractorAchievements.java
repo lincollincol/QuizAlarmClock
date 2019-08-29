@@ -22,19 +22,25 @@ public class InteractorAchievements {
     }
 
     public void updateAcgievementsInLocal() {
-        repository.updateLocalAchievementsVersion((remoteVersion) -> {
+        this.repository.updateLocalAchievementsVersion((remoteVersion) -> {
             if(!preferences.getLocalAchievementsVersion().equals(remoteVersion)) {
-                repository.updateLocalAchievements();
-                preferences.saveLocalAchievementsVersion(remoteVersion);
+                this.repository.updateLocalAchievements();
+                this.preferences.saveLocalAchievementsVersion(remoteVersion);
             }
         });
     }
 
     public int getBalance() {
-        return preferences.getBalance();
+        return this.preferences.getBalance();
     }
 
-    public void updateBalance(int balance) {
-        preferences.saveBalance(balance);
+    public void increaseBalance(int award) {
+        int newBalance = this.preferences.getBalance() + award;
+        this.preferences.saveBalance(newBalance);
+    }
+
+    public void updateAchievement(Achievement achievement) {
+        this.repository.updateAchievement(achievement)
+                .subscribe();
     }
 }

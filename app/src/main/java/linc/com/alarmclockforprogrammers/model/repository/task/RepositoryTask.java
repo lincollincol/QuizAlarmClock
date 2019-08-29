@@ -39,24 +39,24 @@ public class RepositoryTask {
     // todo rename
     public Completable setQuestionCompleted(Question question) {
         return Completable.fromAction(() -> {
-            questionsDao.update(question);
+            this.questionsDao.update(question);
             List<Achievement> achievements = achievementsDao
                     .getByLanguage(question.getProgrammingLanguage());
 
-            Log.d("ACH_SIZE", "setQuestionCompleted: " + achievements.size());
-            Log.d("LANGUAGE", "setQuestionCompleted: " + question.getProgrammingLanguage());
-
             for(Achievement a : achievements) {
-
-                Log.d("COMPLETED", "setQuestionCompleted: " + (a.getCompletedTasks() + 1));
-                Log.d("ID", "setQuestionCompleted: " + a.getId());
-                Log.d("ACHIV_STAT", "setQuestionCompleted: " + a.isCompleted());
-
                 if(a.isCompleted()) {
                     continue;
                 }
+
+                // Set number of completed tasks
                 a.setCompletedTasks((a.getCompletedTasks() + 1));
-                achievementsDao.update(a);
+
+                // Set achievement completed
+                if(a.getCompletedTasks() >= a.getTasksToComplete()) {
+                    a.setCompleted(true);
+                }
+
+                this.achievementsDao.update(a);
             }
 
         }).subscribeOn(Schedulers.io())

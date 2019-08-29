@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.fragments.achievements.adapters.AdapterAchievements;
 import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
 
+import static android.support.constraint.Constraints.TAG;
 import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
 
 public class FragmentAchievements extends BaseFragment implements
@@ -79,8 +81,7 @@ public class FragmentAchievements extends BaseFragment implements
 
     @Override
     public void onClick(int position) {
-        // todo implement award receiving
-//        Log.d(TAG, "onClick/: ");
+        this.presenter.receiveAward(position);
     }
 
     @Override

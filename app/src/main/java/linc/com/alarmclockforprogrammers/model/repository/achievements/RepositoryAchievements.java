@@ -74,7 +74,8 @@ public class RepositoryAchievements {
                             ((Long) (ds.child("completedTasks").getValue())).intValue(),
                             (String) (ds.child("achievementTask").getValue()),
                             (String) (ds.child("language").getValue()),
-                            ((Boolean) (ds.child("completed").getValue()))));
+                            ((Boolean) (ds.child("completed").getValue())),
+                            ((Boolean) (ds.child("awardReceived").getValue()))));
                 }
                 Disposable d = updateAchievements(achievements)
                         .subscribe(() -> {}, e -> e.printStackTrace());
@@ -89,7 +90,7 @@ public class RepositoryAchievements {
         return Completable.fromAction(() -> {
             for(Achievement a : achievements) {
                 try {
-                    achievementsDao.insert(a);
+                    this.achievementsDao.insert(a);
                 }catch (Exception e) {
                     Log.d("ELEMENT EXIST", ""+a.getId() );
                 }
@@ -99,4 +100,11 @@ public class RepositoryAchievements {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Completable updateAchievement(Achievement achievements) {
+        return Completable.fromAction(() ->
+                this.achievementsDao.update(achievements)
+        )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

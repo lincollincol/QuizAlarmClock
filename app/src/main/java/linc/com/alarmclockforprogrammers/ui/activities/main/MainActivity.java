@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 
+import android.support.transition.AutoTransition;
 import android.support.transition.Fade;
 import android.support.transition.Slide;
 import android.support.transition.Transition;
@@ -17,6 +18,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
             replaceFragment(new FragmentAlarms());
         }
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         this.navMenu = findViewById(R.id.main__navigation_drawer_menu);
         this.drawer = findViewById(R.id.main__drawer_layout);
@@ -89,8 +90,8 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
     public void setDrawerEnabled(boolean enabled) {
         int lockMode = enabled ? DrawerLayout.LOCK_MODE_UNLOCKED :
                 DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
-        drawer.setDrawerLockMode(lockMode);
-        toggle.setDrawerIndicatorEnabled(enabled);
+        this.drawer.setDrawerLockMode(lockMode);
+        this.toggle.setDrawerIndicatorEnabled(enabled);
     }
 
     @Override
@@ -183,9 +184,9 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
     }
 
     //todo param diff transitions
-    private void replaceFragment(Fragment fragment) {
+    private void replaceFragment(BaseFragment fragment) {
+
         Transition enterAnimation = new TransitionSet()
-                .setOrdering(TransitionSet.ORDERING_TOGETHER)
                 .addTransition(new Fade(Fade.IN)
                         .addTarget(R.id.alarms__list_of_alarms)
                         .setInterpolator(new FastOutSlowInInterpolator())
@@ -198,18 +199,18 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
         Transition exitAnimation = new TransitionSet()
                 .addTransition(new Fade(Fade.OUT)
                         .addTarget(R.id.alarms__list_of_alarms)
-                        .setInterpolator(new FastOutLinearInInterpolator())
+                        .setInterpolator(new FastOutSlowInInterpolator())
                         .setDuration(FAST_SPEED))
                 .addTransition(new Slide(Gravity.BOTTOM)
                         .addTarget(R.id.alarms__add_alarm)
                         .setInterpolator(new FastOutSlowInInterpolator())
                         .setDuration(NORMAL_SPEED));
 
+
         fragment.setExitTransition(exitAnimation);
         fragment.setReenterTransition(enterAnimation);
         fragment.setEnterTransition(enterAnimation);
 
-        // Start new fragment
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.alarms_container, fragment)
                 .commit();

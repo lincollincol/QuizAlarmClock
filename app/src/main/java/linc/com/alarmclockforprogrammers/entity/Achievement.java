@@ -33,9 +33,11 @@ public class Achievement {
     @ColumnInfo(name = "completed", typeAffinity = INTEGER)
     private boolean completed;
 
+    @ColumnInfo(name = "award_received", typeAffinity = INTEGER)
+    private boolean awardReceived;
 
     public Achievement(int id, int award, int tasksToComplete, int completedTasks,
-                       String achievementTask, String language, boolean completed) {
+                       String achievementTask, String language, boolean completed, boolean awardReceived) {
         this.id = id;
         this.award = award;
         this.tasksToComplete = tasksToComplete;
@@ -43,6 +45,7 @@ public class Achievement {
         this.achievementTask = achievementTask;
         this.language = language;
         this.completed = completed;
+        this.awardReceived = awardReceived;
     }
 
     public int getId() {
@@ -99,5 +102,13 @@ public class Achievement {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public boolean isAwardReceived() {
+        return awardReceived;
+    }
+
+    public void setAwardReceived(boolean awardReceived) {
+        this.awardReceived = awardReceived;
     }
 }

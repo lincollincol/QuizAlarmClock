@@ -54,7 +54,7 @@ public class InteractorTask {
     }
 
     public void setQuestionCompleted(Question question) {
-        Log.d("INTERACTOR_LAYER", "setQuestionCompleted: "  + question.isCompleted() + " " + question.getId());
+        // todo refactor
         question.setCompleted(true);
         this.repository.setQuestionCompleted(question)
             .subscribe();
@@ -66,12 +66,12 @@ public class InteractorTask {
 
     public void reduceBalance(int price) {
         int newBalance = preferences.getBalance() - price;
-        preferences.saveBalance(newBalance);
+        this.preferences.saveBalance(newBalance);
     }
 
     public void increaseBalance(int award) {
         int newBalance = preferences.getBalance() + award;
-        preferences.saveBalance(newBalance);
+        this.preferences.saveBalance(newBalance);
     }
 
     private int getNumberOfQuestions(int difficult) {

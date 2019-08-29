@@ -2,6 +2,7 @@ package linc.com.alarmclockforprogrammers.ui.fragments.achievements.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,7 @@ public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievement
         private LinearLayout receiveButton;
         private OnReceiveClickListener onReceive;
 
-        public AchievementHolder(@NonNull View itemView, OnReceiveClickListener onRecieve) {
+        public AchievementHolder(@NonNull View itemView, OnReceiveClickListener onReceive) {
             super(itemView);
             this.completedView = itemView.findViewById(R.id.item_achievement__completed_view);
             this.completedIcon = itemView.findViewById(R.id.item_achievement_completed_icon);
@@ -77,7 +78,7 @@ public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievement
             this.progress = itemView.findViewById(R.id.item_achievement__progress);
             this.receiveButton = itemView.findViewById(R.id.item_achievement__receive);
             this.receiveButton.setOnClickListener(this);
-            this.onReceive = onRecieve;
+            this.onReceive = onReceive;
         }
 
         void setAchievement(Achievement achievement) {
@@ -88,7 +89,12 @@ public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievement
             this.progress.setMax(achievement.getTasksToComplete());
             this.progress.setProgress(achievement.getCompletedTasks());
 
-            if(achievement.isCompleted()) {
+            // Disable button, while achievement isn't completed
+            this.receiveButton.setEnabled(achievement.isCompleted()
+                    && !achievement.isAwardReceived());
+
+            // Set completed decorations, when user receive award from achievement
+            if(achievement.isAwardReceived()) {
                 this.receiveButton.setEnabled(false);
                 this.completedView.setVisibility(View.VISIBLE);
                 this.completedIcon.setVisibility(View.VISIBLE);

@@ -14,6 +14,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import linc.com.alarmclockforprogrammers.ui.fragments.alarms.adapters.AdapterAla
 import linc.com.alarmclockforprogrammers.ui.fragments.alarmsettings.FragmentAlarmSettings;
 import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
 
+import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
 import static linc.com.alarmclockforprogrammers.utils.Consts.ENABLE;
 
 
@@ -97,14 +99,20 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
         alarmsListRV.setAdapter(adapterAlarms);
         fab.setOnClickListener(this);
 
-        this.presenter.setData();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("RES", "onResume: ");
+        this.presenter.setData();
     }
 
     @Override
     public void setAlarmsData(List<Alarm> alarms) {
         this.alarms = alarms;
-        adapterAlarms.setAlarms(alarms);
+        this.adapterAlarms.setAlarms(alarms);
     }
 
     @Override
@@ -113,8 +121,8 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     }
 
     @Override
-    public void enableDrawerMenu() {
-        ((MainActivity) getActivity()).setDrawerEnabled(ENABLE);
+    public void setDrawerState(boolean isEnable) {
+        ((MainActivity) getActivity()).setDrawerEnabled(isEnable);
     }
 
     @Override
