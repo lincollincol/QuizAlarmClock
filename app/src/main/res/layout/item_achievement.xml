@@ -83,7 +83,7 @@
             android:layout_width="70dp"
             android:layout_height="50dp"
             android:gravity="center"
-            android:background="@drawable/item_achievement_receive"
+            android:background="@drawable/shape_achievement_receive"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_small"
-                android:textColor="?attr/text_default_color"
+                android:textColor="?attr/text_achieve_color"
                 android:fontFamily="sans-serif-medium"
                 android:text="20"/>
 
@@ -102,7 +102,7 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_pay"
-                android:tint="?attr/text_default_color"/>
+                android:tint="?attr/text_achieve_color"/>
         </LinearLayout>
 
         <View

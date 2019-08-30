@@ -21,6 +21,7 @@
         <item name="button_default_color">@color/violet_default</item>
         <item name="text_default_color">@color/text_default_color_light</item>
         <item name="text_secondary_color">@color/violet_default</item>
+        <item name="text_achieve_color">@color/text_default_color_dark</item>
         <item name="icon_default_color">@color/violet_default</item>
         <item name="background_card_color">@color/card_light</item>
         <item name="background_card_alarm_enable">@color/alarm_enable_light</item>
@@ -65,6 +66,7 @@
         <item name="button_default_color">@color/green_default</item>
         <item name="text_default_color">@color/text_default_color_dark</item>
         <item name="text_secondary_color">@color/green_default</item>
+        <item name="text_achieve_color">@color/text_default_color_dark</item>
         <item name="icon_default_color">@color/green_default</item>
         <item name="background_card_color">@color/card_dark</item>
         <item name="background_card_alarm_enable">@color/alarm_enable_dark</item>
@@ -136,6 +138,15 @@
     <style name="WindowAnimationTransition">
         <item name="android:windowEnterAnimation" >@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <!--Divide line-->
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_medium</item>
+        <item name="android:layout_marginBottom">@dimen/margin_medium</item>
+        <item name="android:background">?android:attr/listDivider</item>
     </style>
 
 </resources>

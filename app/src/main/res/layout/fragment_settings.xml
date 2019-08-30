@@ -12,6 +12,7 @@
         android:theme="@style/ThemeToolbar"
         android:background="@android:color/transparent"
         android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
         app:navigationIcon="@drawable/ic_back"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
@@ -30,16 +31,26 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/margin_medium"/>
 
+    <ImageView
+        android:id="@+id/settings__theme_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_theme"
+        android:tint="?attr/button_default_color"
+        app:layout_constraintTop_toBottomOf="@id/settings__toolbar"
+        app:layout_constraintLeft_toRightOf="@id/settings__margin_left"/>
+
     <TextView
         android:id="@+id/settings__theme_switch_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dark theme"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_medium"
         android:textSize="@dimen/text_medium"
         android:textColor="?attr/text_default_color"
-        app:layout_constraintTop_toBottomOf="@id/settings__toolbar"
-        app:layout_constraintLeft_toLeftOf="@id/settings__margin_left"
+        app:layout_constraintTop_toTopOf="@id/settings__theme_icon"
+        app:layout_constraintBottom_toBottomOf="@id/settings__theme_icon"
+        app:layout_constraintLeft_toRightOf="@id/settings__theme_icon"
         app:layout_constraintRight_toLeftOf="@id/settings__theme_switch"
         app:layout_constraintHorizontal_chainStyle="spread_inside"/>
 
@@ -53,6 +64,58 @@
         app:layout_constraintBottom_toBottomOf="@id/settings__theme_switch_title"
         app:layout_constraintRight_toRightOf="@id/settings__margin_right"
         app:layout_constraintLeft_toRightOf="@id/settings__theme_switch_title"/>
+
+    <View style="@style/Divider"
+        android:id="@+id/settings__divider_other"
+        app:layout_constraintTop_toBottomOf="@+id/settings__theme_switch"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <ImageView
+        android:id="@+id/settings__rate_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:src="@drawable/ic_rate"
+        android:tint="?attr/button_default_color"
+        app:layout_constraintTop_toBottomOf="@id/settings__divider_other"
+        app:layout_constraintLeft_toRightOf="@id/settings__margin_left"
+        app:layout_constraintRight_toLeftOf="@id/settings__rate_us"/>
+
+    <TextView
+        android:id="@+id/settings__rate_us"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rate us"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:textSize="@dimen/text_medium"
+        android:textColor="?attr/text_default_color"
+        app:layout_constraintTop_toTopOf="@+id/settings__rate_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/settings__rate_icon"
+        app:layout_constraintLeft_toRightOf="@+id/settings__rate_icon"/>
+
+    <ImageView
+        android:id="@+id/settings__support_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:src="@drawable/ic_support"
+        android:tint="?attr/button_default_color"
+        app:layout_constraintTop_toBottomOf="@id/settings__rate_us"
+        app:layout_constraintLeft_toRightOf="@id/settings__margin_left"
+        app:layout_constraintRight_toLeftOf="@id/settings__support"/>
+
+    <TextView
+        android:id="@+id/settings__support"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Support"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:textSize="@dimen/text_medium"
+        android:textColor="?attr/text_default_color"
+        app:layout_constraintTop_toTopOf="@id/settings__support_icon"
+        app:layout_constraintBottom_toBottomOf="@id/settings__support_icon"
+        app:layout_constraintLeft_toRightOf="@id/settings__support_icon"/>
 
 
 </android.support.constraint.ConstraintLayout>

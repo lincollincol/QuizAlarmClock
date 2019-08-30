@@ -9,6 +9,7 @@
         <!--Text-->
         <attr name="text_default_color" format="color"/>
         <attr name="text_secondary_color" format="color"/>
+        <attr name="text_achieve_color" format="color"/>
 
         <!--Icons-->
         <attr name="icon_default_color" format="color"/>
