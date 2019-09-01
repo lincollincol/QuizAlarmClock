@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.ui.activities.wake.WakeActivity;
+import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
 
-public class FragmentDismiss extends Fragment implements View.OnClickListener{
+public class FragmentDismiss extends BaseFragment implements View.OnClickListener{
 
     @Nullable
     @Override
@@ -22,10 +23,19 @@ public class FragmentDismiss extends Fragment implements View.OnClickListener{
         return view;
     }
 
+    // todo refactor this methods !
+
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.dismiss__circle) {
+        try {
             ((WakeActivity) getActivity()).finishTask();
+        }catch(ClassCastException e) {
+            getFragmentManager().popBackStack();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        getFragmentManager().popBackStack();
     }
 }

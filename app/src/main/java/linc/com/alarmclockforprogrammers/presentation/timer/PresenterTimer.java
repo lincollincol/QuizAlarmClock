@@ -24,33 +24,33 @@ public class PresenterTimer {
 
     public void startOrPauseTimer() {
         if(!isProgressLayout) {
-            view.openProgressLayout();
-            view.setIntroducedTime();
-            isProgressLayout = true;
+            this.view.openProgressLayout();
+            this.view.setIntroducedTime();
+            this.isProgressLayout = true;
         }
 
         if(isTimerStarted) {
-            view.pauseTimer();
-            isTimerStarted = false;
+            this.view.pauseTimer();
+            this.isTimerStarted = false;
         }else {
             view.startTimer();
-            isTimerStarted = true;
+            this.isTimerStarted = true;
         }
     }
     public void resetTimer() {
         if(isProgressLayout) {
-            view.closeProgressLayout();
-            view.pauseTimer();
-            isProgressLayout = false;
-            isTimerStarted = false;
+            this.view.closeProgressLayout();
+            this.view.pauseTimer();
+            this.isProgressLayout = false;
+            this.isTimerStarted = false;
         }
     }
 
     public void setStartEnable(int value) {
         if(value > Consts.PICKERS_MIN) {
-            view.enableStartButton();
+            this.view.enableStartButton();
         }else {
-            view.disableStartButton();
+            this.view.disableStartButton();
         }
     }
 
@@ -68,11 +68,13 @@ public class PresenterTimer {
                     "%02d:%02d", minutes, seconds);
         }
 
-        view.updateProgressBar(timeLeftFormatted);
+        this.view.updateProgressBar(timeLeftFormatted);
     }
 
-    public void startFinishAlarm() {
-        view.startAlarm();
+    public void openDismissFragment() {
+        this.view.pauseTimer();
+        this.view.closeProgressLayout();
+        this.view.openDismissFragment();
     }
 
     public void returnToAlarms() {

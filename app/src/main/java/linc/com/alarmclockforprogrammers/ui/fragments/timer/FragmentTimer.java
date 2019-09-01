@@ -27,8 +27,8 @@ import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.presentation.timer.PresenterTimer;
 import linc.com.alarmclockforprogrammers.presentation.timer.ViewTimer;
 import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
-import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
 import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
+import linc.com.alarmclockforprogrammers.ui.fragments.dismiss.FragmentDismiss;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
@@ -211,7 +211,7 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
 
             @Override
             public void onFinish() {
-                presenter.startFinishAlarm();
+                presenter.openDismissFragment();
             }
         }.start();
 
@@ -231,9 +231,12 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
-    public void startAlarm() {
-        this.progressBar.setProgress(PROGRESS_MIN);
-        this.startPauseTimer.setImageResource(R.drawable.ic_start);
+    public void openDismissFragment() {
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.alarms_container, new FragmentDismiss())
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
