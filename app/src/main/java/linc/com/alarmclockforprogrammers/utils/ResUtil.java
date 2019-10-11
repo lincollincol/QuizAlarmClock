@@ -11,32 +11,98 @@ import linc.com.alarmclockforprogrammers.R;
 
 public class ResUtil {
 
-    public static String getLanguage(Context context, int position) {
-        return context.getResources()
+    private Context context;
+
+    public ResUtil(Context context) {
+        this.context = context;
+    }
+
+    public String getLanguage(int position) {
+        return this.context
+                .getResources()
                 .getStringArray(R.array.programming_languages)[position];
     }
 
-    public static String getDifficult(Context context, int position) {
-        return context.getResources()
+    public String getDifficult(int position) {
+        return this.context
+                .getResources()
                 .getStringArray(R.array.difficult_modes)[position];
     }
 
-    public static String[] getDifficultModes(Context context) {
-        return context.getResources().getStringArray(R.array.difficult_modes);
+    public String[] getDifficultModes() {
+        return this.context
+                .getResources()
+                .getStringArray(R.array.difficult_modes);
     }
 
-    public static String[] getWeekDays(Context context) {
-        return context.getResources().getStringArray(R.array.week_days);
+    public String[] getWeekDays() {
+        return this.context
+                .getResources()
+                .getStringArray(R.array.week_days);
     }
 
-    public static String[] getProgrammingLanguages(Context context) {
-        return context.getResources().getStringArray(R.array.programming_languages);
+    public String[] getProgrammingLanguages() {
+        return this.context
+                .getResources()
+                .getStringArray(R.array.programming_languages);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    public ColorStateList getStateColor(boolean enableState) {
+        int color = R.attr.button_disable_color;
+        if(enableState) {
+            color = R.attr.button_default_color;
+        }
+        return ColorStateList.valueOf(getAttrColor(color));
+    }
+
+
+    public int getAnswerColor(boolean correct) {
+        int color = R.attr.incorrect_color;
+        if(correct) {
+            color = R.attr.correct_color;
+        }
+        return getAttrColor(color);
+    }
+
+    public int getDefaultTextColor() {
+        return getAttrColor(R.attr.text_default_color);
+    }
+
+    public String getStringWithParam(int string, int param) {
+        return context.getResources().getString(string, param);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /** Return String with selected days in mark format: Mn(Monday), Fr (Friday)*/
-    public static String getDaysMarks(Context context, String days) {
+    public String getDaysMarks(String days) {
         StringBuilder marks = new StringBuilder();
-        String[] weekDays = context.getResources().getStringArray(R.array.week_days_marks);
+        String[] weekDays = this.context
+                .getResources()
+                .getStringArray(R.array.week_days_marks);
 
         for(int i = 0; i < days.length(); i++) {
             int day = Character.getNumericValue(days.charAt(i));
@@ -48,28 +114,25 @@ public class ResUtil {
         return marks.toString().isEmpty() ? "Select days" : marks.toString();
     }
 
-    public static ColorStateList getButtonColor(Context context, int color) {
-        return ColorStateList.valueOf(getAttrColor(context, color));
+    public ColorStateList getButtonColor(int color) {
+        return ColorStateList.valueOf(getAttrColor(color));
     }
 
-    public static int getTextColor(Context context, @ColorInt int color) {
-        return getAttrColor(context, color);
+
+    public ColorStateList getThemeColor(@ColorInt int color) {
+        return ColorStateList.valueOf(getAttrColor(color));
     }
 
-    public static ColorStateList getThemeColor(Context context, @ColorInt int color) {
-        return ColorStateList.valueOf(getAttrColor(context, color));
-    }
-
-    public static int getTheme(boolean isDarkTheme) {
+    public int getTheme(boolean isDarkTheme) {
         if(isDarkTheme) {
             return R.style.DarkTheme;
         }
         return R.style.LightTheme;
     }
 
-    public static int getAttrColor(Context context, @ColorInt int color) {
+    public int getAttrColor(@ColorInt int color) {
         TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = context.getTheme();
+        Resources.Theme theme = this.context.getTheme();
         theme.resolveAttribute(color, typedValue, true);
         return typedValue.data;
     }

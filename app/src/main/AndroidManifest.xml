@@ -29,7 +29,7 @@
         <activity android:name=".ui.activities.wake.WakeActivity"
             android:launchMode="singleTask"
             android:theme="@style/LightTheme"/>
-        <receiver android:name=".service.AlarmReceiver">
+        <receiver android:name=".infrastructure.service.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>

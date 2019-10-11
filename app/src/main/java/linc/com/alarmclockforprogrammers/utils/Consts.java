@@ -39,4 +39,12 @@ public final class Consts {
     public static final boolean DISABLE = false;
     public static final boolean ENABLE = true;
 
+    // Colors
+    public static final boolean DEFAULT_COLOR = true;
+    public static final boolean DISABLE_COLOR = false;
+    public static final boolean CORRECT = true;
+    public static final boolean INCORRECT = false;
+
 }
+
+

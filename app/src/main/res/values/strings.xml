@@ -46,15 +46,15 @@
     <string name="animator_property_progress">progress</string>
 
     <!--Wake -->
-    <string name="dialog_message_pay_transaction">Are you sure? Pay %1$d</string>
+    <string name="dialog_message_pay">Are you sure? Pay %1$d</string>
     <string name="dialog_message_completed">Task completed!
-        <br/>You have earned %1$d on your balance %1$d</string>
+        <br/>You have earned %1$d</string>
     <string name="dialog_message_failed">You didn"'"t complete the achievementTask!</string>
     <string name="title_dialog_skip_question">Skip</string>
     <string name="dialog_yes_positive">Yes</string>
     <string name="dialog_no_negative">No</string>
     <string name="dialog_got_it_positive">GOT IT!</string>
-    <string name="title_dialog_failed">Failed</string>
+    <string name="title_dialog_failed">Failed! You lose %1$d</string>
     <string name="title_dialog_completed">Completed</string>
     <string name="title_dialog_time_out">Time out</string>
     <string name="dialog_message_time_out">You only have 2 minutes to answer</string>

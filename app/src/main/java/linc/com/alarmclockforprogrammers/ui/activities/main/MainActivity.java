@@ -4,21 +4,18 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 
-import android.support.transition.AutoTransition;
 import android.support.transition.Fade;
 import android.support.transition.Slide;
 import android.support.transition.Transition;
 import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,16 +25,14 @@ import android.view.WindowManager;
 import java.util.List;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
-import linc.com.alarmclockforprogrammers.model.interactor.mainactivity.InteractorMainActivity;
-import linc.com.alarmclockforprogrammers.presentation.mainactivity.PresenterMainActivity;
-import linc.com.alarmclockforprogrammers.presentation.mainactivity.ViewMainActivity;
-import linc.com.alarmclockforprogrammers.ui.fragments.achievements.FragmentAchievements;
-import linc.com.alarmclockforprogrammers.ui.fragments.alarms.FragmentAlarms;
-import linc.com.alarmclockforprogrammers.ui.fragments.base.BaseFragment;
-import linc.com.alarmclockforprogrammers.ui.fragments.settings.FragmentSettings;
-import linc.com.alarmclockforprogrammers.ui.fragments.stopwatch.FragmentStopwatch;
-import linc.com.alarmclockforprogrammers.ui.fragments.timer.FragmentTimer;
+import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
+import linc.com.alarmclockforprogrammers.domain.interactor.mainactivity.InteractorMainActivity;
+import linc.com.alarmclockforprogrammers.ui.achievements.FragmentAchievements;
+import linc.com.alarmclockforprogrammers.ui.alarms.FragmentAlarms;
+import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
+import linc.com.alarmclockforprogrammers.ui.settings.FragmentSettings;
+import linc.com.alarmclockforprogrammers.ui.stopwatch.FragmentStopwatch;
+import linc.com.alarmclockforprogrammers.ui.timer.FragmentTimer;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
@@ -54,8 +49,10 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
     protected void onCreate(Bundle savedInstanceState) {
 
         if(presenter == null) {
-            presenter = new PresenterMainActivity(this,
-                    new InteractorMainActivity(new PreferencesAlarm(this))
+            presenter = new PresenterMainActivity(
+                    this,
+                    new InteractorMainActivity(new PreferencesAlarm(this)),
+                    new ResUtil(this)
             );
         }
 
@@ -94,16 +91,16 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
         this.toggle.setDrawerIndicatorEnabled(enabled);
     }
 
-    @Override
+/*    @Override
     public void changeTheme(boolean isDarkTheme) {
-        setTheme(ResUtil.getTheme(isDarkTheme));
+        setAppTheme(ResUtil.getTheme(isDarkTheme));
         finish();
         startActivity(getIntent());
-    }
+    }*/
 
     @Override
-    public void setTheme(boolean isDarkTheme) {
-        setTheme(ResUtil.getTheme(isDarkTheme));
+    public void setAppTheme(int theme) {
+        setTheme(theme);
     }
 
     @Override
@@ -207,9 +204,9 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
                         .setDuration(NORMAL_SPEED));
 
 
-        fragment.setExitTransition(exitAnimation);
+/*        fragment.setExitTransition(exitAnimation);
         fragment.setReenterTransition(enterAnimation);
-        fragment.setEnterTransition(enterAnimation);
+        fragment.setEnterTransition(enterAnimation);*/
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.alarms_container, fragment)

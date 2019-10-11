@@ -5,7 +5,7 @@ import android.app.Application;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 
-import linc.com.alarmclockforprogrammers.model.data.database.AppDatabase;
+import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
 
 public class AlarmApp extends Application {
 

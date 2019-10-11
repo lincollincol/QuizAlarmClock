@@ -13,13 +13,11 @@ import android.view.WindowManager;
 import com.google.gson.Gson;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.entity.Alarm;
-import linc.com.alarmclockforprogrammers.model.data.preferences.PreferencesAlarm;
-import linc.com.alarmclockforprogrammers.model.interactor.wakeactivity.InteractorWakeActivity;
-import linc.com.alarmclockforprogrammers.presentation.wakeactivity.PresenterWakeActivity;
-import linc.com.alarmclockforprogrammers.presentation.wakeactivity.ViewWakeActivity;
-import linc.com.alarmclockforprogrammers.ui.fragments.dismiss.FragmentDismiss;
-import linc.com.alarmclockforprogrammers.ui.fragments.task.FragmentTask;
+import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
+import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
+import linc.com.alarmclockforprogrammers.domain.interactor.wakeactivity.InteractorWakeActivity;
+import linc.com.alarmclockforprogrammers.ui.dismiss.FragmentDismiss;
+import linc.com.alarmclockforprogrammers.ui.task.FragmentTask;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 
@@ -33,38 +31,42 @@ public class WakeActivity extends AppCompatActivity implements ViewWakeActivity 
         setContentView(R.layout.activity_wake);
 
         if(presenter == null) {
-            this.presenter = new PresenterWakeActivity(this,
-                    new InteractorWakeActivity(new PreferencesAlarm(this))
+            this.presenter = new PresenterWakeActivity(
+                    this,
+                    new InteractorWakeActivity(new PreferencesAlarm(this)),
+                    new ResUtil(this)
             );
         }
 
         this.presenter.setData();
 
+        Bundle data = new Bundle();
+//        Alarm alarm = new Gson().fromJson(
+//                getIntent().getStringExtra("ALARM_JSON"), Alarm.class);
+
         Alarm alarm = new Gson().fromJson(
                 getIntent().getStringExtra("ALARM_JSON"), Alarm.class);
+
         Fragment wakeFragment;
 
         if(!alarm.hasTask()) {
             wakeFragment = new FragmentDismiss();
-
         }else {
             wakeFragment = new FragmentTask();
-            Bundle data = new Bundle();
-            data.putInt("LANGUAGE", alarm.getLanguage());
-            data.putInt("DIFFICULT", alarm.getDifficult());
-
-            wakeFragment.setArguments(data);
-
         }
+
+        data.putInt("ALARM_ID", alarm.getId());
+        wakeFragment.setArguments(data);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.wake_container, wakeFragment)
                 .commit();
     }
 
+    //todo change isDark to theme res
     @Override
-    public void setTheme(boolean isDarkTheme) {
-        setTheme(ResUtil.getTheme(isDarkTheme));
+    public void setAppTheme(int theme) {
+        setTheme(theme);
     }
 
     @Override
