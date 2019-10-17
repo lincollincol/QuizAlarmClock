@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.domain.entity.Lap;
+import linc.com.alarmclockforprogrammers.data.entity.Lap;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 

@@ -3,7 +3,7 @@ package linc.com.alarmclockforprogrammers.domain.interactor.achievements;
 import java.util.List;
 
 import io.reactivex.Observable;
-import linc.com.alarmclockforprogrammers.domain.entity.Achievement;
+import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
 import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAchievements;
 
@@ -17,7 +17,7 @@ public class InteractorAchievements {
         this.preferences = preferences;
     }
 
-    public Observable<List<Achievement>> getAchievements() {
+    public Observable<List<AchievementEntity>> getAchievements() {
         return repository.getAchievements();
     }
 
@@ -39,7 +39,7 @@ public class InteractorAchievements {
         this.preferences.saveBalance(newBalance);
     }
 
-    public void updateAchievement(Achievement achievement) {
+    public void updateAchievement(AchievementEntity achievement) {
         this.repository.updateAchievement(achievement)
                 .subscribe();
     }

@@ -19,10 +19,12 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import linc.com.alarmclockforprogrammers.domain.entity.Question;
-import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
+import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
+import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 import linc.com.alarmclockforprogrammers.data.database.alarms.AlarmDao;
 import linc.com.alarmclockforprogrammers.data.database.questions.QuestionsDao;
+import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
+import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.utils.callbacks.VersionUpdateCallback;
 
 public class RepositoryAlarms {
@@ -31,18 +33,20 @@ public class RepositoryAlarms {
     private QuestionsDao questionsDao;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private AlarmEntityMapper mapper;
 
-    public RepositoryAlarms(AlarmDao alarmDao, QuestionsDao questionsDao) {
-        this.firebaseDatabase = FirebaseDatabase.getInstance();
+    public RepositoryAlarms(AlarmDao alarmDao, QuestionsDao questionsDao, AlarmEntityMapper mapper) {
         this.alarmDao = alarmDao;
         this.questionsDao = questionsDao;
+        this.mapper = mapper;
+        this.firebaseDatabase = FirebaseDatabase.getInstance();
     }
 
     /** Alarms*/
     public Observable<List<Alarm>> getAlarms() {
         return Observable.create((ObservableOnSubscribe<List<Alarm>>) emitter -> {
             try{
-                emitter.onNext(alarmDao.getAll());
+                emitter.onNext(mapper.toAlarmList(alarmDao.getAll()));
                 emitter.onComplete();
             }catch (Exception e){
                 emitter.onError(e);
@@ -53,14 +57,14 @@ public class RepositoryAlarms {
 
     public Completable deleteAlarm(Alarm alarm) {
         return Completable.fromAction(
-                () -> alarmDao.deleteAlarm(alarm)
+                () -> alarmDao.deleteAlarm(mapper.toAlarmEntity(alarm))
         ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Completable updateAlarm(Alarm alarm) {
         return Completable.fromAction(
-                () -> alarmDao.updateAlarm(alarm)
+                () -> alarmDao.updateAlarm(mapper.toAlarmEntity(alarm))
         ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -83,13 +87,13 @@ public class RepositoryAlarms {
     }
 
     public void updateLocalQuestions() {
-        List<Question> questions = new ArrayList<>();
+        List<QuestionEntity> questions = new ArrayList<>();
         this.databaseReference = this.firebaseDatabase.getReference("questions");
         this.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    questions.add(new Question(
+                    questions.add(new QuestionEntity(
                                     ((Long) (ds.child("id").getValue())).intValue(),
                                     ((Long) (ds.child("difficult").getValue())).intValue(),
                                     ((Long) (ds.child("trueAnswerPosition").getValue())).intValue(),
@@ -109,10 +113,10 @@ public class RepositoryAlarms {
         });
     }
 
-    private Completable updateQuestions(List<Question> questions) {
+    private Completable updateQuestions(List<QuestionEntity> questions) {
         Log.d("SIZE", "updateQuestions: " + questions.size());
         return Completable.fromAction(() -> {
-            for(Question q : questions) {
+            for(QuestionEntity q : questions) {
                 try {
                     questionsDao.insert(q);
                 }catch (Exception e) {

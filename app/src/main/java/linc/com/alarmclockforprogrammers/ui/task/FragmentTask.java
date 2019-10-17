@@ -11,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ import android.widget.TextView;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.domain.entity.Question;
+import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
 import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.domain.interactor.task.InteractorTaskImpl;
@@ -122,7 +121,7 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
     }
 
     @Override
-    public void showQuestion(Question question) {
+    public void showQuestion(QuestionEntity question) {
         this.preQuestion.setText(String.valueOf(question.getId()));
         this.postQuestion.setText(question.getPostQuestion());
         this.codeSnippet.loadData(question.getHtmlCodeSnippet(), "text/html", "utf-8");

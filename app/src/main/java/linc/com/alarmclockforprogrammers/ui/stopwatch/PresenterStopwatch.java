@@ -6,7 +6,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import linc.com.alarmclockforprogrammers.domain.entity.Lap;
+import linc.com.alarmclockforprogrammers.data.entity.Lap;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 

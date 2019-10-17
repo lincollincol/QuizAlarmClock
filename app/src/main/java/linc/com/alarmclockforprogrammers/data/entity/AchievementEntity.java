@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.domain.entity;
+package linc.com.alarmclockforprogrammers.data.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -8,7 +8,7 @@ import static android.arch.persistence.room.ColumnInfo.INTEGER;
 import static android.arch.persistence.room.ColumnInfo.TEXT;
 
 @Entity(tableName = "achievements")
-public class Achievement {
+public class AchievementEntity {
 
     @PrimaryKey
     @ColumnInfo(name = "_id")
@@ -35,8 +35,8 @@ public class Achievement {
     @ColumnInfo(name = "award_received", typeAffinity = INTEGER)
     private boolean awardReceived;
 
-    public Achievement(int id, int award, int tasksToComplete, int completedTasks,
-                       String achievementTask, String language, boolean completed, boolean awardReceived) {
+    public AchievementEntity(int id, int award, int tasksToComplete, int completedTasks,
+                             String achievementTask, String language, boolean completed, boolean awardReceived) {
         this.id = id;
         this.award = award;
         this.tasksToComplete = tasksToComplete;

@@ -1,7 +1,7 @@
 package linc.com.alarmclockforprogrammers.ui.task;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.domain.entity.Question;
+import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 import linc.com.alarmclockforprogrammers.domain.interactor.task.InteractorTask;
 import linc.com.alarmclockforprogrammers.utils.Consts;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
@@ -13,12 +13,21 @@ public class PresenterTask implements InteractorTask.Callback {
     private ResUtil resUtil;
 
     public PresenterTask(InteractorTask interactor, ResUtil resUtil) {
-        this.resUtil = resUtil;
         this.interactor = interactor;
+        this.resUtil = resUtil;
+    }
+
+    public void bind(ViewTask view, int alarmId) {
+        this.view = view;
+        this.interactor.execute(this, alarmId);
+    }
+
+    public void unbind() {
+        this.view = null;
     }
 
     @Override
-    public void updateQuestion(Question question) {
+    public void updateQuestion(QuestionEntity question) {
         this.view.showQuestion(question);
         this.view.disappearHighlight(resUtil.getDefaultTextColor());
         this.view.startProgress();
@@ -51,15 +60,6 @@ public class PresenterTask implements InteractorTask.Callback {
                 R.string.dialog_message_completed :
                 R.string.dialog_message_failed, award);
         view.showFinishDialog(message);
-    }
-
-    public void bind(ViewTask view, int alarmId) {
-        this.view = view;
-        this.interactor.execute(this, alarmId);
-    }
-
-    public void unbind() {
-        this.view = null;
     }
 
     void nextButtonClicked(int answerPosition) {

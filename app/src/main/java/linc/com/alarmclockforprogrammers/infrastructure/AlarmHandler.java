@@ -4,13 +4,13 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.util.Calendar;
 
-import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
+import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
+import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.infrastructure.service.AlarmReceiver;
 
 public class AlarmHandler {
@@ -31,9 +31,7 @@ public class AlarmHandler {
             return;
         }
 
-        final Calendar nextAlarmTime = getTimeForNextAlarm(alarm);
-        alarm.setTime(nextAlarmTime.getTimeInMillis());
-
+        final Calendar nextAlarmTime = getTimeToNextAlarm(alarm);
         final String json = new Gson().toJson(alarm);
         final Intent intent = new Intent(this.context, AlarmReceiver.class);
         intent.putExtra("ALARM_JSON", json);
@@ -46,7 +44,7 @@ public class AlarmHandler {
         );
 
         final AlarmManager am = (AlarmManager) this.context.getSystemService(Context.ALARM_SERVICE);
-        am.setExact(AlarmManager.RTC_WAKEUP, alarm.getTime(), pIntent);
+        am.setExact(AlarmManager.RTC_WAKEUP, nextAlarmTime.getTimeInMillis(), pIntent);
     }
 
     public void cancelReminderAlarm(Alarm alarm) {
@@ -63,17 +61,17 @@ public class AlarmHandler {
 //        todo pIntent.cancel();
     }
 
-    private Calendar getTimeForNextAlarm(Alarm alarm) {
+    private Calendar getTimeToNextAlarm(Alarm alarm) {
         final Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(alarm.getTime());
-
+        calendar.set(Calendar.HOUR_OF_DAY, alarm.getHour());
+        calendar.set(Calendar.MINUTE, alarm.getMinute());
         final long currentTime = System.currentTimeMillis();
         final int startIndex = getStartIndexFromTime(calendar);
 
         int count = 0;
         boolean isAlarmSetForDay;
 
-        final boolean[] selectedDays = getSelectedDays(alarm.getDays());
+        final boolean[] selectedDays = alarm.getSelectedDays();
 
         do {
             final int index = (startIndex + count) % 7;
@@ -86,7 +84,6 @@ public class AlarmHandler {
         } while(!isAlarmSetForDay && count < 7);
 
         return calendar;
-
     }
 
     private int getStartIndexFromTime(Calendar calendar) {
@@ -104,15 +101,5 @@ public class AlarmHandler {
         }
 
         return startIndex;
-    }
-
-    private static boolean[] getSelectedDays(String days) {
-        boolean[] selectedDays = new boolean[7];
-
-        for (int i = 0; i < days.length(); i++) {
-            selectedDays[Character.getNumericValue(days.charAt(i))] = true;
-        }
-
-        return selectedDays;
     }
 }

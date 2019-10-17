@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.domain.entity;
+package linc.com.alarmclockforprogrammers.data.entity;
 
 
 import android.arch.persistence.room.ColumnInfo;
@@ -13,7 +13,7 @@ import static android.arch.persistence.room.ColumnInfo.INTEGER;
 import static android.arch.persistence.room.ColumnInfo.TEXT;
 
 @Entity(tableName = "alarms")
-public class Alarm {
+public class AlarmEntity {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
@@ -43,8 +43,8 @@ public class Alarm {
     @ColumnInfo(name = "enable", typeAffinity = INTEGER)
     private boolean enable;
 
-    public Alarm(long time, String label, String days, String songPath,
-                 String language, int difficult, boolean task, boolean enable) {
+    public AlarmEntity(long time, String label, String days, String songPath,
+                       String language, int difficult, boolean task, boolean enable) {
         this.time = time;
         this.label = label;
         this.days = days;
@@ -129,26 +129,9 @@ public class Alarm {
 
     /** Return default empty alarm object*/
     @Ignore
-    public static Alarm getInstance() {
-        return new Alarm(0,"", "",
+    public static AlarmEntity getInstance() {
+        return new AlarmEntity(0,"", "",
                 "default", "Java",0,false, false);
     }
-
-    /** Retrieve song name from path */
-    @Ignore
-    public static String getSongName(String path) {
-        int cut = path.lastIndexOf('/');
-        if (cut != -1) {
-            path = path.substring(cut + 1);
-        }
-        return path;
-    }
-
-    @Ignore
-    public static String getReadableTime(long time) {
-        return new SimpleDateFormat("HH:mm", Locale.getDefault())
-                .format(time);
-    }
-
 }
 

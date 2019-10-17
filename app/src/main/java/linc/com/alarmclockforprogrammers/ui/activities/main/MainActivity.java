@@ -91,12 +91,11 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
         this.toggle.setDrawerIndicatorEnabled(enabled);
     }
 
-/*    @Override
-    public void changeTheme(boolean isDarkTheme) {
-        setAppTheme(ResUtil.getTheme(isDarkTheme));
+    @Override
+    public void restart() {
         finish();
         startActivity(getIntent());
-    }*/
+    }
 
     @Override
     public void setAppTheme(int theme) {

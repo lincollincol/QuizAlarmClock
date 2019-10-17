@@ -1,6 +1,6 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.task;
 
-import linc.com.alarmclockforprogrammers.domain.entity.Question;
+import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 
 public interface InteractorTask {
 
@@ -11,7 +11,7 @@ public interface InteractorTask {
     void stop();
 
     interface Callback {
-        void updateQuestion(Question question);
+        void updateQuestion(QuestionEntity question);
         void updateBalance(int balance);
         void updateCompletedTasks(int completedTasks, int numberOfQuestions);
         void highlightAnswer(int position, boolean isCorrect);

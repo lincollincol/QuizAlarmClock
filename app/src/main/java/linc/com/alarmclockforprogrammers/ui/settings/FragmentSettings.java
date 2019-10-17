@@ -113,7 +113,7 @@ public class FragmentSettings extends BaseFragment implements ViewSettings,
 
     @Override
     public void restartActivity() {
-//        ((MainActivity)getActivity()).changeTheme(switchTheme.isChecked());
+        ((MainActivity)getActivity()).restart();
     }
 
     @Override

@@ -8,21 +8,21 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-import linc.com.alarmclockforprogrammers.domain.entity.Achievement;
+import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
 
 @Dao
 public interface AchievementsDao {
 
     @Query("SELECT * FROM achievements")
-    List<Achievement> getAll();
+    List<AchievementEntity> getAll();
 
     @Query("SELECT * FROM achievements WHERE language = :language")
-    List<Achievement> getByLanguage(String language);
+    List<AchievementEntity> getByLanguage(String language);
 
     @Insert(onConflict = OnConflictStrategy.FAIL)
-    void insert(Achievement achievement);
+    void insert(AchievementEntity achievement);
 
     @Update
-    void update(Achievement achievement);
+    void update(AchievementEntity achievement);
 
 }

@@ -34,7 +34,7 @@
             app:layout_constraintLeft_toRightOf="@id/alarm_settings__hour_picker"
             app:layout_constraintRight_toRightOf="parent"/>
 
-        <!--Alarm name-->
+        <!--AlarmEntity name-->
         <EditText
             android:id="@+id/alarm_settings__alarm_name"
             android:layout_width="0dp"
@@ -47,7 +47,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/alarm_settings__hour_picker" />
 
-        <!--Alarm days-->
+        <!--AlarmEntity days-->
         <TextView
             android:id="@+id/alarm_settings__days"
             android:layout_width="0dp"
@@ -102,7 +102,7 @@
                 android:textSize="@dimen/text_medium" />
         </LinearLayout>
 
-        <!--Alarm turn on/off-->
+        <!--AlarmEntity turn on/off-->
         <TextView
             android:id="@+id/alarm_settings__alarm_enable_title"
             android:layout_width="wrap_content"

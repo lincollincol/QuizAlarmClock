@@ -6,7 +6,8 @@ import android.content.Intent;
 
 import com.google.gson.Gson;
 
-import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
+import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
+import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.ui.activities.wake.WakeActivity;
 import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
 

@@ -1,10 +1,12 @@
-package linc.com.alarmclockforprogrammers.domain.entity;
+package linc.com.alarmclockforprogrammers.data.entity;
 
 import java.util.Locale;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.ONE_HOUR;
 import static linc.com.alarmclockforprogrammers.utils.Consts.ONE_MINUTE;
 import static linc.com.alarmclockforprogrammers.utils.Consts.ONE_SECOND;
+
+//todo create models
 
 public class Lap {
 

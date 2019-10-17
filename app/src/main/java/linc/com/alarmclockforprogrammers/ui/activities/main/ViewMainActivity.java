@@ -5,6 +5,6 @@ public interface ViewMainActivity {
     void setAppTheme(int theme);
     void setupWindow();
     void setDrawerEnabled(boolean enabled);
-//    void changeTheme(boolean isDarkTheme);
+    void restart();
 
 }

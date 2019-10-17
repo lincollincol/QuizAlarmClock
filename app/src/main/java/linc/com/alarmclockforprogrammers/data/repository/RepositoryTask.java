@@ -11,19 +11,16 @@ import java.util.Random;
 import java.util.Set;
 
 import io.reactivex.Completable;
-import io.reactivex.Maybe;
-import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.data.database.alarms.AlarmDao;
+import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
+import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
-import linc.com.alarmclockforprogrammers.domain.entity.Achievement;
-import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
-import linc.com.alarmclockforprogrammers.domain.entity.Question;
+import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.data.database.achievements.AchievementsDao;
 import linc.com.alarmclockforprogrammers.data.database.questions.QuestionsDao;
 
@@ -34,7 +31,7 @@ public class RepositoryTask {
     private AchievementsDao achievementsDao;
     private PreferencesAlarm preferences;
 
-    private List<Question> questions;
+    private List<QuestionEntity> questions;
 
     public RepositoryTask(QuestionsDao questionsDao,
                           AlarmDao alarmDao,
@@ -49,7 +46,7 @@ public class RepositoryTask {
     public Completable loadQuestions(int alarmId) {
         return Completable.create((emitter) -> {
             try {
-                Alarm alarm = alarmDao.getAlarmById(alarmId);
+                AlarmEntity alarm = alarmDao.getAlarmById(alarmId);
                 Log.d("ALARM_DATA", "getQuestionsByAlarm: " + alarm.getDifficult());
                 Log.d("ALARM_DATA", "getQuestionsByAlarm: " + alarm.getLanguage());
                 Disposable d = getQuestionsByAlarm(alarm)
@@ -62,8 +59,8 @@ public class RepositoryTask {
           .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Single<List<Question>> getQuestionsByAlarm(Alarm alarm) {
-        return Single.create((SingleOnSubscribe<List<Question>>)emitter -> {
+    private Single<List<QuestionEntity>> getQuestionsByAlarm(AlarmEntity alarm) {
+        return Single.create((SingleOnSubscribe<List<QuestionEntity>>) emitter -> {
             try{
                 emitter.onSuccess(
                         questionsDao.getByLanguage(alarm.getLanguage(), alarm.getDifficult())
@@ -72,7 +69,7 @@ public class RepositoryTask {
                 emitter.onError(e);
             }
         }).map(questions -> {
-            List<Question> randomQuestions = new ArrayList<>();
+            List<QuestionEntity> randomQuestions = new ArrayList<>();
             Set<Integer> randomIds = new LinkedHashSet<>();
             Random r = new Random();
             // todo gson to util
@@ -83,7 +80,7 @@ public class RepositoryTask {
                 randomIds.add(next);
             }
             for(int i : randomIds) {
-                Question question = questions.get(i);
+                QuestionEntity question = questions.get(i);
                 question.setAnswersList(fromJson(gson, question.getJsonAnswers()));
                 randomQuestions.add(question);
             }
@@ -91,22 +88,22 @@ public class RepositoryTask {
         }).subscribeOn(Schedulers.io());
     }
 
-    public Question getQuestion(int position) {
+    public QuestionEntity getQuestion(int position) {
         return this.questions.get(position);
     }
 
 
     // todo rename
-    public Completable setQuestionCompleted(Question question) {
+    public Completable setQuestionCompleted(QuestionEntity question) {
         return Completable.fromAction(() -> {
             this.questionsDao.update(question);
-            List<Achievement> achievements = achievementsDao
+            List<AchievementEntity> achievements = achievementsDao
                     .getByLanguage(question.getProgrammingLanguage());
 
             // todo set achieve completed in the interactor
 
 
-            for(Achievement a : achievements) {
+            for(AchievementEntity a : achievements) {
                 if(a.isCompleted()) {
                     continue;
                 }

@@ -27,11 +27,11 @@
     <dimen name="size_header_image">50dp</dimen>
     <dimen name="height_header">150dp</dimen>
 
-    <!--Alarm recycler view item-->
+    <!--AlarmEntity recycler view item-->
     <dimen name="layout_alarm_height">200dp</dimen>
     <dimen name="margin_alarm_item">5dp</dimen>
 
-    <!--Alarm layout-->
+    <!--AlarmEntity layout-->
     <dimen name="card_editor_height">200dp</dimen>
     <dimen name="button_size_medium">30dp</dimen>
     <dimen name="button_size_large">60dp</dimen>
@@ -42,7 +42,7 @@
     <!--Wake activity-->
     <dimen name="image_currency_size">30dp</dimen>
 
-    <!--Achievement item-->
+    <!--AchievementEntity item-->
     <dimen name="card_achievement_height">100dp</dimen>
 
 </resources>

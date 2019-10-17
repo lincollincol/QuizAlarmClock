@@ -18,7 +18,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import linc.com.alarmclockforprogrammers.domain.entity.Achievement;
+import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
 import linc.com.alarmclockforprogrammers.data.database.achievements.AchievementsDao;
 import linc.com.alarmclockforprogrammers.utils.callbacks.VersionUpdateCallback;
 
@@ -33,8 +33,8 @@ public class RepositoryAchievements {
         this.achievementsDao = achievementsDao;
     }
 
-    public Observable<List<Achievement>> getAchievements() {
-        return Observable.create((ObservableOnSubscribe<List<Achievement>>) emitter -> {
+    public Observable<List<AchievementEntity>> getAchievements() {
+        return Observable.create((ObservableOnSubscribe<List<AchievementEntity>>) emitter -> {
             try{
                 emitter.onNext(achievementsDao.getAll());
                 emitter.onComplete();
@@ -59,13 +59,13 @@ public class RepositoryAchievements {
     }
 
     public void updateLocalAchievements() {
-        List<Achievement> achievements = new ArrayList<>();
+        List<AchievementEntity> achievements = new ArrayList<>();
         this.databaseReference = this.firebaseDatabase.getReference("achievements");
         this.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    achievements.add(new Achievement(
+                    achievements.add(new AchievementEntity(
                             ((Long) (ds.child("id").getValue())).intValue(),
                             ((Long) (ds.child("award").getValue())).intValue(),
                             ((Long) (ds.child("tasksToComplete").getValue())).intValue(),
@@ -84,9 +84,9 @@ public class RepositoryAchievements {
         });
     }
 
-    private Completable updateAchievements(List<Achievement> achievements) {
+    private Completable updateAchievements(List<AchievementEntity> achievements) {
         return Completable.fromAction(() -> {
-            for(Achievement a : achievements) {
+            for(AchievementEntity a : achievements) {
                 try {
                     this.achievementsDao.insert(a);
                 }catch (Exception e) {
@@ -98,7 +98,7 @@ public class RepositoryAchievements {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Completable updateAchievement(Achievement achievements) {
+    public Completable updateAchievement(AchievementEntity achievements) {
         return Completable.fromAction(() ->
                 this.achievementsDao.update(achievements)
         )

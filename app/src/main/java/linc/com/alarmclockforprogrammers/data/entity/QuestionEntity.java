@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.domain.entity;
+package linc.com.alarmclockforprogrammers.data.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -11,7 +11,7 @@ import static android.arch.persistence.room.ColumnInfo.INTEGER;
 import static android.arch.persistence.room.ColumnInfo.TEXT;
 
 @Entity (tableName = "questions")
-public class Question {
+public class QuestionEntity {
 
     @PrimaryKey
     @ColumnInfo(name = "_id")
@@ -46,8 +46,8 @@ public class Question {
     @Ignore
     private List<String> answersList;
 
-    public Question(int id, int difficult, int correctAnswer, String programmingLanguage,
-                    String preQuestion, String postQuestion, String jsonAnswers, String htmlCodeSnippet, boolean completed) {
+    public QuestionEntity(int id, int difficult, int correctAnswer, String programmingLanguage,
+                          String preQuestion, String postQuestion, String jsonAnswers, String htmlCodeSnippet, boolean completed) {
         this.id = id;
         this.difficult = difficult;
         this.correctAnswer = correctAnswer;

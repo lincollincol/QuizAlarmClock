@@ -24,16 +24,19 @@ import java.util.List;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
-import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
+import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.R;
+import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarms.InteractorAlarms;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarms;
+import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
 import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.alarms.adapters.AdapterAlarms;
 import linc.com.alarmclockforprogrammers.ui.alarmsettings.FragmentAlarmSettings;
 import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
+import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 
 public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlarmClicked,
@@ -55,7 +58,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
 
         if(presenter == null) {
             this.presenter = new PresenterAlarms(this, new InteractorAlarms(
-                    new RepositoryAlarms(database.alarmDao(), database.questionsDao()),
+                    new RepositoryAlarms(database.alarmDao(), database.questionsDao(), new AlarmEntityMapper(new ResUtil(getActivity()))),
                     new PreferencesAlarm(getActivity()),
                     new AlarmHandler(getActivity())
             ));

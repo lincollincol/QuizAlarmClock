@@ -13,9 +13,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
+import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
+import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 
 public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHolder> {
 
@@ -86,7 +86,7 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
         // todo uncomment the methods
 
         public void setAlarm(Alarm alarm) {
-            this.time.setText(Alarm.getReadableTime(alarm.getTime()));
+            this.time.setText(alarm.getTime());
 //            this.programmingLanguage.setText((ResUtil.getLanguage(context, alarm.getLanguage())));
 //            this.days.setText(ResUtil.getDaysMarks(context, alarm.getDays()));
             setIndicatorColor(alarm.isEnable());

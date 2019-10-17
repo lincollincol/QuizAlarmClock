@@ -8,21 +8,21 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-import linc.com.alarmclockforprogrammers.domain.entity.Question;
+import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 
 @Dao
 public interface QuestionsDao {
 
     @Query("SELECT * FROM questions")
-    List<Question> getAll();
+    List<QuestionEntity> getAll();
 
     @Query("SELECT * FROM questions WHERE language = :language AND difficult = :difficult")
-    List<Question> getByLanguage(String language, int difficult);
+    List<QuestionEntity> getByLanguage(String language, int difficult);
 
     @Insert(onConflict = OnConflictStrategy.FAIL)
-    void insert(Question question);
+    void insert(QuestionEntity question);
 
     @Update
-    void update(Question question);
+    void update(QuestionEntity question);
 
 }

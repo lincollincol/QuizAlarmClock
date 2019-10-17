@@ -17,7 +17,7 @@ import java.util.List;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.domain.entity.Achievement;
+import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
 import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
 import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.domain.interactor.achievements.InteractorAchievements;
@@ -86,7 +86,7 @@ public class FragmentAchievements extends BaseFragment implements
     }
 
     @Override
-    public void setAchievements(List<Achievement> achievements) {
+    public void setAchievements(List<AchievementEntity> achievements) {
         this.adapter.setAchievements(achievements);
     }
 

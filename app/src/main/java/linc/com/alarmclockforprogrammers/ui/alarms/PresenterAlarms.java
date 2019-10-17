@@ -1,10 +1,9 @@
 package linc.com.alarmclockforprogrammers.ui.alarms;
 
-import android.content.Context;
-
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
+import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarms.InteractorAlarms;
+import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
 import static linc.com.alarmclockforprogrammers.utils.Consts.ENABLE;
@@ -52,7 +51,7 @@ public class PresenterAlarms {
     private void updateAlarmsList() {
         Disposable d = this.interactor.getAlarms()
                 .subscribe(alarms ->
-                        this.view.setAlarmsData(alarms)
+                        this.view.setAlarmsData(alarms), Throwable::printStackTrace
                 );
     }
 }

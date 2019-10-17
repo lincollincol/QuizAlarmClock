@@ -2,7 +2,8 @@ package linc.com.alarmclockforprogrammers.ui.alarms;
 
 import java.util.List;
 
-import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
+import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
+import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 
 public interface ViewAlarms {
 

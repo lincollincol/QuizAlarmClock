@@ -1,6 +1,6 @@
 package linc.com.alarmclockforprogrammers.ui.stopwatch;
 
-import linc.com.alarmclockforprogrammers.domain.entity.Lap;
+import linc.com.alarmclockforprogrammers.data.entity.Lap;
 
 public interface ViewStopwatch {
 

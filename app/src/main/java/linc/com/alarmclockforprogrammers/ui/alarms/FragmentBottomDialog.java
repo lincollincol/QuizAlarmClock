@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
+import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
+import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 
 public class FragmentBottomDialog extends BottomSheetDialogFragment implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
@@ -46,7 +46,7 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
         enableAlarm.setChecked(alarm.isEnable());
         enableAlarm.setOnCheckedChangeListener(this);
 
-        alarmTime.setText(Alarm.getReadableTime(alarm.getTime()));
+        alarmTime.setText(alarm.getTime());
         alarmDetails.setText((""
 //                ResUtil.getLanguage(getActivity(), alarm.getLanguage()) + "/" +
 //                ResUtil.getDifficult(getActivity(), alarm.getDifficult()) + "\n" +

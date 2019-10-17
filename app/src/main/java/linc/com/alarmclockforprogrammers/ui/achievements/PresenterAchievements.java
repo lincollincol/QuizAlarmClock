@@ -3,7 +3,7 @@ package linc.com.alarmclockforprogrammers.ui.achievements;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.domain.entity.Achievement;
+import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
 import linc.com.alarmclockforprogrammers.domain.interactor.achievements.InteractorAchievements;
 
 public class PresenterAchievements {
@@ -11,7 +11,7 @@ public class PresenterAchievements {
     private ViewAchievements view;
     private InteractorAchievements interactor;
 
-    private List<Achievement> achievements;
+    private List<AchievementEntity> achievements;
 
     public PresenterAchievements(ViewAchievements view, InteractorAchievements interactor) {
         this.view = view;
@@ -29,7 +29,7 @@ public class PresenterAchievements {
     }
 
     public void receiveAward(int position) {
-        Achievement achievement = this.achievements.get(position);
+        AchievementEntity achievement = this.achievements.get(position);
         achievement.setAwardReceived(true);
         this.interactor.increaseBalance(achievement.getAward());
         this.interactor.updateAchievement(achievement);

@@ -18,36 +18,28 @@ public class ResUtil {
     }
 
     public String getLanguage(int position) {
-        return this.context
-                .getResources()
+        return this.context.getResources()
                 .getStringArray(R.array.programming_languages)[position];
     }
 
     public String getDifficult(int position) {
-        return this.context
-                .getResources()
+        return this.context.getResources()
                 .getStringArray(R.array.difficult_modes)[position];
     }
 
     public String[] getDifficultModes() {
-        return this.context
-                .getResources()
+        return this.context.getResources()
                 .getStringArray(R.array.difficult_modes);
     }
 
     public String[] getWeekDays() {
-        return this.context
-                .getResources()
-                .getStringArray(R.array.week_days);
+        return this.context.getResources().getStringArray(R.array.week_days);
     }
 
     public String[] getProgrammingLanguages() {
-        return this.context
-                .getResources()
+        return this.context.getResources()
                 .getStringArray(R.array.programming_languages);
     }
-
-
 
 
 
@@ -100,19 +92,34 @@ public class ResUtil {
     /** Return String with selected days in mark format: Mn(Monday), Fr (Friday)*/
     public String getDaysMarks(String days) {
         StringBuilder marks = new StringBuilder();
-        String[] weekDays = this.context
-                .getResources()
-                .getStringArray(R.array.week_days_marks);
+        String[] weekDays = context.getResources().getStringArray(R.array.week_days_marks);
 
         for(int i = 0; i < days.length(); i++) {
             int day = Character.getNumericValue(days.charAt(i));
-            marks.append(weekDays[day]);
-            marks.append((i == (days.length()-1) ? "" : ", "));
-            marks.append( ((i == 3) && (i < days.length() - 1) ? "\n\t\t\t" : "") );
+            marks.append(weekDays[day])
+                 .append((i == (days.length()-1) ? "" : ", "))
+                 .append( ((i == 3) && (i < days.length() - 1) ? "\n\t\t\t" : "") );
         }
 
         return marks.toString().isEmpty() ? "Select days" : marks.toString();
     }
+
+    public String getDaysMarks(boolean[] checkedDays) {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < checkedDays.length; i++) {
+            sb.append((checkedDays[i] ? i : ""));
+        }
+        return getDaysMarks(sb.toString());
+    }
+
+
+
+
+
+
+
+
+
 
     public ColorStateList getButtonColor(int color) {
         return ColorStateList.valueOf(getAttrColor(color));

@@ -14,6 +14,6 @@ public interface ViewAlarmSettings {
     void showDifficultModeDialog(String[] difficultModes, int position);
     void showLanguageDialog(String[] languages, int position);
     void askForReadWritePermission();
-    void getSongFile();
+    void openFileManager();
     void openAlarmsFragment();
 }

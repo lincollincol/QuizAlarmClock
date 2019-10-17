@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.domain.entity.Achievement;
+import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
 
 public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievements.AchievementHolder>{
 
-    private List<Achievement> achievements;
+    private List<AchievementEntity> achievements;
     private OnReceiveClickListener onReceiveClickListener;
 
     public AdapterAchievements(OnReceiveClickListener onReceiveClickListener) {
@@ -26,7 +26,7 @@ public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievement
         this.achievements = new ArrayList<>();
     }
 
-    public void setAchievements(List<Achievement> achievements) {
+    public void setAchievements(List<AchievementEntity> achievements) {
         this.achievements.clear();
         this.achievements.addAll(achievements);
         notifyDataSetChanged();
@@ -80,7 +80,7 @@ public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievement
             this.onReceive = onReceive;
         }
 
-        void setAchievement(Achievement achievement) {
+        void setAchievement(AchievementEntity achievement) {
             this.progLanguage.setText(achievement.getLanguage());
             this.completedTasks.setText((achievement.getCompletedTasks()+"/"+achievement.getTasksToComplete()));
             this.taskCondition.setText(achievement.getAchievementTask());

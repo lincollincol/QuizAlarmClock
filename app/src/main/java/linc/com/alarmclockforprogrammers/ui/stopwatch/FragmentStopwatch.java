@@ -23,7 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.domain.entity.Lap;
+import linc.com.alarmclockforprogrammers.data.entity.Lap;
 import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
 import linc.com.alarmclockforprogrammers.ui.stopwatch.adapters.AdapterLaps;

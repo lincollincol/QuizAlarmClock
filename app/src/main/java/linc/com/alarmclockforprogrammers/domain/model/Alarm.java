@@ -1,0 +1,116 @@
+package linc.com.alarmclockforprogrammers.domain.model;
+
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+public class Alarm {
+
+    private int id;
+    private int hour;
+    private int minute;
+    private int language;
+    private int difficult;
+    private boolean containsTask;
+    private boolean enable;
+    private String label;
+    private String songPath;
+    //todo rename
+    private boolean[] selectedDays;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public int getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(int language) {
+        this.language = language;
+    }
+
+    public int getDifficult() {
+        return difficult;
+    }
+
+    public void setDifficult(int difficult) {
+        this.difficult = difficult;
+    }
+
+    public boolean isContainsTask() {
+        return containsTask;
+    }
+
+    public void setContainsTask(boolean containsTask) {
+        this.containsTask = containsTask;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getSongPath() {
+        return songPath;
+    }
+
+    public void setSongPath(String songPath) {
+        this.songPath = songPath;
+    }
+
+    public boolean[] getSelectedDays() {
+        return selectedDays;
+    }
+
+    public void setSelectedDays(boolean[] selectedDays) {
+        this.selectedDays = selectedDays;
+    }
+
+    public String getDaysPositions() {
+        StringBuilder checkedDays = new StringBuilder();
+        for (int i = 0; i < 7; i++) {
+            checkedDays.append(selectedDays[i] ? i : "");
+        }
+        Log.d("OBJECT_METH", "getDaysPositions: " + checkedDays.toString());
+        return checkedDays.toString();
+    }
+
+    public String getTime() {
+        String time = (hour < 10 ? "0" : "") + hour + ":";
+        time += (minute < 10 ? "0" : "") + minute;
+        return time;
+    }
+}

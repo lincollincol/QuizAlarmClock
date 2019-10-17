@@ -3,11 +3,11 @@ package linc.com.alarmclockforprogrammers.ui.task;
 import android.content.res.ColorStateList;
 import android.support.annotation.ColorInt;
 
-import linc.com.alarmclockforprogrammers.domain.entity.Question;
+import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 
 public interface ViewTask {
 
-    void showQuestion(Question question);
+    void showQuestion(QuestionEntity question);
     void showCompletedQuestions(String completedQuestions);
     void showBalance(int balance);
     void highlightAnswers(int position, @ColorInt int color);

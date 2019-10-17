@@ -9,24 +9,24 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
+import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 
 @Dao
 public interface AlarmDao {
 
     @Query("SELECT * FROM alarms")
-    List<Alarm> getAll();
+    List<AlarmEntity> getAll();
 
     @Query("SELECT * FROM alarms WHERE _id = :id")
-    Alarm getAlarmById(int id);
+    AlarmEntity getAlarmById(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAlarm(Alarm alarm);
+    void insertAlarm(AlarmEntity alarm);
 
     @Update
-    void updateAlarm(Alarm alarm);
+    void updateAlarm(AlarmEntity alarm);
 
     @Delete
-    void deleteAlarm(Alarm alarm);
+    void deleteAlarm(AlarmEntity alarm);
 
 }

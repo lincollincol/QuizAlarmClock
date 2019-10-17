@@ -1,6 +1,5 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.task;
 
-import android.support.annotation.ColorInt;
 import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
@@ -9,7 +8,7 @@ import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.domain.entity.Question;
+import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryTask;
 import linc.com.alarmclockforprogrammers.domain.interactor.dismiss.MediaManager;
 import linc.com.alarmclockforprogrammers.utils.Consts;
@@ -114,11 +113,11 @@ public class InteractorTaskImpl implements InteractorTask{
     }
 
 
-    private Question getQuestion() {
+    private QuestionEntity getQuestion() {
         return this.repository.getQuestion(currentQuestion);
     }
 
-    private void setQuestionCompleted(Question question) {
+    private void setQuestionCompleted(QuestionEntity question) {
         // todo refactor
         question.setCompleted(true);
         this.repository.setQuestionCompleted(question)

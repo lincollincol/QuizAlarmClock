@@ -5,14 +5,14 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import linc.com.alarmclockforprogrammers.domain.entity.Achievement;
-import linc.com.alarmclockforprogrammers.domain.entity.Question;
-import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
+import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
+import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
+import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 import linc.com.alarmclockforprogrammers.data.database.achievements.AchievementsDao;
 import linc.com.alarmclockforprogrammers.data.database.alarms.AlarmDao;
 import linc.com.alarmclockforprogrammers.data.database.questions.QuestionsDao;
 
-@Database(entities = {Alarm.class, Question.class, Achievement.class}, version = 8, exportSchema = false)
+@Database(entities = {AlarmEntity.class, QuestionEntity.class, AchievementEntity.class}, version = 8, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract AlarmDao alarmDao();

@@ -4,8 +4,9 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
+import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
-import linc.com.alarmclockforprogrammers.domain.entity.Alarm;
+import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarms;
 
 public class InteractorAlarms {
