@@ -11,7 +11,6 @@ import java.util.List;
 
 import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmModel;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class AlarmEntityMapper {

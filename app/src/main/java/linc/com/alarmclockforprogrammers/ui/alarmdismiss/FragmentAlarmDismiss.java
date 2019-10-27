@@ -1,6 +1,5 @@
-package linc.com.alarmclockforprogrammers.ui.dismiss;
+package linc.com.alarmclockforprogrammers.ui.alarmdismiss;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,14 +11,14 @@ import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryDismiss;
-import linc.com.alarmclockforprogrammers.domain.interactor.dismiss.InteractorDismiss;
+import linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss.InteractorAlarmDismiss;
 import linc.com.alarmclockforprogrammers.infrastructure.Player;
 import linc.com.alarmclockforprogrammers.ui.activities.wake.WakeActivity;
 import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
 
-public class FragmentDismiss extends BaseFragment implements ViewDismiss, View.OnClickListener{
+public class FragmentAlarmDismiss extends BaseFragment implements ViewAlarmDismiss, View.OnClickListener{
 
-    private PresenterDismiss presenter;
+    private PresenterAlarmDismiss presenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,8 +28,8 @@ public class FragmentDismiss extends BaseFragment implements ViewDismiss, View.O
         AppDatabase database = AlarmApp.getInstance().getDatabase();
 
         if(presenter == null) {
-            this.presenter = new PresenterDismiss(this,
-                    new InteractorDismiss(new RepositoryDismiss(database.alarmDao()),
+            this.presenter = new PresenterAlarmDismiss(this,
+                    new InteractorAlarmDismiss(new RepositoryDismiss(database.alarmDao()),
                                         new Player(getActivity()))
             );
         }
@@ -41,7 +40,7 @@ public class FragmentDismiss extends BaseFragment implements ViewDismiss, View.O
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dismiss, container, false);
+        View view = inflater.inflate(R.layout.fragment_dismiss_alarm, container, false);
 
         View dismissCircle = view.findViewById(R.id.dismiss__circle);
         dismissCircle.setOnClickListener(this);
@@ -64,11 +63,7 @@ public class FragmentDismiss extends BaseFragment implements ViewDismiss, View.O
     @Override
     public void dismissAlarm() {
         //todo to interactor
-        try {
-            ((WakeActivity) getActivity()).finishTask();
-        }catch(ClassCastException e) {
-            getFragmentManager().popBackStack();
-        }
+        ((WakeActivity) getActivity()).finishTask();
     }
 
     @Override

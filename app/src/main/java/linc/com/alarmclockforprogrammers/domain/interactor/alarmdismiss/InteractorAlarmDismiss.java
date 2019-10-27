@@ -1,15 +1,15 @@
-package linc.com.alarmclockforprogrammers.domain.interactor.dismiss;
+package linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss;
 
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryDismiss;
 
-public class InteractorDismiss {
+public class InteractorAlarmDismiss {
 
     private RepositoryDismiss repository;
     private MediaManager player;
 
-    public InteractorDismiss(RepositoryDismiss repository,
-                             MediaManager player) {
+    public InteractorAlarmDismiss(RepositoryDismiss repository,
+                                  MediaManager player) {
         this.repository = repository;
         this.player = player;
     }

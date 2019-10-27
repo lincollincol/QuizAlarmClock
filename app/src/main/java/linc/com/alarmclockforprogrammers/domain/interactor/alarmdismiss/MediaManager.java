@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.domain.interactor.dismiss;
+package linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss;
 
 public interface MediaManager {
 

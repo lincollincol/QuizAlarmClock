@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.ui.task;
+package linc.com.alarmclockforprogrammers.ui.alarmtask;
 
 import android.content.res.ColorStateList;
 import android.support.annotation.ColorInt;

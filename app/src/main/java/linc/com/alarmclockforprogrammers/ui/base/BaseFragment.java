@@ -21,18 +21,11 @@ import linc.com.alarmclockforprogrammers.ui.alarms.FragmentAlarms;
 import static linc.com.alarmclockforprogrammers.utils.Consts.FAST_SPEED;
 import static linc.com.alarmclockforprogrammers.utils.Consts.NORMAL_SPEED;
 
-public class BaseFragment extends Fragment {
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+public abstract class BaseFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
+    public abstract View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
 
     public void onBackPressed() {

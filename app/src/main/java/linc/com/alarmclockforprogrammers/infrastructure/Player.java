@@ -4,7 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.domain.interactor.dismiss.MediaManager;
+import linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss.MediaManager;
 
 public class Player implements MediaManager {
 

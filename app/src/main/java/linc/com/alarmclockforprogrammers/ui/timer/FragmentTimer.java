@@ -1,7 +1,7 @@
 package linc.com.alarmclockforprogrammers.ui.timer;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -13,6 +13,7 @@ import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
 import android.support.transition.TransitionSet;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,42 +22,38 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.concurrent.TimeUnit;
-
 import linc.com.alarmclockforprogrammers.R;
+import linc.com.alarmclockforprogrammers.domain.interactor.timer.InteractorTimerImpl;
+import linc.com.alarmclockforprogrammers.infrastructure.TimerManager;
 import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
-import linc.com.alarmclockforprogrammers.ui.dismiss.FragmentDismiss;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
 public class FragmentTimer extends BaseFragment implements View.OnClickListener, ViewTimer,
-        NumberPicker.OnScrollListener {
+        NumberPicker.OnValueChangeListener {
 
     private NumberPicker hourPicker;
     private NumberPicker minutePicker;
     private NumberPicker secondPicker;
 
-    private ProgressBar progressBar;
     private TextView timeBar;
-    private FloatingActionButton startPauseTimer;
+    private ProgressBar progressBar;
+    private FloatingActionButton startButton;
 
     private ConstraintSet timerConstraintSet;
     private ConstraintLayout layout;
     private Transition layoutAnimation;
 
     private PresenterTimer presenter;
-    private CountDownTimer timer;
-
-    private long timeLeftInMillis;
-    private long progress;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(presenter == null) {
-            this.presenter = new PresenterTimer(this);
+            this.presenter = new PresenterTimer(
+                    new InteractorTimerImpl(new TimerManager())
+            );
         }
 
         // Animation between constraint layout transition
@@ -94,7 +91,7 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
         this.secondPicker = view.findViewById(R.id.timer__second_picker);
         this.progressBar = view.findViewById(R.id.timer__progress_bar);
         this.timeBar = view.findViewById(R.id.timer__time_to_stop);
-        this.startPauseTimer = view.findViewById(R.id.timer__start);
+        this.startButton = view.findViewById(R.id.timer__start);
 
         this.timerConstraintSet = new ConstraintSet();
         this.timerConstraintSet.clone(layout);
@@ -106,29 +103,36 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
         this.minutePicker.setMinValue(PICKERS_MIN);
         this.secondPicker.setMaxValue(PICKER_SECONDS_MAX);
         this.secondPicker.setMinValue(PICKERS_MIN);
+        // todo Const
         this.hourPicker.setFormatter(i -> String.format("%02d", i));
         this.minutePicker.setFormatter(i -> String.format("%02d", i));
         this.secondPicker.setFormatter(i -> String.format("%02d", i));
 
-        toolbar.setNavigationOnClickListener(v -> presenter.returnToAlarms());
-        stopTimer.setOnClickListener(this);
-        this.startPauseTimer.setOnClickListener(this);
-        this.hourPicker.setOnScrollListener(this);
-        this.minutePicker.setOnScrollListener(this);
-        this.secondPicker.setOnScrollListener(this);
 
-        // Disable start button first time
-        this.presenter.setStartEnable(PICKERS_MIN);
-        this.presenter.setData();
+        toolbar.setNavigationOnClickListener(v -> presenter.backToAlarms());
+        stopTimer.setOnClickListener(this);
+        this.startButton.setOnClickListener(this);
+        this.hourPicker.setOnValueChangedListener(this);
+        this.minutePicker.setOnValueChangedListener(this);
+        this.secondPicker.setOnValueChangedListener(this);
+
+        presenter.bind(this);
 
         return view;
+    }
+
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+        presenter.timeChanged(hourPicker.getValue(),
+                minutePicker.getValue(),
+                secondPicker.getValue());
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.timer__start:
-                this.presenter.startOrPauseTimer();
+                this.presenter.changeTimerState();
                 break;
             case R.id.timer__stop:
                 this.presenter.resetTimer();
@@ -137,106 +141,53 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
-    public void onScrollStateChange(NumberPicker view, int scrollState) {
-        int selectedTime = hourPicker.getValue()
-                        + minutePicker.getValue()
-                        + secondPicker.getValue();
-        this.presenter.setStartEnable(selectedTime);
-    }
-
-    @Override
     public void disableDrawerMenu() {
         ((MainActivity) getActivity()).setDrawerEnabled(DISABLE);
     }
 
     @Override
-    public void openProgressLayout() {
+    public void showProgressBar(int progressVisible, int pickerVisible) {
         TransitionManager.beginDelayedTransition(layout, layoutAnimation);
-        this.timerConstraintSet.setVisibility(R.id.timer__hour_picker, ConstraintSet.GONE);
-        this.timerConstraintSet.setVisibility(R.id.timer__minute_picker, ConstraintSet.GONE);
-        this.timerConstraintSet.setVisibility(R.id.timer__second_picker, ConstraintSet.GONE);
-        this.timerConstraintSet.setVisibility(R.id.timer__stop, ConstraintSet.VISIBLE);
-        this.timerConstraintSet.setVisibility(R.id.timer__time_to_stop, ConstraintSet.VISIBLE);
-        this.timerConstraintSet.setVisibility(R.id.timer__progress_bar, ConstraintSet.VISIBLE);
+        this.timerConstraintSet.setVisibility(R.id.timer__hour_picker, pickerVisible);
+        this.timerConstraintSet.setVisibility(R.id.timer__minute_picker, pickerVisible);
+        this.timerConstraintSet.setVisibility(R.id.timer__second_picker, pickerVisible);
+        this.timerConstraintSet.setVisibility(R.id.timer__stop, progressVisible);
+        this.timerConstraintSet.setVisibility(R.id.timer__time_to_stop, progressVisible);
+        this.timerConstraintSet.setVisibility(R.id.timer__progress_bar, progressVisible);
         this.timerConstraintSet.applyTo(layout);
     }
 
     @Override
-    public void closeProgressLayout() {
-        TransitionManager.beginDelayedTransition(layout, layoutAnimation);
-        this.timerConstraintSet.setVisibility(R.id.timer__hour_picker, ConstraintSet.VISIBLE);
-        this.timerConstraintSet.setVisibility(R.id.timer__minute_picker, ConstraintSet.VISIBLE);
-        this.timerConstraintSet.setVisibility(R.id.timer__second_picker, ConstraintSet.VISIBLE);
-        this.timerConstraintSet.setVisibility(R.id.timer__stop, ConstraintSet.GONE);
-        this.timerConstraintSet.setVisibility(R.id.timer__time_to_stop, ConstraintSet.GONE);
-        this.timerConstraintSet.setVisibility(R.id.timer__progress_bar, ConstraintSet.GONE);
-        this.timerConstraintSet.applyTo(layout);
-    }
-
-    @Override
-    public void setIntroducedTime() {
-        // Convert selected time to millis
-        this.timeLeftInMillis = TimeUnit.HOURS.toMillis(this.hourPicker.getValue())
-                + TimeUnit.MINUTES.toMillis(this.minutePicker.getValue())
-                + TimeUnit.SECONDS.toMillis(this.secondPicker.getValue());
-        // Save selected time
-        this.progress = timeLeftInMillis;
-        // Set selected time as max progress in the progress bar
-        this.progressBar.setMax((int)timeLeftInMillis);
-    }
-
-    // todo uncomment lines in the methods
-
-    @Override
-    public void enableStartButton() {
-        this.startPauseTimer.setEnabled(true);
-//        this.startPauseTimer.setBackgroundTintList(ResUtil.getThemeColor(getActivity(),
-//                R.attr.button_default_color));
-    }
-    @Override
-    public void disableStartButton() {
-        this.startPauseTimer.setEnabled(false);
-//        this.startPauseTimer.setBackgroundTintList(ResUtil.getThemeColor(getActivity(),
-//                R.attr.button_disable_color));
-    }
-
-    @Override
-    public void startTimer() {
-        this.timer = new CountDownTimer(timeLeftInMillis, 100) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                timeLeftInMillis = millisUntilFinished;
-                presenter.updateTime(millisUntilFinished);
-            }
-
-            @Override
-            public void onFinish() {
-                presenter.openDismissFragment();
-            }
-        }.start();
-
-        this.startPauseTimer.setImageResource(R.drawable.ic_pause);
-    }
-
-    @Override
-    public void pauseTimer() {
-        this.timer.cancel();
-        this.startPauseTimer.setImageResource(R.drawable.ic_start);
-    }
-
-    @Override
-    public void updateProgressBar(String time) {
-        //  todo refactor it
-        // (progress - (progress-timeLeftInMillis)) to presenter
-        this.progressBar.setProgress((int) (progress - (progress-timeLeftInMillis)) );
+    public void updateTime(String time) {
         this.timeBar.setText(time);
     }
 
     @Override
-    public void openDismissFragment() {
+    public void prepareProgressBar(int maxProgressTime) {
+        this.progressBar.setMax(maxProgressTime);
+    }
+
+    @Override
+    public void updateProgress(int progressTime) {
+        this.progressBar.setProgress(progressTime);
+    }
+
+    @Override
+    public void setStartButtonIcon(int icon) {
+        this.startButton.setImageResource(icon);
+    }
+
+    @Override
+    public void setEnableStartButton(boolean enable, int color) {
+        this.startButton.setEnabled(enable);
+        this.startButton.setBackgroundTintList(ColorStateList.valueOf(color));
+    }
+
+    @Override
+    public void showDismissFragment() {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.alarms_container, new FragmentDismiss())
+                .replace(R.id.alarms_container, new FragmentTimerDismiss())
                 .addToBackStack(null)
                 .commit();
     }
@@ -247,8 +198,8 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
-    public void onBackPressed() {
-        this.presenter.returnToAlarms();
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.unbind();
     }
-
 }

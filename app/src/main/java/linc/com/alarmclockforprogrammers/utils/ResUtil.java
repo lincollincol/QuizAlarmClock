@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.support.annotation.ColorInt;
-import android.support.v4.content.ContextCompat;
+import android.support.constraint.ConstraintSet;
 import android.util.TypedValue;
 
 import linc.com.alarmclockforprogrammers.R;
 
 public class ResUtil {
 
-    private Context context;
+    private static Context context;
 
     public ResUtil(Context context) {
         this.context = context;
@@ -42,14 +42,52 @@ public class ResUtil {
     }
 
 
+    /**
+     * Widget Visibility
+     */
+    public enum Visibility {
+        VISIBLE(ConstraintSet.VISIBLE),
+        INVISIBLE(ConstraintSet.GONE);
+
+        private final int visibility;
+        Visibility(int visibility) {
+            this.visibility = visibility;
+        }
+        public int getState() { return visibility; }
+    }
+
+    /**
+     * Icons
+     */
+    public enum Icon {
+        START(R.drawable.ic_start),
+        PAUSE(R.drawable.ic_pause),
+        STOP(R.drawable.ic_stop);
+
+        private final int icon;
+        Icon(int icon) {
+            this.icon = icon;
+        }
+        public int getIcon() { return icon; }
+    }
+
+    /**
+     * Colors
+     */
+    public enum Color {
+        ENABLE(R.attr.button_default_color),
+        DISABLE(R.attr.button_disable_color);
+
+        private final int color;
+
+        Color(int color) {
+            this.color = color;
+        }
+        public int getColor() { return getAttrColor(color); }
+    }
 
 
-
-
-
-
-
-
+    //todo remove of refactor to enum
     public ColorStateList getStateColor(boolean enableState) {
         int color = R.attr.button_disable_color;
         if(enableState) {
@@ -137,9 +175,9 @@ public class ResUtil {
         return R.style.LightTheme;
     }
 
-    public int getAttrColor(@ColorInt int color) {
+    public static int getAttrColor(@ColorInt int color) {
         TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = this.context.getTheme();
+        Resources.Theme theme = context.getTheme();
         theme.resolveAttribute(color, typedValue, true);
         return typedValue.data;
     }

@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryTask;
-import linc.com.alarmclockforprogrammers.domain.interactor.dismiss.MediaManager;
+import linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss.MediaManager;
 import linc.com.alarmclockforprogrammers.utils.Consts;
 
 public class InteractorTaskImpl implements InteractorTask{

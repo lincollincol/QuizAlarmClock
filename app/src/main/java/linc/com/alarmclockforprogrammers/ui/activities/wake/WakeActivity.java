@@ -13,12 +13,11 @@ import android.view.WindowManager;
 import com.google.gson.Gson;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.domain.interactor.wakeactivity.InteractorWakeActivity;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
-import linc.com.alarmclockforprogrammers.ui.dismiss.FragmentDismiss;
-import linc.com.alarmclockforprogrammers.ui.task.FragmentTask;
+import linc.com.alarmclockforprogrammers.ui.alarmdismiss.FragmentAlarmDismiss;
+import linc.com.alarmclockforprogrammers.ui.alarmtask.FragmentTask;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 
@@ -51,7 +50,7 @@ public class WakeActivity extends AppCompatActivity implements ViewWakeActivity 
         Fragment wakeFragment;
 
         if(!alarm.isContainsTask()) {
-            wakeFragment = new FragmentDismiss();
+            wakeFragment = new FragmentAlarmDismiss();
         }else {
             wakeFragment = new FragmentTask();
         }

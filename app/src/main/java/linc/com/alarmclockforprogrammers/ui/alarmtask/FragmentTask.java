@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.ui.task;
+package linc.com.alarmclockforprogrammers.ui.alarmtask;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;

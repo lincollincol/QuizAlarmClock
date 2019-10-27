@@ -52,6 +52,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5"/>
 
+    <!--todo Fading edges-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/stopwatch__lap_info"
         android:layout_width="0dp"

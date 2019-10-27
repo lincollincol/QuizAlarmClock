@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.ui.task;
+package linc.com.alarmclockforprogrammers.ui.alarmtask;
 
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;

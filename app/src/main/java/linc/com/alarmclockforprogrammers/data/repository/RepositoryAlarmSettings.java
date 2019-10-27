@@ -31,12 +31,6 @@ public class RepositoryAlarmSettings {
                 AlarmEntity alarmEntity = alarmDao.getAlarmById(id) == null ?
                         AlarmEntity.getInstance() : alarmDao.getAlarmById(id);
                 Alarm alarm = mapper.toAlarm(alarmEntity);
-                Log.d("ALARM_DATA", "getAlarmById: ID " + alarm.getId());
-                Log.d("ALARM_DATA", "getAlarmById: HOUR " + alarm.getHour());
-                Log.d("ALARM_DATA", "getAlarmById: MIN " + alarm.getMinute());
-                Log.d("ALARM_DATA", "getAlarmById: DIFF " + alarm.getDifficult());
-                Log.d("ALARM_DATA", "getAlarmById: LANG " + alarm.getLanguage());
-                Log.d("ALARM_DATA", "getAlarmById: DAYS " + Arrays.toString(alarm.getSelectedDays()));
                 this.alarm = alarm;
                 emitter.onSuccess(alarm);
             }catch (Exception e){
@@ -51,12 +45,6 @@ public class RepositoryAlarmSettings {
                 //todo map tom entity
                 () -> {
                     AlarmEntity alarmEntity = mapper.toAlarmEntity(alarm);
-                    Log.d("ALARM_DATA", "getAlarmById: ID " + alarmEntity.getId());
-                    Log.d("ALARM_DATA", "getAlarmById: TIME " + alarmEntity.getTime());
-                    Log.d("ALARM_DATA", "getAlarmById: DAYS " + alarmEntity.getDays());
-                    Log.d("ALARM_DATA", "getAlarmById: DIFF " + alarmEntity.getDifficult());
-                    Log.d("ALARM_DATA", "getAlarmById: LANG " + alarmEntity.getLanguage());
-
                     alarmDao.insertAlarm(alarmEntity);
                 }
         ).subscribeOn(Schedulers.io())
