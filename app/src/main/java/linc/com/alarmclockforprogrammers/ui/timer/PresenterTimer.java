@@ -1,8 +1,5 @@
 package linc.com.alarmclockforprogrammers.ui.timer;
 
-import android.util.Log;
-
-import java.sql.Time;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -115,7 +112,7 @@ public class PresenterTimer {
                 ResUtil.Visibility.VISIBLE.getState() : ResUtil.Visibility.INVISIBLE.getState();
         int picker = progressLayout ?
                 ResUtil.Visibility.INVISIBLE.getState() : ResUtil.Visibility.VISIBLE.getState();
-        view.showProgressBar(progress, picker);
+        view.setProgressBarVisible(progress, picker);
     }
 
     private void setStartButton(boolean enable) {
@@ -124,7 +121,7 @@ public class PresenterTimer {
     }
 
     /**
-     * Time calculations
+     * Time calculations todo delete from presenter, use TimeConverter
      */
     private long getTimeInSeconds(int hour, int minute, int second) {
         return TimeUnit.HOURS.toSeconds(hour) + TimeUnit.MINUTES.toSeconds(minute) + second;

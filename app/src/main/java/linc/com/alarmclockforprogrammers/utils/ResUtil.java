@@ -62,7 +62,8 @@ public class ResUtil {
     public enum Icon {
         START(R.drawable.ic_start),
         PAUSE(R.drawable.ic_pause),
-        STOP(R.drawable.ic_stop);
+        STOP(R.drawable.ic_stop),
+        LAP(R.drawable.ic_stopwatch_lap);
 
         private final int icon;
         Icon(int icon) {

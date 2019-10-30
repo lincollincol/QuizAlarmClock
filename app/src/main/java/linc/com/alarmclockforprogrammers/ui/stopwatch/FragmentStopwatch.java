@@ -23,10 +23,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.data.entity.Lap;
+import linc.com.alarmclockforprogrammers.data.repository.RepositoryStopwatch;
+import linc.com.alarmclockforprogrammers.domain.interactor.stopwatch.InteractorStopwatchImpl;
+import linc.com.alarmclockforprogrammers.infrastructure.StopwatchManager;
 import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
+import linc.com.alarmclockforprogrammers.ui.mapper.LapViewModelMapper;
 import linc.com.alarmclockforprogrammers.ui.stopwatch.adapters.AdapterLaps;
+import linc.com.alarmclockforprogrammers.ui.viewmodel.LapViewModel;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
@@ -34,8 +38,7 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
 
     private FloatingActionButton startPauseStopwatch;
     private FloatingActionButton lapStopStopwatch;
-    private TextView time;
-    private ObjectAnimator progressAnimation;
+    private TextView timeBar;
     private RecyclerView lapsInfo;
     private ConstraintLayout layout;
     private ConstraintSet constraintSet;
@@ -43,14 +46,17 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
     private AdapterLaps adapter;
     private PresenterStopwatch presenter;
 
-    private long progressTime;
+    private ObjectAnimator progressAnimation;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if(presenter == null) {
-            this.presenter = new PresenterStopwatch(this);
+            this.presenter = new PresenterStopwatch(
+                    new InteractorStopwatchImpl(new RepositoryStopwatch(), new StopwatchManager()),
+                    new LapViewModelMapper()
+            );
         }
     }
 
@@ -61,7 +67,7 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
 
         Toolbar toolbar = view.findViewById(R.id.stopwatch__toolbar);
         ProgressBar progressBar = view.findViewById(R.id.stopwatch__progress_bar);
-        this.time = view.findViewById(R.id.stow);
+        this.timeBar = view.findViewById(R.id.stow);
         this.lapsInfo = view.findViewById(R.id.stopwatch__lap_info);
         this.startPauseStopwatch = view.findViewById(R.id.stopwatch__start_pause);
         this.lapStopStopwatch = view.findViewById(R.id.stopwatch__lap_stop);
@@ -70,9 +76,9 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
         SnapHelper snapHelper = new LinearSnapHelper();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         this.adapter = new AdapterLaps();
+        this.constraintSet = new ConstraintSet();
         this.progressAnimation = ObjectAnimator.ofInt(progressBar,
                 getResources().getString(R.string.animator_property_progress), ANIMATION_START, ANIMATION_END);
-        this.constraintSet = new ConstraintSet();
 
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
@@ -81,14 +87,17 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
         this.lapsInfo.setLayoutManager(layoutManager);
         this.lapsInfo.setAdapter(adapter);
 
-        toolbar.setNavigationOnClickListener(v -> presenter.returnToAlarms());
+        toolbar.setNavigationOnClickListener(v -> presenter.backToAlarms());
         this.startPauseStopwatch.setOnClickListener(this);
         this.lapStopStopwatch.setOnClickListener(this);
         this.progressAnimation.setDuration(ONE_MINUTE);
         this.progressAnimation.setInterpolator(new LinearInterpolator());
         this.progressAnimation.setRepeatCount(ValueAnimator.INFINITE);
         this.constraintSet.clone(layout);
-        this.presenter.setData();
+
+        //todo onCreate?
+        presenter.bind(this);
+
         return view;
     }
 
@@ -96,70 +105,73 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.stopwatch__start_pause:
-                this.presenter.startOrPauseStopwatch();
+                this.presenter.startInteraction();
                 break;
             case R.id.stopwatch__lap_stop:
-                this.presenter.stopOrLapStopwatch();
+                this.presenter.stopInteraction();
                 break;
         }
     }
 
     @Override
-    public void disableDrawerMenu() {
-        ((MainActivity) getActivity()).setDrawerEnabled(DISABLE);
+    public void setDrawerEnable(boolean enable) {
+        ((MainActivity) getActivity()).setDrawerEnabled(enable);
     }
 
     @Override
-    public void startStopwatch() {
+    public void setProgressBarVisible(int progressVisible) {
         TransitionManager.beginDelayedTransition(this.layout,
                 new AutoTransition().setDuration(FAST_SPEED));
-        this.constraintSet.setVisibility(R.id.stopwatch__lap_stop, ConstraintSet.VISIBLE);
-        this.constraintSet.applyTo(layout);
-
-        this.startPauseStopwatch.setImageResource(R.drawable.ic_pause);
-        this.lapStopStopwatch.setImageResource(R.drawable.ic_stopwatch_lap);
-    }
-
-    @Override
-    public void pauseStopwatch() {
-        this.startPauseStopwatch.setImageResource(R.drawable.ic_start);
-        this.lapStopStopwatch.setImageResource(R.drawable.ic_stop);
-    }
-
-    @Override
-    public void resetStopwatch() {
-        this.adapter.clearLaps();
-        this.progressAnimation.setCurrentPlayTime(ANIMATION_START);
-        this.progressTime = ANIMATION_START;
-        this.time.setText(R.string.time_default);
-
-        TransitionManager.beginDelayedTransition(this.layout,
-                new AutoTransition().setDuration(FAST_SPEED));
-        this.constraintSet.setVisibility(R.id.stopwatch__lap_stop, ConstraintSet.GONE);
+        this.constraintSet.setVisibility(R.id.stopwatch__lap_stop, progressVisible);
         this.constraintSet.applyTo(layout);
     }
 
     @Override
-    public void addLap(Lap lap) {
+    public void startProgress() {
+        this.progressAnimation.start();
+    }
+
+    @Override
+    public void resumeProgress() {
+        progressAnimation.resume();
+    }
+
+    @Override
+    public void pauseProgress() {
+        progressAnimation.pause();
+    }
+
+    @Override
+    public void resetProgress() {
+        progressAnimation.cancel();
+        //todo const val
+        progressAnimation.setCurrentPlayTime(0);
+    }
+
+    @Override
+    public void updateTime(String time) {
+        this.timeBar.setText(time);
+    }
+
+    @Override
+    public void showLap(LapViewModel lap) {
         this.adapter.addLap(lap);
         this.lapsInfo.scrollToPosition(adapter.getItemCount() - 1);
     }
 
     @Override
-    public void runProgressBar() {
-        this.progressAnimation.start();
-        this.progressAnimation.setCurrentPlayTime(progressTime);
+    public void clearLaps() {
+        this.adapter.clearLaps();
     }
 
     @Override
-    public void pauseProgressBar() {
-        this.progressTime = progressAnimation.getCurrentPlayTime();
-        this.progressAnimation.cancel();
+    public void setStartButtonIcon(int icon) {
+        startPauseStopwatch.setImageResource(icon);
     }
 
     @Override
-    public void updateTime(long timeInMillis) {
-        this.time.setText(Lap.getReadableTime(timeInMillis));
+    public void setStopButtonIcon(int icon) {
+        lapStopStopwatch.setImageResource(icon);
     }
 
     @Override
@@ -169,6 +181,7 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
 
     @Override
     public void onBackPressed() {
-        this.presenter.returnToAlarms();
+        this.presenter.backToAlarms();
     }
+
 }

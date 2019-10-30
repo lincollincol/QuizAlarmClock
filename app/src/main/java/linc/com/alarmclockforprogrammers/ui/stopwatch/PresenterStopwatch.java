@@ -1,87 +1,109 @@
 package linc.com.alarmclockforprogrammers.ui.stopwatch;
 
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import linc.com.alarmclockforprogrammers.data.entity.Lap;
+import linc.com.alarmclockforprogrammers.domain.interactor.stopwatch.InteractorStopwatch;
+import linc.com.alarmclockforprogrammers.ui.mapper.LapViewModelMapper;
+import linc.com.alarmclockforprogrammers.utils.ResUtil;
+import linc.com.alarmclockforprogrammers.utils.TimeConverter;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
 public class PresenterStopwatch {
 
     private ViewStopwatch view;
-    private Disposable stopwatch;
+    private InteractorStopwatch interactor;
+    private LapViewModelMapper mapper;
+    private boolean progressLayout;
 
-    private boolean running;
-    private int numberOfLaps = DEFAULT_TIME;
-    private long previousLapTime = DEFAULT_TIME;
-    private long currentTime = DEFAULT_TIME;
+    public PresenterStopwatch(InteractorStopwatch interactor, LapViewModelMapper mapper) {
+        this.interactor = interactor;
+        this.mapper = mapper;
+    }
 
-    public PresenterStopwatch(ViewStopwatch view) {
+    void bind(ViewStopwatch view) {
         this.view = view;
+        this.view.setDrawerEnable(DISABLE);
     }
 
-    public void setData() {
-        view.disableDrawerMenu();
+    void unbind() {
+        //todo dispose with CompositeDisposables
     }
 
-    public void startOrPauseStopwatch() {
-        if(!running) {
-            view.startStopwatch();
-            view.runProgressBar();
-            runStopwatch();
-        }else {
-            view.pauseStopwatch();
-            view.pauseProgressBar();
-            pauseStopwatch();
+    void startInteraction() {
+        Disposable d = interactor.timerState()
+                .subscribe(running -> {
+                    if(!running) {
+                        startStopwatch();
+                    }else {
+                        pauseStopwatch();
+                    }
+                    setButtonIcon(running);
+                });
+    }
+
+    void stopInteraction() {
+        Disposable d = interactor.timerState()
+                .subscribe(running -> {
+                    if(running) {
+                        addLap();
+                    }else {
+                        stopStopwatch();
+                    }
+                });
+    }
+
+
+    /**
+     * Stopwatch functions
+     */
+    private void startStopwatch() {
+        if(!progressLayout) {
+            view.setProgressBarVisible(ResUtil.Visibility.VISIBLE.getState());
+            view.startProgress();
+            progressLayout = true;
         }
-    }
-
-    public void stopOrLapStopwatch() {
-        if(!running) {
-            view.pauseProgressBar();
-            view.pauseStopwatch();
-            view.resetStopwatch();
-            pauseStopwatch();
-            resetStopwatch();
-        }else {
-            view.addLap(createLap());
-        }
-    }
-
-    private Lap createLap() {
-        this.previousLapTime = (currentTime * MILLISECOND) - previousLapTime;
-        this.numberOfLaps++;
-        return new Lap( numberOfLaps, (currentTime*MILLISECOND));
-    }
-
-    private void runStopwatch() {
-        this.stopwatch = Observable.intervalRange(currentTime, (Long.MAX_VALUE-currentTime),
-                0, MILLISECOND, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
+        view.resumeProgress();
+        Disposable d = this.interactor.start()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    this.currentTime = aLong;
-                    view.updateTime(aLong*MILLISECOND);
-                });
-        this.running = true;
+                    view.updateTime(TimeConverter.MILLISECONDS.toReadable(aLong));
+                }, Throwable::printStackTrace);
     }
 
     private void pauseStopwatch() {
-        this.stopwatch.dispose();
-        this.running = false;
+        view.pauseProgress();
+        interactor.stop();
     }
 
-    private void resetStopwatch() {
-        this.numberOfLaps = DEFAULT_TIME;
-        this.previousLapTime = DEFAULT_TIME;
-        this.currentTime = DEFAULT_TIME;
+    private void stopStopwatch() {
+        if (progressLayout) {
+            //todo refactor to constants
+            view.setProgressBarVisible(ResUtil.Visibility.INVISIBLE.getState());
+            view.updateTime("00:00");
+            view.resetProgress();
+            view.clearLaps();
+            progressLayout = false;
+        }
+        interactor.reset();
     }
 
-    public void returnToAlarms() {
+    private void addLap() {
+        Disposable d = interactor.addLap()
+                .subscribe(lap -> view.showLap(mapper.toLapViewModel(lap)),
+                        Throwable::printStackTrace);
+    }
+    /**
+     * Buttons
+     */
+    private void setButtonIcon(boolean running) {
+        int startIcon = running ? ResUtil.Icon.START.getIcon() : ResUtil.Icon.PAUSE.getIcon();
+        int stopIcon = running ? ResUtil.Icon.STOP.getIcon() : ResUtil.Icon.LAP.getIcon();
+        view.setStartButtonIcon(startIcon);
+        view.setStopButtonIcon(stopIcon);
+    }
+
+    public void backToAlarms() {
         this.view.openAlarmsFragment();
     }
 }

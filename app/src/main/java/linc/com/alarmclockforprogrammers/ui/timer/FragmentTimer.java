@@ -146,7 +146,7 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
-    public void showProgressBar(int progressVisible, int pickerVisible) {
+    public void setProgressBarVisible(int progressVisible, int pickerVisible) {
         TransitionManager.beginDelayedTransition(layout, layoutAnimation);
         this.timerConstraintSet.setVisibility(R.id.timer__hour_picker, pickerVisible);
         this.timerConstraintSet.setVisibility(R.id.timer__minute_picker, pickerVisible);

@@ -13,20 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.data.entity.Lap;
+import linc.com.alarmclockforprogrammers.domain.model.Lap;
+import linc.com.alarmclockforprogrammers.ui.viewmodel.LapViewModel;
+import linc.com.alarmclockforprogrammers.utils.TimeConverter;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
 public class AdapterLaps extends RecyclerView.Adapter<AdapterLaps.LapsHolder>{
 
-    private List<Lap> laps;
+    private List<LapViewModel> laps;
+    //todo remove?
     private int lastPosition = LAST_ITEM_POSITION_DEFAULT;
 
     public AdapterLaps() {
         this.laps = new ArrayList<>();
     }
 
-    public void addLap(Lap lap) {
+    public void addLap(LapViewModel lap) {
         this.laps.add(lap);
         notifyItemInserted(laps.size());
     }
@@ -76,9 +79,9 @@ public class AdapterLaps extends RecyclerView.Adapter<AdapterLaps.LapsHolder>{
             this.actualTime = itemView.findViewById(R.id.item_stopwatch__actual_time);
         }
 
-        private void setLap(Lap lap) {
+        private void setLap(LapViewModel lap) {
             this.id.setText(String.valueOf(lap.getId()));
-            this.actualTime.setText(Lap.getReadableTime(lap.getActualTime()));
+            this.actualTime.setText(lap.getTime());
         }
 
     }

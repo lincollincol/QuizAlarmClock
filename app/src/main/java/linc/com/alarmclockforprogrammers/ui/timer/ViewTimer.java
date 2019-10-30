@@ -4,7 +4,7 @@ public interface ViewTimer {
 
     void disableDrawerMenu();
 
-    void showProgressBar(int progressVisible, int pickerVisible);
+    void setProgressBarVisible(int progressVisible, int pickerVisible);
     void updateTime(String time);
     void prepareProgressBar(int maxProgressTime);
     void updateProgress(int progressTime);

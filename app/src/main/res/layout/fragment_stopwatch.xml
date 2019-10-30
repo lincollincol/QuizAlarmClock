@@ -52,12 +52,14 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5"/>
 
-    <!--todo Fading edges-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/stopwatch__lap_info"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:overScrollMode="never"
+        android:fadingEdge="horizontal"
+        android:fadingEdgeLength="70dp"
+        android:fillViewport="false"
+        android:requiresFadingEdge="vertical"
         app:layout_constraintTop_toBottomOf="@+id/stopwatch__horizontal_recycler_fix"
         app:layout_constraintBottom_toTopOf="@id/stopwatch__horizontal_fix_line"
         app:layout_constraintLeft_toLeftOf="parent"
