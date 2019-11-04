@@ -1,24 +1,22 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.task;
 
-import android.util.Log;
-
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
-import linc.com.alarmclockforprogrammers.data.repository.RepositoryTask;
+import linc.com.alarmclockforprogrammers.data.repository.RepositoryTaskImpl;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss.MediaManager;
-import linc.com.alarmclockforprogrammers.utils.Consts;
+import linc.com.alarmclockforprogrammers.domain.model.Question;
 
 public class InteractorTaskImpl implements InteractorTask{
 
-    private CompositeDisposable disposables;
     private RepositoryTask repository;
     private MediaManager player;
-    private InteractorTask.Callback callback;
 
     private int currentQuestion = 0;
     private int correctAnswers = 0;
@@ -26,113 +24,101 @@ public class InteractorTaskImpl implements InteractorTask{
     public InteractorTaskImpl(RepositoryTask repository, MediaManager player) {
         this.repository = repository;
         this.player = player;
-        this.disposables = new CompositeDisposable();
     }
 
     @Override
-    public void execute(InteractorTask.Callback callback, int alarmId) {
-        this.callback = callback;
-        Disposable d = repository.loadQuestions(alarmId)
-            .subscribe(this::updateScreen);
+    public Completable execute(int alarmId) {
         player.start();
-        addDisposable(d);
-        Log.d("EXECUTE_METHOD", "execute: ");
-    }
-
-    public void makePayment() {
-        int balance = repository.getBalance() - getQuestion().getSkipPrice();
-        repository.saveBalance(balance);
-        checkAnswer(getQuestion().getCorrectAnswer());
+        return repository.loadQuestions(alarmId);
     }
 
     @Override
-    public void checkAnswer(int answerPosition) {
-        if(getQuestion().getCorrectAnswer() == answerPosition) {
+    public Observable<Boolean> checkAnswer(int answerPosition) {
+        return Observable.create(emitter -> {
+            boolean isCorrect = getQuestion().getAnswer() == answerPosition;
+            correctAnswers += isCorrect ? 1 : 0;
+            currentQuestion++;
+            emitter.onNext(isCorrect);
+            emitter.onComplete();
+        });
+    }
+
+    @Override
+    public Single<Integer> calculatePaymentPrice() {
+        return Single.fromCallable(() -> getQuestion().getSkipPrice());
+    }
+
+    @Override
+    public Single<Integer> makePayment() {
+        return Single.create(emitter -> {
+            emitter.onSuccess(getQuestion().getAnswer());
+            repository.saveBalance(repository.getBalance() - getQuestion().getSkipPrice());
             this.correctAnswers++;
-        }else if(answerPosition > 0) {
-            callback.highlightAnswer(answerPosition, Consts.INCORRECT);
-        }
-        callback.highlightAnswer(getQuestion().getCorrectAnswer(), Consts.CORRECT);
-        this.currentQuestion++;
-
-        Log.d("CORRECT", "checkAnswer: " + correctAnswers);
-        Log.d("CURRENT", "checkAnswer: " + currentQuestion);
-
-        if(!isTestCompleted()) {
-            Disposable d = Completable.timer(3, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-                    .subscribe(this::updateScreen);
-            addDisposable(d);
-        }
+            this.currentQuestion++;
+        });
     }
 
     @Override
-    public void calculateSkipPrice() {
-        this.callback.showPrice(getQuestion().getSkipPrice());
+    public Single<Question> nextQuestion() {
+        return Single.fromCallable(this::getQuestion)
+                .delay(3, TimeUnit.SECONDS)
+                //todo schedulers.ui
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Single<Integer> timeOut() {
+        return Single.create(emitter -> {
+            emitter.onSuccess(getQuestion().getAnswer());
+            this.currentQuestion++;
+        });
+    }
+
+    @Override
+    public Single<Boolean> checkTaskCompletion() {
+        return Single.fromCallable(this::isTaskCompleted);
+    }
+
+    @Override
+    public Single<Boolean> isTaskPassed() {
+        return Single.create(emitter -> {
+            int questionsAmount = getQuestion().getQuestionsAmount();
+
+            if(isTaskCompleted()) {
+                int alarmCoins = getQuestion().getTestAward();
+
+                if(correctAnswers < questionsAmount) {
+                    repository.saveBalance(repository.getBalance() - alarmCoins);
+                    emitter.onSuccess(false);
+                }else {
+                    repository.saveBalance(repository.getBalance() + alarmCoins);
+                    emitter.onSuccess(true);
+                }
+            }
+        });
+    }
+
+    @Override
+    public Single<Integer> getBalance() {
+        return Single.fromCallable(() -> repository.getBalance());
     }
 
     @Override
     public void stop() {
         player.stop();
-        dispose();
     }
 
-    private void updateScreen() {
-        callback.updateQuestion(getQuestion());
-        callback.updateBalance(repository.getBalance());
-        callback.updateCompletedTasks(correctAnswers, getQuestion().getNumberOfQuestions());
-        Log.d("DIFF", "updateScreen: " + getQuestion().getDifficult());
-    }
+    private boolean isTaskCompleted() {
+        int questionsAmount = getQuestion().getQuestionsAmount();
 
-    // todo timeout reset +
-    // todo text color reset +
-    // todo disable fab after payment +
-    // todo text in the finish dialog to res/string -
-    // todo disable fab, if nothing is selected +
-
-    private boolean isTestCompleted() {
-        int alarmCoins = getQuestion().getTestAward();
-        int numberOfQuestions = getQuestion().getNumberOfQuestions();
-
-        if(currentQuestion == (numberOfQuestions * 2 - 1)) {
-            if(correctAnswers < numberOfQuestions) {
-                Log.d("LOSE", "isTestCompleted: ");
-                repository.saveBalance(repository.getBalance() - alarmCoins);
-                callback.finishTest(false, alarmCoins);
-                return true;
-            }
-        }
-
-        if(correctAnswers >= numberOfQuestions) {
-            Log.d("WIN", "isTestCompleted: ");
-            repository.saveBalance(repository.getBalance() + alarmCoins);
-            callback.finishTest(true, alarmCoins);
+        if(currentQuestion == (questionsAmount * 2 - 1)) {
             return true;
+        }else {
+            return correctAnswers >= questionsAmount;
         }
-
-        return false;
     }
 
-
-    private QuestionEntity getQuestion() {
+    private Question getQuestion() {
         return this.repository.getQuestion(currentQuestion);
-    }
-
-    private void setQuestionCompleted(QuestionEntity question) {
-        // todo refactor
-        question.setCompleted(true);
-        this.repository.setQuestionCompleted(question)
-                .subscribe();
-    }
-
-    private void addDisposable(Disposable disposable) {
-        if(disposable != null && disposables != null) {
-            disposables.add(disposable);
-        }
-    }
-
-    private void dispose() {
-        if (!disposables.isDisposed()) {
-            disposables.dispose();
-        }
     }
 }

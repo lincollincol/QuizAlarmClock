@@ -1,107 +1,152 @@
 package linc.com.alarmclockforprogrammers.ui.alarmtask;
 
-import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
+import android.util.Log;
+
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.task.InteractorTask;
+import linc.com.alarmclockforprogrammers.ui.mapper.QuestionViewModelMapper;
 import linc.com.alarmclockforprogrammers.utils.Consts;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
-public class PresenterTask implements InteractorTask.Callback {
+public class PresenterTask {
 
     private ViewTask view;
     private InteractorTask interactor;
-    private ResUtil resUtil;
+    private QuestionViewModelMapper mapper;
+    private CompositeDisposable disposables;
 
-    public PresenterTask(InteractorTask interactor, ResUtil resUtil) {
+    public PresenterTask(InteractorTask interactor, QuestionViewModelMapper mapper) {
         this.interactor = interactor;
-        this.resUtil = resUtil;
+        this.mapper = mapper;
+        this.disposables = new CompositeDisposable();
     }
 
     public void bind(ViewTask view, int alarmId) {
         this.view = view;
-        this.interactor.execute(this, alarmId);
+        Disposable d = this.interactor.execute(alarmId)
+            .subscribe(this::nextQuestion, Throwable::printStackTrace);
+        addDisposable(d);
     }
 
     public void unbind() {
         this.view = null;
+        this.interactor.stop();
+        dispose();
     }
 
-    @Override
-    public void updateQuestion(QuestionEntity question) {
-        this.view.showQuestion(question);
-        this.view.disappearHighlight(resUtil.getDefaultTextColor());
-        this.view.startProgress();
-        setFabEnable(Consts.ENABLE, Consts.DISABLE);
+    void optionSelected() {
+        view.setNextEnable(Consts.ENABLE, ResUtil.Color.ENABLE.getColor());
     }
 
-    @Override
-    public void updateBalance(int balance) {
-        this.view.showBalance(balance);
+    void checkAnswer(int answerPosition) {
+        Disposable d = this.interactor.checkAnswer(answerPosition)
+            .subscribe(correct -> displayAnswer(correct, answerPosition),
+                       Throwable::printStackTrace,
+                       this::checkCompletion
+            );
+        disableUiInteraction();
+        addDisposable(d);
     }
 
-    @Override
-    public void updateCompletedTasks(int completedTasks, int numberOfQuestions) {
-        this.view.showCompletedQuestions(completedTasks + "/" + numberOfQuestions);
+    void showPaymentPrice() {
+        Disposable d = interactor.calculatePaymentPrice()
+                .subscribe(price ->
+                    view.showPayDialog(ResUtil.Message.PAYMENT_PRICE.getWithParam(price)),
+                Throwable::printStackTrace);
+        addDisposable(d);
     }
 
-    @Override
-    public void highlightAnswer(int position, boolean isCorrect) {
-        view.highlightAnswers(position, resUtil.getAnswerColor(isCorrect));
-    }
-
-    @Override
-    public void showPrice(int price) {
-        view.showPayDialog(resUtil.getStringWithParam(R.string.dialog_message_pay, price));
-    }
-
-    @Override
-    public void finishTest(boolean isSuccess, int award) {
-        String message = resUtil.getStringWithParam(isSuccess ?
-                R.string.dialog_message_completed :
-                R.string.dialog_message_failed, award);
-        view.showFinishDialog(message);
-    }
-
-    void nextButtonClicked(int answerPosition) {
-        setFabEnable(Consts.DISABLE, Consts.DISABLE);
-        this.view.pauseProgress();
-        this.interactor.checkAnswer(answerPosition);
-    }
-
-    void answerChecked() {
-        setFabEnable(Consts.ENABLE);
-    }
-
-    void payButtonClicked() {
-        interactor.calculateSkipPrice();
-    }
-
-    void paymentConfirmed() {
-        setFabEnable(Consts.DISABLE, Consts.DISABLE);
-        this.view.pauseProgress();
-        this.interactor.makePayment();
-    }
-
-    void finishConfirmed() {
-        view.closeActivity();
-        interactor.stop();
-    }
-
-    void timeOutConfirmed() {
-        interactor.checkAnswer(-1);
+    void makePayment() {
+        Disposable d = interactor.makePayment()
+                .subscribe(answerPosition -> {
+                    displayAnswer(true, answerPosition);
+                    checkCompletion();
+                });
+        disableUiInteraction();
+        addDisposable(d);
     }
 
     void timeOut() {
-        setFabEnable(Consts.DISABLE, Consts.DISABLE);
-        view.showTimeOutDialog();
+        Disposable d = interactor.timeOut()
+                .subscribe(answerPosition -> {
+                    displayAnswer(true, answerPosition);
+                    checkCompletion();
+                });
+        disableUiInteraction();
+        addDisposable(d);
     }
 
-    private void setFabEnable(boolean payEnable, boolean nextEnable) {
-        view.setNextEnable(nextEnable, resUtil.getStateColor(nextEnable));
-        view.setPayEnable(payEnable, resUtil.getStateColor(payEnable));
+    void finishTask() {
+        view.closeActivity();
     }
 
-    private void setFabEnable(boolean nextEnable) {
-        view.setNextEnable(nextEnable, resUtil.getStateColor(nextEnable));
+    private void checkCompletion() {
+        Disposable d = interactor.checkTaskCompletion()
+                .subscribe(completed -> {
+                    if(completed) {
+                        finishTest();
+                    }else {
+                        nextQuestion();
+                    }
+                });
+        addDisposable(d);
     }
+
+    private void nextQuestion() {
+        Disposable d = interactor.nextQuestion()
+                .subscribe(question -> {
+                    view.startProgress();
+                    view.showQuestion(mapper.toQuestionViewModel(question));
+                    view.disappearHighlight(ResUtil.Color.DEFAULT.getColor());
+                    view.setOptionsEnable(Consts.ENABLE);
+                    view.setPayEnable(Consts.ENABLE, ResUtil.Color.ENABLE.getColor());
+                    view.setNextEnable(Consts.DISABLE, ResUtil.Color.DISABLE.getColor());
+                    displayBalance();
+                }, Throwable::printStackTrace);
+        addDisposable(d);
+    }
+
+    private void finishTest() {
+        Disposable d = interactor.isTaskPassed()
+                .subscribe(passed -> {
+                    String message = passed ? ResUtil.Message.TASK_SUCCESS.getMessage() :
+                                              ResUtil.Message.TASK_FAIL.getMessage();
+                    view.showFinishDialog(message);
+                }, Throwable::printStackTrace);
+        addDisposable(d);
+    }
+
+    private void displayBalance() {
+        Disposable d = interactor.getBalance()
+                .subscribe(view::showBalance);
+        addDisposable(d);
+    }
+
+    private void displayAnswer(boolean correct, int position) {
+        int color = correct ? ResUtil.Color.CORRECT.getColor() :
+                ResUtil.Color.INCORRECT.getColor();
+        view.highlightAnswers(position, color);
+    }
+
+    private void disableUiInteraction() {
+        int color = ResUtil.Color.DISABLE.getColor();
+        view.setNextEnable(Consts.DISABLE, color);
+        view.setPayEnable(Consts.DISABLE, color);
+        view.setOptionsEnable(Consts.DISABLE);
+        view.pauseProgress();
+    }
+
+    private void addDisposable(Disposable disposable) {
+        if(disposable != null && disposables != null) {
+            disposables.add(disposable);
+        }
+    }
+
+    private void dispose() {
+        if (!disposables.isDisposed()) {
+            disposables.dispose();
+        }
+    }
+
 }

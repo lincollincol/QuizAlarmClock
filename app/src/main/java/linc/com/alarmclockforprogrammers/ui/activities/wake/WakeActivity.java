@@ -41,9 +41,6 @@ public class WakeActivity extends AppCompatActivity implements ViewWakeActivity 
         this.presenter.setData();
 
         Bundle data = new Bundle();
-//        AlarmEntity alarm = new Gson().fromJson(
-//                getIntent().getStringExtra("ALARM_JSON"), AlarmEntity.class);
-
         Alarm alarm = new Gson().fromJson(
                 getIntent().getStringExtra("ALARM_JSON"), Alarm.class);
 

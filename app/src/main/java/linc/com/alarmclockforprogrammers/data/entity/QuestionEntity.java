@@ -17,7 +17,6 @@ public class QuestionEntity {
     @ColumnInfo(name = "_id")
     private int id;
 
-
     @ColumnInfo(name = "difficult", typeAffinity = INTEGER)
     private int difficult;
 
@@ -42,9 +41,6 @@ public class QuestionEntity {
 
     @ColumnInfo(name = "completed", typeAffinity = INTEGER)
     private boolean completed;
-
-    @Ignore
-    private List<String> answersList;
 
     public QuestionEntity(int id, int difficult, int correctAnswer, String programmingLanguage,
                           String preQuestion, String postQuestion, String jsonAnswers, String htmlCodeSnippet, boolean completed) {
@@ -131,23 +127,8 @@ public class QuestionEntity {
         this.completed = completed;
     }
 
-    public List<String> getAnswersList() {
-        return answersList;
-    }
-
-    public void setAnswersList(List<String> answersList) {
-        this.answersList = answersList;
-    }
-
-    public int getNumberOfQuestions() {
+    public int getQuestionsAmount() {
         return ((difficult < 1) ? 3 : (difficult > 1) ? 1 : 2);
     }
 
-    public int getSkipPrice() {
-        return ((difficult < 1) ? 1 : (difficult > 1) ? 5 : 2);
-    }
-
-    public int getTestAward() {
-        return ((difficult < 1) ? 2 : (difficult > 1) ? 4 : 3);
-    }
 }

@@ -1,22 +1,19 @@
 package linc.com.alarmclockforprogrammers.ui.alarmtask;
 
-import android.content.res.ColorStateList;
 import android.support.annotation.ColorInt;
-
-import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
+import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
 
 public interface ViewTask {
 
-    void showQuestion(QuestionEntity question);
-    void showCompletedQuestions(String completedQuestions);
+    void showQuestion(QuestionViewModel question);
     void showBalance(int balance);
     void highlightAnswers(int position, @ColorInt int color);
     void disappearHighlight(@ColorInt int color);
-    void setNextEnable(boolean enable, ColorStateList color);
-    void setPayEnable(boolean enable, ColorStateList color);
+    void setNextEnable(boolean enable, @ColorInt int color);
+    void setPayEnable(boolean enable, @ColorInt int color);
+    void setOptionsEnable(boolean enable);
     void showPayDialog(String message);
     void showFinishDialog(String message);
-    void showTimeOutDialog();
 
     void startProgress();
     void pauseProgress();

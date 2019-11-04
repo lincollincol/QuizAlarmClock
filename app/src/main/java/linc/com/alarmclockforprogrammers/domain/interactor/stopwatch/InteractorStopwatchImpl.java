@@ -1,7 +1,5 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.stopwatch;
 
-import android.view.LayoutInflater;
-
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryStopwatch;

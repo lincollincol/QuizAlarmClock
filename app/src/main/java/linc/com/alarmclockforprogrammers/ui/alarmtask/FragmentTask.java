@@ -20,16 +20,20 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
+import linc.com.alarmclockforprogrammers.data.mapper.QuestionEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.domain.interactor.task.InteractorTaskImpl;
-import linc.com.alarmclockforprogrammers.data.repository.RepositoryTask;
+import linc.com.alarmclockforprogrammers.data.repository.RepositoryTaskImpl;
 import linc.com.alarmclockforprogrammers.infrastructure.Player;
 import linc.com.alarmclockforprogrammers.ui.activities.wake.WakeActivity;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
+import linc.com.alarmclockforprogrammers.ui.mapper.QuestionViewModelMapper;
+import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
+import linc.com.alarmclockforprogrammers.utils.JsonUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.ANIMATION_END;
 import static linc.com.alarmclockforprogrammers.utils.Consts.ANIMATION_START;
@@ -38,8 +42,12 @@ import static linc.com.alarmclockforprogrammers.utils.Consts.TWO_MINUTES;
 public class FragmentTask extends Fragment implements ViewTask, View.OnClickListener,
         Animator.AnimatorListener, RadioGroup.OnCheckedChangeListener {
 
+    //todo lottie animation, when questions do not displayed
+    //todo lottie animation, when questions do not displayed
+    //todo lottie animation, when questions do not displayed
+    //todo lottie animation, when questions do not displayed
+
     private TextView balance;
-    private TextView completedQuestions;
     private TextView preQuestion;
     private TextView postQuestion;
     private WebView codeSnippet;
@@ -55,21 +63,19 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
         super.onCreate(savedInstanceState);
 
         AppDatabase database = AlarmApp.getInstance().getDatabase();
-        int alarmId = getArguments().getInt("ALARM_ID");
 
         if(presenter == null) {
             this.presenter = new PresenterTask(
-                    new InteractorTaskImpl(new RepositoryTask(
+                    new InteractorTaskImpl(new RepositoryTaskImpl(
                             database.questionsDao(),
                             database.alarmDao(),
                             database.achievementsDao(),
-                            new PreferencesAlarm(getContext()))
-                            , new Player(getActivity())
-                    ), new ResUtil(getActivity())
+                            new PreferencesAlarm(getActivity()),
+                            new QuestionEntityMapper(new JsonUtil<>(new Gson()))
+                    ), new Player(getActivity())),
+                    new QuestionViewModelMapper()
             );
         }
-
-        this.presenter.bind(this, alarmId);
     }
 
     @Nullable
@@ -79,7 +85,6 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
 
         ProgressBar progressBar = view.findViewById(R.id.wake__time_for_answer);
         this.balance = view.findViewById(R.id.wake__balance);
-        this.completedQuestions = view.findViewById(R.id.wake__completed_questions);
         this.preQuestion = view.findViewById(R.id.wake__pre_question);
         this.postQuestion = view.findViewById(R.id.wake__post_question);
         this.codeSnippet = view.findViewById(R.id.wake__code_snippet);
@@ -97,6 +102,8 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
         this.progressAnimation.setDuration(TWO_MINUTES);
         this.progressAnimation.start();
 
+        this.presenter.bind(this, getArguments().getInt("ALARM_ID"));
+
         return view;
     }
 
@@ -107,35 +114,30 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
                 // Get selected
                 RadioButton radioButton = getView().findViewById(answersGroup.getCheckedRadioButtonId());
                 // Check answer by position
-                this.presenter.nextButtonClicked(answersGroup.indexOfChild(radioButton));
+                this.presenter.checkAnswer(answersGroup.indexOfChild(radioButton));
                 break;
             case R.id.wake__pay_for_answer:
-                this.presenter.payButtonClicked();
+                this.presenter.showPaymentPrice();
                 break;
         }
     }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        this.presenter.answerChecked();
+        this.presenter.optionSelected();
     }
 
     @Override
-    public void showQuestion(QuestionEntity question) {
-        this.preQuestion.setText(String.valueOf(question.getId()));
+    public void showQuestion(QuestionViewModel question) {
+        this.preQuestion.setText(question.getPreQuestion());
         this.postQuestion.setText(question.getPostQuestion());
         this.codeSnippet.loadData(question.getHtmlCodeSnippet(), "text/html", "utf-8");
         this.answersGroup.clearCheck();
         // Reset radio buttons
         for(int i = 0; i < answersGroup.getChildCount(); i++) {
             RadioButton answer = (RadioButton)answersGroup.getChildAt(i);
-            answer.setText(question.getAnswersList().get(i));
+            answer.setText(question.getAnswerOptions().get(i));
         }
-    }
-
-    @Override
-    public void showCompletedQuestions(String completedQuestions) {
-        this.completedQuestions.setText(completedQuestions);
     }
 
     @Override
@@ -158,15 +160,23 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
     }
 
     @Override
-    public void setNextEnable(boolean enable, ColorStateList color) {
-        this.nextQuestion.setEnabled(enable);
-        this.nextQuestion.setBackgroundTintList(color);
+    public void setOptionsEnable(boolean enable) {
+        for(int i = 0; i < answersGroup.getChildCount(); i++) {
+            RadioButton answer = (RadioButton)answersGroup.getChildAt(i);
+            answer.setEnabled(enable);
+        }
     }
 
     @Override
-    public void setPayEnable(boolean enable, ColorStateList color) {
+    public void setNextEnable(boolean enable, @ColorInt int color) {
+        this.nextQuestion.setEnabled(enable);
+        this.nextQuestion.setBackgroundTintList(ColorStateList.valueOf(color));
+    }
+
+    @Override
+    public void setPayEnable(boolean enable, @ColorInt int color) {
         this.payForQuestion.setEnabled(enable);
-        this.payForQuestion.setBackgroundTintList(color);
+        this.payForQuestion.setBackgroundTintList(ColorStateList.valueOf(color));
     }
 
     @Override
@@ -176,8 +186,7 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
         dialogBuilder.setCancelable(false)
                 .setTitle(R.string.title_dialog_skip_question)
                 .setMessage(message)
-                .setPositiveButton(R.string.dialog_yes_positive, (dialog, id) ->
-                        this.presenter.paymentConfirmed())
+                .setPositiveButton(R.string.dialog_yes_positive, (dialog, id) -> presenter.makePayment())
                 .setNegativeButton(R.string.dialog_no_negative, (dialog, id) -> dialog.cancel())
                 .show();
     }
@@ -187,23 +196,10 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
                 new ContextThemeWrapper(getActivity(), R.style.AlertDialogStyle));
         dialogBuilder.setCancelable(false)
-                .setTitle(R.string.title_dialog_completed)
+                .setTitle(R.string.title_dialog_task)
                 .setMessage(message)
-                .setPositiveButton(R.string.dialog_got_it_positive,
-                        (dialog, id) -> this.presenter.finishConfirmed()
-                ).show();
-    }
-
-    @Override
-    public void showTimeOutDialog() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.AlertDialogStyle));
-        dialogBuilder.setCancelable(false)
-                .setTitle(R.string.title_dialog_time_out)
-                .setMessage(R.string.dialog_message_time_out)
-                .setPositiveButton(R.string.dialog_got_it_positive, (dialog, id) ->
-                        this.presenter.timeOutConfirmed()
-                ).show();
+                .setPositiveButton(R.string.dialog_got_it_positive, (dialog, id) -> presenter.finishTask())
+                .show();
     }
 
     @Override
@@ -223,12 +219,20 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
     }
 
     @Override
-    public void onAnimationStart(Animator animation) {/** Not implemented*/}
-
-    @Override
     public void onAnimationEnd(Animator animation) {
         this.presenter.timeOut();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.unbind();
+    }
+
+    //todo remove methods
+
+    @Override
+    public void onAnimationStart(Animator animation) {/** Not implemented*/}
 
     @Override
     public void onAnimationCancel(Animator animation) {/** Not implemented*/}

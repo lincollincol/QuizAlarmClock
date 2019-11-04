@@ -1,22 +1,22 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.task;
 
+import io.reactivex.Completable;
+import io.reactivex.Maybe;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
+import linc.com.alarmclockforprogrammers.domain.model.Question;
 
 public interface InteractorTask {
 
-    void execute(InteractorTask.Callback callback, int alarmId);
-    void makePayment();
-    void checkAnswer(int answerPosition);
-    void calculateSkipPrice();
+    Completable execute(int alarmId);
+    Observable<Boolean> checkAnswer(int answerPosition);
+    Single<Integer> calculatePaymentPrice();
+    Single<Integer> makePayment();
+    Single<Integer> timeOut();
+    Single<Question> nextQuestion();
+    Single<Boolean> checkTaskCompletion();
+    Single<Boolean> isTaskPassed();
+    Single<Integer> getBalance();
     void stop();
-
-    interface Callback {
-        void updateQuestion(QuestionEntity question);
-        void updateBalance(int balance);
-        void updateCompletedTasks(int completedTasks, int numberOfQuestions);
-        void highlightAnswer(int position, boolean isCorrect);
-        void showPrice(int price);
-        void finishTest(boolean isSuccess, int alarmCoins);
-    }
-
 }

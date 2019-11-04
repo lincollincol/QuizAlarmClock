@@ -5,12 +5,16 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import io.reactivex.Completable;
+import io.reactivex.Maybe;
+import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -19,12 +23,19 @@ import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.data.database.alarms.AlarmDao;
 import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
 import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
+import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
+import linc.com.alarmclockforprogrammers.data.mapper.QuestionEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.data.database.achievements.AchievementsDao;
 import linc.com.alarmclockforprogrammers.data.database.questions.QuestionsDao;
+import linc.com.alarmclockforprogrammers.domain.interactor.task.RepositoryTask;
+import linc.com.alarmclockforprogrammers.domain.model.Question;
+import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
+import linc.com.alarmclockforprogrammers.utils.Consts;
+import linc.com.alarmclockforprogrammers.utils.JsonUtil;
 
-public class RepositoryTask {
+public class RepositoryTaskImpl implements RepositoryTask {
 
     private QuestionsDao questionsDao;
     private AlarmDao alarmDao;
@@ -32,65 +43,41 @@ public class RepositoryTask {
     private PreferencesAlarm preferences;
 
     private List<QuestionEntity> questions;
+    private QuestionEntityMapper mapper;
 
-    public RepositoryTask(QuestionsDao questionsDao,
-                          AlarmDao alarmDao,
-                          AchievementsDao achievementsDao,
-                          PreferencesAlarm preferences) {
+    public RepositoryTaskImpl(QuestionsDao questionsDao,
+                              AlarmDao alarmDao,
+                              AchievementsDao achievementsDao,
+                              PreferencesAlarm preferences,
+                              QuestionEntityMapper mapper) {
         this.questionsDao = questionsDao;
         this.alarmDao = alarmDao;
         this.achievementsDao = achievementsDao;
         this.preferences = preferences;
+        this.mapper = mapper;
+        this.questions = new ArrayList<>();
     }
 
     public Completable loadQuestions(int alarmId) {
-        return Completable.create((emitter) -> {
-            try {
+        return Completable.create(emitter -> {
+            if(questions.isEmpty()) {
                 AlarmEntity alarm = alarmDao.getAlarmById(alarmId);
-                Log.d("ALARM_DATA", "getQuestionsByAlarm: " + alarm.getDifficult());
-                Log.d("ALARM_DATA", "getQuestionsByAlarm: " + alarm.getLanguage());
-                Disposable d = getQuestionsByAlarm(alarm)
-                        .subscribe(questions -> this.questions = questions, Throwable::printStackTrace);
+                questions = questionsDao.getByLanguage(alarm.getLanguage(), alarm.getDifficult());
+                Collections.shuffle(questions);
                 emitter.onComplete();
-            }catch (Exception e) {
-                emitter.onError(e);
             }
         }).subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Single<List<QuestionEntity>> getQuestionsByAlarm(AlarmEntity alarm) {
-        return Single.create((SingleOnSubscribe<List<QuestionEntity>>) emitter -> {
-            try{
-                emitter.onSuccess(
-                        questionsDao.getByLanguage(alarm.getLanguage(), alarm.getDifficult())
-                );
-            }catch (Exception e){
-                emitter.onError(e);
-            }
-        }).map(questions -> {
-            List<QuestionEntity> randomQuestions = new ArrayList<>();
-            Set<Integer> randomIds = new LinkedHashSet<>();
-            Random r = new Random();
-            // todo gson to util
-            Gson gson = new Gson();
-
-            while (randomIds.size() < (questions.get(0).getNumberOfQuestions()*2)) {
-                Integer next = r.nextInt(questions.size());
-                randomIds.add(next);
-            }
-            for(int i : randomIds) {
-                QuestionEntity question = questions.get(i);
-                question.setAnswersList(fromJson(gson, question.getJsonAnswers()));
-                randomQuestions.add(question);
-            }
-            return randomQuestions;
-        }).subscribeOn(Schedulers.io());
+    public Question getQuestion(int position) {
+        return mapper.toQuestion(questions.get(position));
     }
 
-    public QuestionEntity getQuestion(int position) {
-        return this.questions.get(position);
-    }
+
+
+
+
 
 
     // todo rename
@@ -130,11 +117,6 @@ public class RepositoryTask {
 
     public void saveBalance(int balance) {
         preferences.saveBalance(balance);
-    }
-
-    // todo GSON UTIL create class
-    private List<String> fromJson(Gson gson, String answersJson) {
-        return gson.fromJson(answersJson, ArrayList.class);
     }
 
 

@@ -76,8 +76,14 @@ public class ResUtil {
      * Colors
      */
     public enum Color {
+        // buttons
         ENABLE(R.attr.button_default_color),
-        DISABLE(R.attr.button_disable_color);
+        DISABLE(R.attr.button_disable_color),
+
+        // text
+        CORRECT(R.attr.correct_color),
+        INCORRECT(R.attr.incorrect_color),
+        DEFAULT(R.attr.text_default_color);
 
         private final int color;
 
@@ -87,6 +93,22 @@ public class ResUtil {
         public int getColor() { return getAttrColor(color); }
     }
 
+    /**
+     * Text
+     */
+    public enum Message {
+        TASK_SUCCESS(R.string.dialog_message_completed),
+        TASK_FAIL(R.string.dialog_message_failed),
+        PAYMENT_PRICE(R.string.dialog_message_pay);
+
+        private final int message;
+
+        Message(int message) {
+            this.message = message;
+        }
+        public String getMessage() { return context.getResources().getString(message); }
+        public String getWithParam(int param) { return context.getResources().getString(message, param); }
+    }
 
     //todo remove of refactor to enum
     public ColorStateList getStateColor(boolean enableState) {
