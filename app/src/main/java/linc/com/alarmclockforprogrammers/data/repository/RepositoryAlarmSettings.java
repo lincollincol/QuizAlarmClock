@@ -18,7 +18,6 @@ public class RepositoryAlarmSettings {
 
     private AlarmDao alarmDao;
     private AlarmEntityMapper mapper;
-    private Alarm alarm;
 
     public RepositoryAlarmSettings(AlarmDao alarmDao, AlarmEntityMapper mapper) {
         this.alarmDao = alarmDao;
@@ -31,7 +30,6 @@ public class RepositoryAlarmSettings {
                 AlarmEntity alarmEntity = alarmDao.getAlarmById(id) == null ?
                         AlarmEntity.getInstance() : alarmDao.getAlarmById(id);
                 Alarm alarm = mapper.toAlarm(alarmEntity);
-                this.alarm = alarm;
                 emitter.onSuccess(alarm);
             }catch (Exception e){
                 emitter.onError(e);
@@ -40,7 +38,7 @@ public class RepositoryAlarmSettings {
           .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Completable saveAlarm() {
+    public Completable saveAlarm(Alarm alarm) {
         return Completable.fromAction(
                 //todo map tom entity
                 () -> {
@@ -49,10 +47,6 @@ public class RepositoryAlarmSettings {
                 }
         ).subscribeOn(Schedulers.io())
          .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public Alarm getAlarm() {
-        return this.alarm;
     }
 
 }

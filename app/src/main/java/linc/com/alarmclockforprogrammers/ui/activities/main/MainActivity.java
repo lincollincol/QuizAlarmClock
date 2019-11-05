@@ -24,6 +24,7 @@ import android.view.WindowManager;
 
 import java.util.List;
 
+import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.domain.interactor.mainactivity.InteractorMainActivity;
@@ -51,8 +52,7 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
         if(presenter == null) {
             presenter = new PresenterMainActivity(
                     this,
-                    new InteractorMainActivity(new PreferencesAlarm(this)),
-                    new ResUtil(this)
+                    new InteractorMainActivity(new PreferencesAlarm(this))
             );
         }
 
@@ -81,6 +81,12 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
         this.drawer.addDrawerListener(toggle);
         this.toggle.syncState();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AlarmApp.getInstance().setCurrentActivity(this);
     }
 
     @Override

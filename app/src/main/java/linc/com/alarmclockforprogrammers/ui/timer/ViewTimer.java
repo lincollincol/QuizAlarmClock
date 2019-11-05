@@ -9,10 +9,10 @@ public interface ViewTimer {
     void prepareProgressBar(int maxProgressTime);
     void updateProgress(int progressTime);
 
-    void showDismissFragment();
-    void openAlarmsFragment();
-
     void setEnableStartButton(boolean enable, int color);
     void setStartButtonIcon(int icon);
+
+    void showDismissFragment();
+    void openAlarmsFragment();
 
 }

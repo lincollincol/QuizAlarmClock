@@ -10,13 +10,12 @@ public class Alarm {
     private int id;
     private int hour;
     private int minute;
-    private int language;
     private int difficult;
     private boolean containsTask;
     private boolean enable;
+    private String language;
     private String label;
     private String songPath;
-    //todo rename
     private boolean[] selectedDays;
 
     public int getId() {
@@ -43,11 +42,11 @@ public class Alarm {
         this.minute = minute;
     }
 
-    public int getLanguage() {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(int language) {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
@@ -97,15 +96,6 @@ public class Alarm {
 
     public void setSelectedDays(boolean[] selectedDays) {
         this.selectedDays = selectedDays;
-    }
-
-    public String getDaysPositions() {
-        StringBuilder checkedDays = new StringBuilder();
-        for (int i = 0; i < 7; i++) {
-            checkedDays.append(selectedDays[i] ? i : "");
-        }
-        Log.d("OBJECT_METH", "getDaysPositions: " + checkedDays.toString());
-        return checkedDays.toString();
     }
 
     public String getTime() {

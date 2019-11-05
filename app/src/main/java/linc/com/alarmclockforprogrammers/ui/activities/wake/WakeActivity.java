@@ -12,6 +12,7 @@ import android.view.WindowManager;
 
 import com.google.gson.Gson;
 
+import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.domain.interactor.wakeactivity.InteractorWakeActivity;
@@ -33,8 +34,7 @@ public class WakeActivity extends AppCompatActivity implements ViewWakeActivity 
         if(presenter == null) {
             this.presenter = new PresenterWakeActivity(
                     this,
-                    new InteractorWakeActivity(new PreferencesAlarm(this)),
-                    new ResUtil(this)
+                    new InteractorWakeActivity(new PreferencesAlarm(this))
             );
         }
 
@@ -58,6 +58,12 @@ public class WakeActivity extends AppCompatActivity implements ViewWakeActivity 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.wake_container, wakeFragment)
                 .commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AlarmApp.getInstance().setCurrentActivity(this);
     }
 
     //todo change isDark to theme res

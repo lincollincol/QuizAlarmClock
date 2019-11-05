@@ -2,18 +2,20 @@ package linc.com.alarmclockforprogrammers.ui.alarmsettings;
 
 public interface ViewAlarmSettings {
 
-    void openExpandedSettings(boolean isChecked);
-    void setTime(int hour, int minute);
-    void setWeekDays(String days);
-    void setAlarmSong(String songName);
-    void setDifficultMode(String difficult);
-    void setLanguage(String language);
-    void setEnableState(boolean isEnabled);
-    void setTaskState(boolean hasTask);
-    void showWeekDaysDialog(String[] weekDays, boolean[] checkedDays);
-    void showDifficultModeDialog(String[] difficultModes, int position);
-    void showLanguageDialog(String[] languages, int position);
-    void askForReadWritePermission();
+    void showTaskSettings(boolean isChecked);
+    void showTime(int hour, int minute);
+    void showWeekdays(String days);
+    void showAlarmSong(String songName);
+    void showDifficult(String difficult);
+    void showLanguage(String language);
+    void showEnableState(boolean isEnabled);
+    void showTaskState(boolean hasTask);
+
+    void showDaysSelectionDialog(String[] weekDays, boolean[] checkedDays);
+    void showDifficultSelectionDialog(String[] difficultModes, int position);
+    void showLanguageSelectionDialog(String[] languages, int position);
+
+    void showPermissionRequest();
     void openFileManager();
     void openAlarmsFragment();
 }

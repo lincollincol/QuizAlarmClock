@@ -7,18 +7,16 @@ public class PresenterMainActivity {
 
     private ViewMainActivity view;
     private InteractorMainActivity interactor;
-    private ResUtil resUtil;
 
-    public PresenterMainActivity(ViewMainActivity view, InteractorMainActivity interactor, ResUtil resUtil) {
+    public PresenterMainActivity(ViewMainActivity view, InteractorMainActivity interactor) {
         this.view = view;
         this.interactor = interactor;
-        this.resUtil = resUtil;
     }
 
     // todo refactor
     public void setupActivity() {
-        int theme = resUtil.getTheme(interactor.getTheme());
-        this.view.setAppTheme(theme);
+        this.view.setAppTheme(interactor.getTheme() ?
+                ResUtil.Theme.DARK.getTheme() : ResUtil.Theme.LIGHT.getTheme());
         this.view.setupWindow();
     }
 

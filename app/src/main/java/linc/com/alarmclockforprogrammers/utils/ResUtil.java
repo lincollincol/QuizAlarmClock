@@ -1,46 +1,18 @@
 package linc.com.alarmclockforprogrammers.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintSet;
 import android.util.TypedValue;
 
+import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 
 public class ResUtil {
-
-    private static Context context;
-
-    public ResUtil(Context context) {
-        this.context = context;
-    }
-
-    public String getLanguage(int position) {
-        return this.context.getResources()
-                .getStringArray(R.array.programming_languages)[position];
-    }
-
-    public String getDifficult(int position) {
-        return this.context.getResources()
-                .getStringArray(R.array.difficult_modes)[position];
-    }
-
-    public String[] getDifficultModes() {
-        return this.context.getResources()
-                .getStringArray(R.array.difficult_modes);
-    }
-
-    public String[] getWeekDays() {
-        return this.context.getResources().getStringArray(R.array.week_days);
-    }
-
-    public String[] getProgrammingLanguages() {
-        return this.context.getResources()
-                .getStringArray(R.array.programming_languages);
-    }
-
 
     /**
      * Widget Visibility
@@ -93,6 +65,7 @@ public class ResUtil {
         public int getColor() { return getAttrColor(color); }
     }
 
+
     /**
      * Text
      */
@@ -106,101 +79,84 @@ public class ResUtil {
         Message(int message) {
             this.message = message;
         }
-        public String getMessage() { return context.getResources().getString(message); }
-        public String getWithParam(int param) { return context.getResources().getString(message, param); }
-    }
-
-    //todo remove of refactor to enum
-    public ColorStateList getStateColor(boolean enableState) {
-        int color = R.attr.button_disable_color;
-        if(enableState) {
-            color = R.attr.button_default_color;
+        public String getMessage() {
+            return getString(message);
         }
-        return ColorStateList.valueOf(getAttrColor(color));
+        public String getWithParam(int param) { return getString(message, param); }
     }
 
+    /**
+     * String array
+     */
+    public enum Array {
 
-    public int getAnswerColor(boolean correct) {
-        int color = R.attr.incorrect_color;
-        if(correct) {
-            color = R.attr.correct_color;
+        DIFFICULT(R.array.difficult_modes),
+        LANGUAGES(R.array.programming_languages),
+        WEEKDAYS(R.array.week_days),
+        WEEKDAYS_MARKS(R.array.week_days_marks);
+
+        private final int array;
+
+        Array(int array) {
+            this.array = array;
         }
-        return getAttrColor(color);
-    }
-
-    public int getDefaultTextColor() {
-        return getAttrColor(R.attr.text_default_color);
-    }
-
-    public String getStringWithParam(int string, int param) {
-        return context.getResources().getString(string, param);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /** Return String with selected days in mark format: Mn(Monday), Fr (Friday)*/
-    public String getDaysMarks(String days) {
-        StringBuilder marks = new StringBuilder();
-        String[] weekDays = context.getResources().getStringArray(R.array.week_days_marks);
-
-        for(int i = 0; i < days.length(); i++) {
-            int day = Character.getNumericValue(days.charAt(i));
-            marks.append(weekDays[day])
-                 .append((i == (days.length()-1) ? "" : ", "))
-                 .append( ((i == 3) && (i < days.length() - 1) ? "\n\t\t\t" : "") );
+        public String[] getArray() {
+            return getStringArray(array);
         }
 
-        return marks.toString().isEmpty() ? "Select days" : marks.toString();
-    }
-
-    public String getDaysMarks(boolean[] checkedDays) {
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < checkedDays.length; i++) {
-            sb.append((checkedDays[i] ? i : ""));
+        public String getItem(int position) {
+            return getStringArray(array)[position];
         }
-        return getDaysMarks(sb.toString());
-    }
 
-
-
-
-
-
-
-
-
-
-    public ColorStateList getButtonColor(int color) {
-        return ColorStateList.valueOf(getAttrColor(color));
-    }
-
-
-    public ColorStateList getThemeColor(@ColorInt int color) {
-        return ColorStateList.valueOf(getAttrColor(color));
-    }
-
-    public int getTheme(boolean isDarkTheme) {
-        if(isDarkTheme) {
-            return R.style.DarkTheme;
+        public int getItemPosition(String language) {
+            String[] languages = getStringArray(array);
+            for(int i = 0; i < languages.length; i++) {
+                if(languages[i].equals(language)) {
+                    return i;
+                }
+            }
+            return -1;
         }
-        return R.style.LightTheme;
     }
 
-    public static int getAttrColor(@ColorInt int color) {
+    public enum Theme {
+        DARK(R.style.DarkTheme),
+        LIGHT(R.style.LightTheme);
+
+        private final int theme;
+        Theme(int theme) {
+            this.theme = theme;
+        }
+        public int getTheme() {
+            return theme;
+        }
+    }
+
+    private static String getString(int id) {
+        return AlarmApp.getInstance()
+                .getAppContext()
+                .getResources()
+                .getString(id);
+    }
+
+    private static String getString(int id, Object ...param ) {
+        return AlarmApp.getInstance()
+                .getAppContext()
+                .getResources()
+                .getString(id, param);
+    }
+
+    private static String[] getStringArray(int id) {
+        return AlarmApp.getInstance()
+                .getAppContext()
+                .getResources()
+                .getStringArray(id);
+    }
+
+    private static int getAttrColor(int color) {
+        Activity activity = AlarmApp.getInstance().getCurrentActivity();
         TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = context.getTheme();
+        Resources.Theme theme = activity.getTheme();
         theme.resolveAttribute(color, typedValue, true);
         return typedValue.data;
     }

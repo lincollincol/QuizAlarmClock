@@ -15,11 +15,9 @@ import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class AlarmEntityMapper {
 
-    private ResUtil resUtil;
     private Calendar calendar;
 
-    public AlarmEntityMapper(ResUtil resUtil) {
-        this.resUtil = resUtil;
+    public AlarmEntityMapper() {
         this.calendar = Calendar.getInstance();
     }
 
@@ -29,9 +27,9 @@ public class AlarmEntityMapper {
         final AlarmEntity alarmEntity = new AlarmEntity(
                 calendar.getTimeInMillis(),
                 alarm.getLabel(),
-                alarm.getDaysPositions(),
+                getDaysPositions(alarm.getSelectedDays()),
                 alarm.getSongPath(),
-                resUtil.getLanguage(alarm.getLanguage()),
+                alarm.getLanguage(),
                 alarm.getDifficult(),
                 alarm.isContainsTask(),
                 alarm.isEnable()
@@ -50,7 +48,7 @@ public class AlarmEntityMapper {
         alarm.setLabel(alarmEntity.getLabel());
         alarm.setSelectedDays(getCheckedDays(alarmEntity.getDays()));
         alarm.setSongPath(alarmEntity.getSongPath());
-        alarm.setLanguage(getPositionFromLanguage(alarmEntity.getLanguage()));
+        alarm.setLanguage(alarmEntity.getLanguage());
         alarm.setDifficult(alarmEntity.getDifficult());
         alarm.setContainsTask(alarmEntity.hasTask());
         alarm.setEnable(alarmEntity.isEnable());
@@ -65,14 +63,18 @@ public class AlarmEntityMapper {
         return alarms;
     }
 
-    private int getPositionFromLanguage(String language) {
-        String[] languages = resUtil.getProgrammingLanguages();
-        for(int i = 0; i < language.length(); i++) {
-            if(language.equals(languages[i])) {
-                return i;
+
+    private String getDaysPositions(boolean[] selectedDays) {
+        StringBuilder days = new StringBuilder();
+        if(selectedDays.length == 0) {
+            return days.toString();
+        }
+        for(int i = 0; i < selectedDays.length; i++) {
+            if(selectedDays[i]) {
+                days.append(i);
             }
         }
-        return 0;
+        return days.toString();
     }
 
     private boolean[] getCheckedDays(String days) {

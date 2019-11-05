@@ -1,8 +1,8 @@
 package linc.com.alarmclockforprogrammers.ui.alarmsettings;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +14,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,8 +35,11 @@ import linc.com.alarmclockforprogrammers.domain.interactor.alarmsettings.Interac
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarmSettings;
 import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
 import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
+import linc.com.alarmclockforprogrammers.ui.mapper.AlarmViewModelMapper;
+import linc.com.alarmclockforprogrammers.utils.PathUtil;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
+import static android.app.Activity.RESULT_OK;
 import static linc.com.alarmclockforprogrammers.utils.Consts.NORMAL_SPEED;
 import static linc.com.alarmclockforprogrammers.utils.Consts.PICKERS_MIN;
 import static linc.com.alarmclockforprogrammers.utils.Consts.PICKER_HOURS_MAX;
@@ -69,12 +71,15 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
 
         if(presenter == null) {
             this.presenter = new PresenterAlarmSettings(
-                    new ResUtil(getActivity()),
                     new InteractorAlarmSettingsImpl(
-                            new RepositoryAlarmSettings(database.alarmDao(),
-                                    new AlarmEntityMapper(new ResUtil(getActivity()))
-                            ), new AlarmHandler(getActivity())
-                    )
+                            new RepositoryAlarmSettings(
+                                    database.alarmDao(),
+                                    new AlarmEntityMapper()
+                            ),
+                            new AlarmHandler(getActivity())
+                    ),
+                    new AlarmViewModelMapper(),
+                    new PathUtil(getActivity())
             );
         }
 
@@ -92,8 +97,8 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
         View view = inflater.inflate(R.layout.fragment_alarm_settings, container, false);
         this.container = container;
 
-        LinearLayout difficultPicker = view.findViewById(R.id.alarm_settings_task_expand__difficult_layout);
-        LinearLayout languagePicker = view.findViewById(R.id.alarm_settings_task_expand__language_layout);
+        LinearLayout difficultPicker = view.findViewById(R.id.alarm_settings_task_settings__difficult_layout);
+        LinearLayout languagePicker = view.findViewById(R.id.alarm_settings_task_settings__language_layout);
         LinearLayout songPicker = view.findViewById(R.id.alarm_settings__song_layout);
         FloatingActionButton saveAlarmButton = view.findViewById(R.id.alarm_settings__save);
         FloatingActionButton cancelButton = view.findViewById(R.id.alarm_settings__cancel);
@@ -133,10 +138,10 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch(buttonView.getId()) {
             case R.id.alarm_settings__toggle_task_enable :
-                this.presenter.taskSwitchClicked(isChecked);
+                this.presenter.taskEnable(isChecked);
                 break;
             case R.id.alarm_settings__toggle_alarm_enable :
-                this.presenter.enableSwitchClicked(isChecked);
+                this.presenter.alarmEnable(isChecked);
                 break;
         }
     }
@@ -145,22 +150,22 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.alarm_settings__days:
-                this.presenter.daysFieldClicked();
+                this.presenter.selectDays();
                 break;
-            case R.id.alarm_settings_task_expand__difficult_layout:
-                this.presenter.difficultFieldClicked();
+            case R.id.alarm_settings_task_settings__difficult_layout:
+                this.presenter.selectDifficult();
                 break;
-            case R.id.alarm_settings_task_expand__language_layout:
-                this.presenter.languageFieldClicked();
+            case R.id.alarm_settings_task_settings__language_layout:
+                this.presenter.selectLanguage();
                 break;
             case R.id.alarm_settings__song_layout:
-                this.presenter.songFieldClicked();
+                this.presenter.selecdSong();
                 break;
             case R.id.alarm_settings__save:
-                this.presenter.saveButtonClicked();
+                this.presenter.saveAlarm();
                 break;
             case R.id.alarm_settings__cancel:
-                this.presenter.cancelButtonClicked();
+                this.presenter.cancelChanges();
                 break;
         }
     }
@@ -169,16 +174,16 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
         switch (picker.getId()) {
             case R.id.alarm_settings__minute_picker:
-                this.presenter.minuteChanged(newVal);
+                this.presenter.minuteSelected(newVal);
                 break;
             case R.id.alarm_settings__hour_picker:
-                this.presenter.hourChanged(newVal);
+                this.presenter.hourSelected(newVal);
                 break;
         }
     }
 
     @Override
-    public void openExpandedSettings(boolean isChecked) {
+    public void showTaskSettings(boolean isChecked) {
         TransitionManager.beginDelayedTransition(container,
                 new Slide(Gravity.BOTTOM)
                         .setInterpolator(new FastOutSlowInInterpolator())
@@ -188,82 +193,81 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
     }
 
     @Override
-    public void setTime(int hour, int minute) {
+    public void showTime(int hour, int minute) {
         this.hourPicker.setValue(hour);
         this.minutePicker.setValue(minute);
     }
 
     @Override
-    public void setWeekDays(String days) {
+    public void showWeekdays(String days) {
         this.dayPicker.setText(days);
     }
 
     @Override
-    public void setAlarmSong(String songName) {
+    public void showAlarmSong(String songName) {
         this.selectedSong.setText(songName);
     }
 
     @Override
-    public void setDifficultMode(String difficult) {
+    public void showDifficult(String difficult) {
         this.selectedDifficultMode.setText(difficult);
     }
 
     @Override
-    public void setLanguage(String language) {
+    public void showLanguage(String language) {
         this.selectedLanguage.setText(language);
     }
 
     @Override
-    public void setEnableState(boolean isEnabled) {
+    public void showEnableState(boolean isEnabled) {
         this.alarmEnable.setChecked(isEnabled);
     }
 
     @Override
-    public void setTaskState(boolean hasTask) {
+    public void showTaskState(boolean hasTask) {
         this.taskEnable.setChecked(hasTask);
     }
 
     @Override
-    public void showWeekDaysDialog(String[] weekDays, boolean[] checkedDays) {
+    public void showDaysSelectionDialog(String[] weekDays, boolean[] checkedDays) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
                 new ContextThemeWrapper(getActivity(), R.style.AlertDialogStyle));
         dialogBuilder.setCancelable(true)
                 .setTitle(R.string.title_dialog_week_days)
                 .setMultiChoiceItems(weekDays, checkedDays, (dialog, which, isChecked) -> {})
                 .setPositiveButton("OK", (dialog, id) -> dialog.cancel())
-                .setOnCancelListener(dialog -> presenter.dialogDaysClosed(checkedDays))
+                .setOnCancelListener(dialog -> presenter.daysSelected(checkedDays))
                 .show();
     }
 
     @Override
-    public void showDifficultModeDialog(String[] difficultModes, int position) {
+    public void showDifficultSelectionDialog(String[] difficultModes, int position) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
                 new ContextThemeWrapper(getActivity(), R.style.AlertDialogStyle));
         dialogBuilder.setCancelable(true)
                 .setTitle(R.string.title_dialog_difficult_mode)
                 .setSingleChoiceItems(difficultModes, position,
-                        (dialog, id) -> this.presenter.dialogDifficultChecked(id)
-                )
+                        (dialog, id) -> this.presenter.difficultSelected(id))
                 //todo ref OK
                 .setPositiveButton("OK", (dialog, which) -> dialog.cancel())
                 .show();
     }
 
     @Override
-    public void showLanguageDialog(String[] languages, int position) {
+    public void showLanguageSelectionDialog(String[] languages, int position) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
                 new ContextThemeWrapper(getActivity(), R.style.AlertDialogStyle));
         dialogBuilder.setCancelable(true)
                 .setTitle(R.string.title_dialog_programming_language)
                 .setSingleChoiceItems(languages, position,
-                        (dialog, id) -> this.presenter.dialogLanguageChecked(id))
+                        (dialog, id) -> this.presenter.languageSelected(id))
                 //todo ref OK
                 .setPositiveButton("OK", (dialog, id) -> dialog.cancel())
                 .show();
     }
 
     @Override
-    public void askForReadWritePermission() {
+    public void showPermissionRequest() {
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -278,18 +282,23 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && requestCode == 0) {
+            Uri uri = data.getData();
+            if (resultCode == RESULT_OK) {
+                this.presenter.songSelected(uri.getPath());
+            }
+        }
+    }
+
+    @Override
     public void openAlarmsFragment() {
         getFragmentManager().popBackStack();
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        this.presenter.activityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     public void onBackPressed() {
-        this.presenter.backButtonClicked();
+        presenter.backToAlarms();
     }
 }

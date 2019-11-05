@@ -146,7 +146,7 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
     }
 
     @Override
-    public void highlightAnswers(int position, @ColorInt int color) {
+    public void highlightAnswers(int position, int color) {
         RadioButton answer = (RadioButton) answersGroup.getChildAt(position);
         answer.setTextColor(color);
     }

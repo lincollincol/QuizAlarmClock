@@ -7,17 +7,17 @@ public class PresenterWakeActivity {
 
     private ViewWakeActivity view;
     private InteractorWakeActivity interactor;
-    private ResUtil resUtil;
+    // todo check interactor?
     private boolean taskCompleted;
 
-    public PresenterWakeActivity(ViewWakeActivity view, InteractorWakeActivity interactor, ResUtil resUtil) {
+    public PresenterWakeActivity(ViewWakeActivity view, InteractorWakeActivity interactor) {
         this.view = view;
         this.interactor = interactor;
-        this.resUtil = resUtil;
     }
 
     public void setData() {
-        this.view.setAppTheme(resUtil.getTheme(interactor.getTheme()));
+        this.view.setAppTheme(interactor.getTheme() ?
+                ResUtil.Theme.DARK.getTheme() : ResUtil.Theme.LIGHT.getTheme());
         this.view.screenTurnOn();
     }
 

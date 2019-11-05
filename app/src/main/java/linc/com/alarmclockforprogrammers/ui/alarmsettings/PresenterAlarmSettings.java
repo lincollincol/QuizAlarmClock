@@ -1,33 +1,41 @@
 package linc.com.alarmclockforprogrammers.ui.alarmsettings;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 
 import java.io.File;
 
-import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarmsettings.InteractorAlarmSettings;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
+import linc.com.alarmclockforprogrammers.ui.mapper.AlarmViewModelMapper;
+import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
+import linc.com.alarmclockforprogrammers.utils.PathUtil;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
-import static android.app.Activity.RESULT_OK;
-
-public class PresenterAlarmSettings implements InteractorAlarmSettings.Callback{
+public class PresenterAlarmSettings {
 
     private ViewAlarmSettings view;
     private InteractorAlarmSettings interactor;
-    private ResUtil resUtil;
+    private CompositeDisposable disposables;
 
+    private AlarmViewModel alarmViewModel;
+    private AlarmViewModelMapper mapper;
+    private PathUtil pathUtil;
 
-    public PresenterAlarmSettings(ResUtil resUtil, InteractorAlarmSettings interactor) {
-        this.resUtil = resUtil;
+    public PresenterAlarmSettings(InteractorAlarmSettings interactor,
+                                  AlarmViewModelMapper mapper,
+                                  PathUtil pathUtil) {
         this.interactor = interactor;
+        this.mapper = mapper;
+        this.pathUtil = pathUtil;
+        this.disposables = new CompositeDisposable();
     }
 
     void bind(ViewAlarmSettings view, int alarmId) {
         this.view = view;
-        this.interactor.execute(this, alarmId);
+        Disposable d = this.interactor.execute(alarmId)
+                .subscribe(this::setAlarmData);
     }
 
     void unbind() {
@@ -35,110 +43,101 @@ public class PresenterAlarmSettings implements InteractorAlarmSettings.Callback{
         //todo interactor.dispose
     }
 
-    @Override
-    public void setAlarmData(Alarm alarm) {
-        setData(alarm);
+    void saveAlarm() {
+        Disposable d = interactor.saveAlarm(mapper.toAlarm(alarmViewModel))
+            .subscribe(view::openAlarmsFragment);
     }
 
-    @Override
-    public void setWeekDays(boolean[] checkedDays) {
-        this.view.showWeekDaysDialog(resUtil.getWeekDays(), checkedDays);
+    void cancelChanges() {
+        view.openAlarmsFragment();
     }
 
-    @Override
-    public void setDifficult(int difficult) {
-        view.showDifficultModeDialog(resUtil.getDifficultModes(), difficult);
+    /**
+     * Time pickers
+     */
+    void hourSelected(int hour) {
+        this.alarmViewModel.setHour(hour);
     }
 
-    @Override
-    public void setLanguage(int languagePosition) {
-        view.showLanguageDialog(resUtil.getProgrammingLanguages(), languagePosition);
+    void minuteSelected(int minute) {
+        this.alarmViewModel.setMinute(minute);
     }
 
-    void daysFieldClicked() {
-        interactor.getDays();
+    /**
+     * Other settings
+     */
+    void labelEntered(String label) {
+        this.alarmViewModel.setLabel(label);
     }
 
-    void difficultFieldClicked() {
-        interactor.getDifficult();
+    void selectDays() {
+        view.showDaysSelectionDialog(ResUtil.Array.WEEKDAYS.getArray(), alarmViewModel.getSelectedDays());
     }
 
-    void languageFieldClicked() {
-        interactor.getLanguage();
+    void selecdSong() {
+        view.openFileManager();
     }
 
-    void hourChanged(int hour) {
-        interactor.setHour(hour);
+    void daysSelected(boolean[] days) {
+        this.alarmViewModel.setSelectedDays(days);
+        view.showWeekdays(alarmViewModel.getWeekdayMarks(ResUtil.Array.WEEKDAYS_MARKS.getArray()));
     }
 
-    void minuteChanged(int minute) {
-        interactor.setMinute(minute);
+    void songSelected(String path) {
+        File song = new File(path);
+        Log.d("PATH", "songSelected: " + song.getAbsolutePath());
+        pathUtil.getPath(song);
+        //todo permission
+        view.showPermissionRequest();
+        alarmViewModel.setSongPath(path);
+        view.showAlarmSong(song.getName());
     }
 
-    void songFieldClicked() {
-        // todo check for successfully provided permissions
-        this.view.askForReadWritePermission();
-        this.view.openFileManager();
+    void alarmEnable(boolean enable) {
+        this.alarmViewModel.setEnable(enable);
     }
 
-    void saveButtonClicked() {
-        this.interactor.saveAlarm();
-        this.view.openAlarmsFragment();
+    /**
+     * Task settings
+     */
+    void taskEnable(boolean enable) {
+        this.alarmViewModel.setContainsTask(enable);
+        view.showTaskSettings(enable);
     }
 
-    void cancelButtonClicked() {
-        this.view.openAlarmsFragment();
+    void selectDifficult() {
+        view.showDifficultSelectionDialog(ResUtil.Array.DIFFICULT.getArray(),
+                alarmViewModel.getDifficultPosition());
     }
 
-    void backButtonClicked() {
-        this.view.openAlarmsFragment();
+    void selectLanguage() {
+        view.showLanguageSelectionDialog(ResUtil.Array.LANGUAGES.getArray(),
+                alarmViewModel.getLanguagePosition());
     }
 
-    void taskSwitchClicked(boolean hasTask) {
-        this.view.openExpandedSettings(hasTask);
-        this.interactor.setHasTask(hasTask);
+    void difficultSelected(int difficultPosition) {
+        this.alarmViewModel.setDifficultPosition(difficultPosition);
+        view.showDifficult(ResUtil.Array.DIFFICULT.getItem(difficultPosition));
     }
 
-    void enableSwitchClicked(boolean enable) {
-        this.interactor.setEnable(enable);
+    void languageSelected(int languagePosition) {
+        this.alarmViewModel.setLanguagePosition(languagePosition);
+        view.showLanguage(ResUtil.Array.LANGUAGES.getItem(languagePosition));
     }
 
-    void dialogDaysClosed(boolean[] checkedDays) {
-        interactor.setCheckedDay(checkedDays);
-        view.setWeekDays(resUtil.getDaysMarks(checkedDays));
+    private void setAlarmData(Alarm alarm) {
+        this.alarmViewModel = mapper.toAlarmViewModel(alarm);
+        this.view.showTime(alarmViewModel.getHour(), alarmViewModel.getMinute());
+        this.view.showAlarmSong(alarmViewModel.getSongPath());
+        this.view.showTaskState(alarmViewModel.isContainsTask());
+        this.view.showEnableState(alarmViewModel.isEnable());
+        this.view.showWeekdays(alarmViewModel.getWeekdayMarks(ResUtil.Array.WEEKDAYS_MARKS.getArray()));
+        this.view.showDifficult(ResUtil.Array.DIFFICULT.getItem(alarmViewModel.getDifficultPosition()));
+        this.view.showLanguage(ResUtil.Array.LANGUAGES.getItem(alarmViewModel.getLanguagePosition()));
     }
 
-    void dialogDifficultChecked(int difficult) {
-        this.interactor.setDifficult(difficult);
-        this.view.setDifficultMode(resUtil.getDifficult(difficult));
-    }
-
-    void dialogLanguageChecked(int language) {
-        this.interactor.setLanguage(language);
-        this.view.setLanguage(resUtil.getLanguage(language));
-    }
-
-    void activityResult(int requestCode, int resultCode, Intent data) {
-        if (data != null && requestCode == 0) {
-            Uri uri = data.getData();
-            if (resultCode == RESULT_OK) {
-                //todo edit path
-                File song = new File(uri.getPath());
-                this.interactor.setSong(song.getAbsolutePath());
-                Log.d("SONG_PATH", "activityResult: " + song.getAbsolutePath());
-                this.view.setAlarmSong(song.getName());
-            }
-        }
-    }
-
-    private void setData(Alarm alarm) {
-        this.view.setTime(alarm.getHour(), alarm.getMinute());
-        this.view.setWeekDays(resUtil.getDaysMarks(alarm.getDaysPositions()));
-        this.view.setAlarmSong(alarm.getSongPath());
-        this.view.setTaskState(alarm.isContainsTask());
-        this.view.setEnableState(alarm.isEnable());
-        this.view.setDifficultMode(resUtil.getDifficult(alarm.getDifficult()));
-        this.view.setLanguage(resUtil.getLanguage(alarm.getLanguage()));
+    void backToAlarms() {
+        view.openAlarmsFragment();
     }
 
 }

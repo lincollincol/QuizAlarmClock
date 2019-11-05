@@ -170,13 +170,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="alarm_settings_task_expand__difficult_layout,
-                alarm_settings_task_expand__language_layout" />
+            app:constraint_referenced_ids="alarm_settings_task_settings__difficult_layout,
+                alarm_settings_task_settings__language_layout" />
 
 
         <!--Difficult-->
         <LinearLayout
-            android:id="@+id/alarm_settings_task_expand__difficult_layout"
+            android:id="@+id/alarm_settings_task_settings__difficult_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -217,14 +217,14 @@
 
         <!--Programming language-->
         <LinearLayout
-            android:id="@+id/alarm_settings_task_expand__language_layout"
+            android:id="@+id/alarm_settings_task_settings__language_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="?attr/selectableItemBackground"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/alarm_settings_task_expand__difficult_layout">
+            app:layout_constraintTop_toBottomOf="@+id/alarm_settings_task_settings__difficult_layout">
 
             <TextView
                 android:id="@+id/alarm_settings_task_expand__language_title"
@@ -264,7 +264,7 @@
             app:backgroundTint="?attr/button_default_color"
             app:elevation="@dimen/elevation_default"
             app:fabSize="normal"
-            app:layout_constraintTop_toBottomOf="@+id/alarm_settings_task_expand__language_layout"
+            app:layout_constraintTop_toBottomOf="@+id/alarm_settings_task_settings__language_layout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/alarm_settings__save"
@@ -283,7 +283,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/alarm_settings__cancel"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/alarm_settings_task_expand__language_layout"
+            app:layout_constraintTop_toBottomOf="@id/alarm_settings_task_settings__language_layout"
             app:layout_constraintVertical_bias="1" />
     </android.support.constraint.ConstraintLayout>
 
