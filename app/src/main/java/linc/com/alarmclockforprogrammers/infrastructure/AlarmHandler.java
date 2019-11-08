@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -58,6 +59,7 @@ public class AlarmHandler {
 
         final AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         manager.cancel(pIntent);
+        Log.d("ALARM_CANCEL_CANCEL", "cancelReminderAlarm: ");
 //        todo pIntent.cancel();
     }
 

@@ -1,8 +1,14 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.alarms;
 
-import java.util.List;
+import android.util.Log;
 
+import java.util.List;
+import java.util.Map;
+
+import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
@@ -12,46 +18,52 @@ import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarms;
 public class InteractorAlarms {
 
     private RepositoryAlarms repository;
-    private PreferencesAlarm preferences;
     private AlarmHandler alarmHandler;
 
     public InteractorAlarms(RepositoryAlarms repository,
-                            PreferencesAlarm preferences,
                             AlarmHandler alarmHandler) {
         this.repository = repository;
-        this.preferences = preferences;
         this.alarmHandler = alarmHandler;
     }
 
-    public Observable<List<Alarm>> getAlarms() {
+    public Single<Map<Integer, Alarm>> execute() {
+        this.repository.updateLocalQuestionsVersion();
         return this.repository.getAlarms();
     }
 
-    public void deleteAlarm(Alarm alarm) {
-        this.alarmHandler.cancelReminderAlarm(alarm);
-        this.repository.deleteAlarm(alarm)
-                .subscribe();
+    public Single<Alarm> getAlarm(int position) {
+        return repository.getAlarm(position);
     }
 
-    public void updateAlarm(Alarm alarm) {
-        if(!alarm.isEnable()) {
-            this.alarmHandler.cancelReminderAlarm(alarm);
-        }
-        this.repository.updateAlarm(alarm)
-                .subscribe();
-    }
-
-    public void updateQuestionInLocal() {
-        this.repository.updateLocalQuestionsVersion((remoteVersion) -> {
-            if(!preferences.getLocalQuestionsVersion().equals(remoteVersion)) {
-                this.repository.updateLocalQuestions();
-                this.preferences.saveLocalQuestionsVersion(remoteVersion);
-            }
+    public Completable deleteAlarm(int id) {
+        return Completable.create(emitter -> {
+        Disposable d = repository.getAlarm(id)
+                .subscribe(alarm -> {
+                    this.alarmHandler.cancelReminderAlarm(alarm);
+                    repository.deleteAlarm(alarm)
+                            .subscribe();
+                    emitter.onComplete();
+                });
         });
     }
 
-    public int getBalance() {
-        return preferences.getBalance();
+    public Single<Alarm> enableAlarm(int id, boolean enable) {
+        return repository.getAlarm(id)
+                .doOnSuccess(alarm -> {
+                    Log.d("ENABLE_SET", "enableAlarm: " + enable);
+                    alarm.setEnable(enable);
+                    if(!enable) {
+                        this.alarmHandler.cancelReminderAlarm(alarm);
+                    }
+                    repository.updateAlarm(alarm)
+                        .subscribe();
+                });
+    }
+
+
+
+    public Single<Integer> getBalance() {
+        return repository.getBalance();
     }
 
 }

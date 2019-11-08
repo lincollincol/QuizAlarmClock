@@ -5,33 +5,56 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
 
 import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
+import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
+import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHolder> {
 
-    private List<Alarm> alarms;
-    private Context context;
+    private Map<Integer, AlarmViewModel> alarms;
+    private List<Integer> keys;
     private OnAlarmClicked onAlarmClicked;
 
-    public AdapterAlarms(OnAlarmClicked onAlarmClicked, Context context) {
+    public AdapterAlarms(OnAlarmClicked onAlarmClicked) {
         this.onAlarmClicked = onAlarmClicked;
-        this.context = context;
-        this.alarms = new ArrayList<>();
+        this.alarms = new HashMap<>();
+        keys = new ArrayList<>();
     }
 
-    public void setAlarms(List<Alarm> alarms) {
+    public void setAlarms(Map<Integer, AlarmViewModel> alarms) {
         this.alarms.clear();
-        this.alarms.addAll(alarms);
+        this.alarms.putAll(alarms);
+
+        keys.clear();
+        keys.addAll(alarms.keySet());
+        notifyDataSetChanged();
+    }
+
+    public void removeAlarm(int id) {
+        int keyPosition = keys.indexOf(id);
+        keys.remove(keyPosition);
+        alarms.remove(id);
+        notifyDataSetChanged();
+    }
+
+    public void updateAlarm(AlarmViewModel alarmViewModel) {
+        Log.d("SIZES", "updateAlarm: " + keys.size() + " alarms " +alarms.size());
+        alarms.put(alarmViewModel.getId(), alarmViewModel);
         notifyDataSetChanged();
     }
 
@@ -44,7 +67,7 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
 
     @Override
     public void onBindViewHolder(@NonNull AlarmsHolder alarmsHolder, int i) {
-        alarmsHolder.setAlarm(alarms.get(i));
+        alarmsHolder.setAlarm(alarms.get(keys.get(i)));
     }
 
     @Override
@@ -74,36 +97,29 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
 
         @Override
         public void onClick(View v) {
-            alarmClicked.onAlarmClicked(getAdapterPosition());
+            alarmClicked.onAlarmClicked(keys.get(getAdapterPosition()));
         }
 
         @Override
         public boolean onLongClick(View v) {
-            alarmClicked.onHold(getAdapterPosition());
+            alarmClicked.onHold(keys.get(getAdapterPosition()));
             return false;
         }
 
-        // todo uncomment the methods
-
-        public void setAlarm(Alarm alarm) {
-            this.time.setText(alarm.getTime());
-//            this.programmingLanguage.setText((ResUtil.getLanguage(context, alarm.getLanguage())));
-//            this.days.setText(ResUtil.getDaysMarks(context, alarm.getDays()));
-            setIndicatorColor(alarm.isEnable());
-        }
-
-        private void setIndicatorColor(boolean isEnable) {
-            // todo change colors
+        public void setAlarm(AlarmViewModel alarm) {
             GradientDrawable background = (GradientDrawable) enableIndicator.getBackground();
-//            int color = ResUtil.getAttrColor(context, isEnable ?
-//                    R.attr.button_default_color : R.attr.view_completed_color);
-//            background.setColor(color);
+            background.setColor(alarm.isEnable() ?
+                    ResUtil.Color.ACTIVE.getColor() : ResUtil.Color.NOT_ACTIVE.getColor());
+
+            this.time.setText(alarm.getTime());
+            this.programmingLanguage.setText(ResUtil.Array.LANGUAGES.getItem(alarm.getLanguagePosition()));
+            this.days.setText(alarm.getWeekdayMarks(ResUtil.Array.WEEKDAYS_MARKS.getArray()));
         }
 
     }
 
     public interface OnAlarmClicked {
-        void onAlarmClicked(int position);
-        void onHold(int position);
+        void onAlarmClicked(int id);
+        void onHold(int id);
     }
 }

@@ -13,22 +13,21 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.domain.model.Alarm;
+import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
+import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class FragmentBottomDialog extends BottomSheetDialogFragment implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
 
     private BottomDialogStateListener dialogStateListener;
-    private Alarm alarm;
-
+    private AlarmViewModel alarm;
 
     public void setBottomDialogClickListener(BottomDialogStateListener dialogClickListener) {
         this.dialogStateListener = dialogClickListener;
     }
 
-    public void setAlarm(Alarm alarm) {
+    public void setAlarm(AlarmViewModel alarm) {
         this.alarm = alarm;
     }
 
@@ -47,12 +46,10 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
         enableAlarm.setOnCheckedChangeListener(this);
 
         alarmTime.setText(alarm.getTime());
-        alarmDetails.setText((""
-//                ResUtil.getLanguage(getActivity(), alarm.getLanguage()) + "/" +
-//                ResUtil.getDifficult(getActivity(), alarm.getDifficult()) + "\n" +
-//                ResUtil.getDaysMarks(getActivity(), alarm.getDays())
+        alarmDetails.setText((ResUtil.Array.LANGUAGES.getItem(alarm.getLanguagePosition())
+                        + "/" + ResUtil.Array.DIFFICULT.getItem(alarm.getDifficultPosition())
+                        + "\n" + alarm.getWeekdayMarks(ResUtil.Array.WEEKDAYS_MARKS.getArray())
         ));
-
 
         return view;
     }
@@ -65,23 +62,17 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
 
     @Override
     public void onClick(View v) {
-        dialogStateListener.onDeleteClicked(this.alarm);
+        dialogStateListener.onDeleteClicked(alarm.getId());
         dismiss();
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        this.alarm.setEnable(isChecked);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        dialogStateListener.onDialogDestroyed(this.alarm);
+        dialogStateListener.onSwitchClicked(alarm.getId(), isChecked);
     }
 
     interface BottomDialogStateListener {
-        void onDeleteClicked(Alarm alarm);
-        void onDialogDestroyed(Alarm alarm);
+        void onDeleteClicked(int id);
+        void onSwitchClicked(int id, boolean enable);
     }
 }

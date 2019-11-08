@@ -20,7 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.List;
+import java.util.Map;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
@@ -36,6 +39,9 @@ import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.alarms.adapters.AdapterAlarms;
 import linc.com.alarmclockforprogrammers.ui.alarmsettings.FragmentAlarmSettings;
 import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
+import linc.com.alarmclockforprogrammers.ui.mapper.AlarmViewModelMapper;
+import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
+import linc.com.alarmclockforprogrammers.utils.JsonUtil;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 
@@ -45,7 +51,6 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     private TextView balance;
     private AdapterAlarms adapterAlarms;
     private PresenterAlarms presenter;
-    private List<Alarm> alarms;
 
     private Transition enterAnimation;
     private Transition returnAnimation;
@@ -57,11 +62,15 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
         AppDatabase database = AlarmApp.getInstance().getDatabase();
 
         if(presenter == null) {
-            this.presenter = new PresenterAlarms(this, new InteractorAlarms(
-                    new RepositoryAlarms(database.alarmDao(), database.questionsDao(), new AlarmEntityMapper()),
-                    new PreferencesAlarm(getActivity()),
+            this.presenter = new PresenterAlarms(new InteractorAlarms(
+                    new RepositoryAlarms(
+                            database.alarmDao(),
+                            database.questionsDao(),
+                            new PreferencesAlarm(getActivity()),
+                            new JsonUtil<>(new Gson()),
+                            new AlarmEntityMapper()),
                     new AlarmHandler(getActivity())
-            ));
+            ), new AlarmViewModelMapper());
         }
 
         this.enterAnimation = new Explode()
@@ -91,7 +100,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         SnapHelper snapHelper = new LinearSnapHelper();
-        this.adapterAlarms = new AdapterAlarms(this, getActivity());
+        this.adapterAlarms = new AdapterAlarms(this);
 
         snapHelper.attachToRecyclerView(alarmsListRV);
         alarmsListRV.setHasFixedSize(true);
@@ -99,20 +108,16 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
         alarmsListRV.setAdapter(adapterAlarms);
         fab.setOnClickListener(this);
 
+        presenter.bind(this);
+        Log.d("CREATE_FRAG", "onCreateView: ");
+
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("RES", "onResume: ");
-        this.presenter.setData();
-    }
-
-    @Override
-    public void setAlarmsData(List<Alarm> alarms) {
-        this.alarms = alarms;
+    public void setAlarmsData(Map<Integer, AlarmViewModel> alarms) {
         this.adapterAlarms.setAlarms(alarms);
+        Log.d("DATA_RESET", "setAlarmsData: ");
     }
 
     @Override
@@ -142,6 +147,8 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
                 .commit();
     }
 
+    // todo merge
+
     @Override
     public void openAlarmCreator() {
         FragmentAlarmSettings alarmSettings = new FragmentAlarmSettings();
@@ -157,7 +164,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     }
 
     @Override
-    public void openBottomSheetDialog(Alarm alarm) {
+    public void openBottomSheetDialog(AlarmViewModel alarm) {
         FragmentBottomDialog bottomDialog = new FragmentBottomDialog();
         bottomDialog.setBottomDialogClickListener(this);
         bottomDialog.setAlarm(alarm);
@@ -172,23 +179,33 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     }
 
     @Override
+    public void hideDeletedItem(int id) {
+        adapterAlarms.removeAlarm(id);
+    }
+
+    @Override
+    public void highlightEnable(AlarmViewModel alarmViewModel) {
+        adapterAlarms.updateAlarm(alarmViewModel);
+    }
+
+    @Override
     public void onAlarmClicked(int position) {
-        this.presenter.openAlarmEditor(this.alarms.get(position).getId());
+        this.presenter.openAlarmEditor(position);
     }
 
     @Override
     public void onHold(int position) {
-        this.presenter.openBottomSheetDialog(alarms.get(position));
+        this.presenter.alarmSelected(position);
     }
 
     @Override
-    public void onDeleteClicked(Alarm alarm) {
-        this.presenter.deleteAlarm(alarm);
+    public void onDeleteClicked(int id) {
+        this.presenter.deleteAlarm(id);
     }
 
     @Override
-    public void onDialogDestroyed(Alarm alarm) {
-        this.presenter.updateAlarm(alarm);
+    public void onSwitchClicked(int id, boolean enable) {
+        this.presenter.enableAlarm(id, enable);
     }
 
     @Override

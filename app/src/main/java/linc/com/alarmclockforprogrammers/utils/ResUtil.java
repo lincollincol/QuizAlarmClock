@@ -48,6 +48,9 @@ public class ResUtil {
      * Colors
      */
     public enum Color {
+        ACTIVE(R.attr.button_default_color),
+        NOT_ACTIVE(R.attr.view_completed_color),
+
         // buttons
         ENABLE(R.attr.button_default_color),
         DISABLE(R.attr.button_disable_color),

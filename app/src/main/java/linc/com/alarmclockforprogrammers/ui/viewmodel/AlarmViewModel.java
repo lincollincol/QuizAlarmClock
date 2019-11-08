@@ -1,7 +1,5 @@
 package linc.com.alarmclockforprogrammers.ui.viewmodel;
 
-import linc.com.alarmclockforprogrammers.R;
-
 public class AlarmViewModel {
 
     private int id;
@@ -33,7 +31,7 @@ public class AlarmViewModel {
     }
 
     public String getTime() {
-        return hour + " " + minute;
+        return String.format("%02d:%02d", hour, minute);
     }
 
     public int getMinute() {

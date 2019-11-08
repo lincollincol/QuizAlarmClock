@@ -98,9 +98,4 @@ public class Alarm {
         this.selectedDays = selectedDays;
     }
 
-    public String getTime() {
-        String time = (hour < 10 ? "0" : "") + hour + ":";
-        time += (minute < 10 ? "0" : "") + minute;
-        return time;
-    }
 }
