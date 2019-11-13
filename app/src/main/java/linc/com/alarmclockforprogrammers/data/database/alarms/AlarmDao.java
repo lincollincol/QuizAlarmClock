@@ -14,7 +14,7 @@ import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 @Dao
 public interface AlarmDao {
 
-    @Query("SELECT * FROM alarms")
+    @Query("SELECT * FROM alarms ORDER BY enable DESC")
     List<AlarmEntity> getAll();
 
     @Query("SELECT * FROM alarms WHERE _id = :id")

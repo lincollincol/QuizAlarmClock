@@ -1,11 +1,11 @@
-package linc.com.alarmclockforprogrammers.domain.model;
+package linc.com.alarmclockforprogrammers.ui.viewmodel;
 
-public class Achievement {
+public class AchievementViewModel {
 
     private int id;
-    private int award;
-    private int completedTasks;
-    private int tasksToComplete;
+    private int completedPercent;
+    private String award;
+    private String completedTasks;
     private String achievementCondition;
     private String programmingLanguage;
     private boolean completed;
@@ -19,28 +19,28 @@ public class Achievement {
         this.id = id;
     }
 
-    public int getAward() {
+    public String getAward() {
         return award;
     }
 
-    public void setAward(int award) {
+    public void setAward(String award) {
         this.award = award;
     }
 
-    public int getCompletedTasks() {
+    public int getCompletedPercent() {
+        return completedPercent;
+    }
+
+    public void setCompletedPercent(int completedPercent) {
+        this.completedPercent = completedPercent;
+    }
+
+    public String getCompletedTasks() {
         return completedTasks;
     }
 
-    public void setCompletedTasks(int completedTasks) {
-        this.completedTasks = completedTasks;
-    }
-
-    public int getTasksToComplete() {
-        return tasksToComplete;
-    }
-
-    public void setTasksToComplete(int tasksToComplete) {
-        this.tasksToComplete = tasksToComplete;
+    public void setCompletedTasks(String completionProgress) {
+        this.completedTasks = completionProgress;
     }
 
     public String getAchievementCondition() {

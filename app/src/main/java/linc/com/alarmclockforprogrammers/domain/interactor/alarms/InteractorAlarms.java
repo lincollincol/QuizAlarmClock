@@ -2,17 +2,13 @@ package linc.com.alarmclockforprogrammers.domain.interactor.alarms;
 
 import android.util.Log;
 
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
-import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarms;
 
 public class InteractorAlarms {

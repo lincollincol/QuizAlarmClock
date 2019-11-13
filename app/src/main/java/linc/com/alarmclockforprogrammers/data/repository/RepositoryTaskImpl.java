@@ -1,46 +1,29 @@
 package linc.com.alarmclockforprogrammers.data.repository;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 import io.reactivex.Completable;
-import io.reactivex.Maybe;
-import io.reactivex.MaybeOnSubscribe;
-import io.reactivex.Single;
-import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.data.database.alarms.AlarmDao;
 import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
 import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
-import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
 import linc.com.alarmclockforprogrammers.data.mapper.QuestionEntityMapper;
-import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
+import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.data.database.achievements.AchievementsDao;
 import linc.com.alarmclockforprogrammers.data.database.questions.QuestionsDao;
 import linc.com.alarmclockforprogrammers.domain.interactor.task.RepositoryTask;
 import linc.com.alarmclockforprogrammers.domain.model.Question;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
-import linc.com.alarmclockforprogrammers.utils.Consts;
-import linc.com.alarmclockforprogrammers.utils.JsonUtil;
 
 public class RepositoryTaskImpl implements RepositoryTask {
 
     private QuestionsDao questionsDao;
     private AlarmDao alarmDao;
     private AchievementsDao achievementsDao;
-    private PreferencesAlarm preferences;
+    private LocalPreferencesManager preferences;
 
     private List<QuestionEntity> questions;
     private QuestionEntityMapper mapper;
@@ -48,7 +31,7 @@ public class RepositoryTaskImpl implements RepositoryTask {
     public RepositoryTaskImpl(QuestionsDao questionsDao,
                               AlarmDao alarmDao,
                               AchievementsDao achievementsDao,
-                              PreferencesAlarm preferences,
+                              LocalPreferencesManager preferences,
                               QuestionEntityMapper mapper) {
         this.questionsDao = questionsDao;
         this.alarmDao = alarmDao;

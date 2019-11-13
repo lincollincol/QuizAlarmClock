@@ -22,19 +22,17 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import java.util.List;
 import java.util.Map;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
-import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
-import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
+import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarms.InteractorAlarms;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarms;
-import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
+import linc.com.alarmclockforprogrammers.infrastructure.CustomSnapHelper;
 import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.alarms.adapters.AdapterAlarms;
 import linc.com.alarmclockforprogrammers.ui.alarmsettings.FragmentAlarmSettings;
@@ -42,7 +40,6 @@ import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
 import linc.com.alarmclockforprogrammers.ui.mapper.AlarmViewModelMapper;
 import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
 import linc.com.alarmclockforprogrammers.utils.JsonUtil;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 
 public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlarmClicked,
@@ -66,7 +63,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
                     new RepositoryAlarms(
                             database.alarmDao(),
                             database.questionsDao(),
-                            new PreferencesAlarm(getActivity()),
+                            new LocalPreferencesManager(getActivity()),
                             new JsonUtil<>(new Gson()),
                             new AlarmEntityMapper()),
                     new AlarmHandler(getActivity())
@@ -99,7 +96,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
         this.balance = view.findViewById(R.id.alarms__balance);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
-        SnapHelper snapHelper = new LinearSnapHelper();
+        SnapHelper snapHelper = new CustomSnapHelper();
         this.adapterAlarms = new AdapterAlarms(this);
 
         snapHelper.attachToRecyclerView(alarmsListRV);

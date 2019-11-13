@@ -14,12 +14,11 @@ import com.google.gson.Gson;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
+import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.domain.interactor.wakeactivity.InteractorWakeActivity;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.ui.alarmdismiss.FragmentAlarmDismiss;
 import linc.com.alarmclockforprogrammers.ui.alarmtask.FragmentTask;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 
 public class WakeActivity extends AppCompatActivity implements ViewWakeActivity {
@@ -34,7 +33,7 @@ public class WakeActivity extends AppCompatActivity implements ViewWakeActivity 
         if(presenter == null) {
             this.presenter = new PresenterWakeActivity(
                     this,
-                    new InteractorWakeActivity(new PreferencesAlarm(this))
+                    new InteractorWakeActivity(new LocalPreferencesManager(this))
             );
         }
 

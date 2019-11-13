@@ -26,7 +26,7 @@ import java.util.List;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
+import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.domain.interactor.mainactivity.InteractorMainActivity;
 import linc.com.alarmclockforprogrammers.ui.achievements.FragmentAchievements;
 import linc.com.alarmclockforprogrammers.ui.alarms.FragmentAlarms;
@@ -34,7 +34,6 @@ import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
 import linc.com.alarmclockforprogrammers.ui.settings.FragmentSettings;
 import linc.com.alarmclockforprogrammers.ui.stopwatch.FragmentStopwatch;
 import linc.com.alarmclockforprogrammers.ui.timer.FragmentTimer;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
         if(presenter == null) {
             presenter = new PresenterMainActivity(
                     this,
-                    new InteractorMainActivity(new PreferencesAlarm(this))
+                    new InteractorMainActivity(new LocalPreferencesManager(this))
             );
         }
 

@@ -23,8 +23,8 @@ public class AchievementEntity {
     @ColumnInfo(name = "completed_tasks", typeAffinity = INTEGER)
     private int completedTasks;
 
-    @ColumnInfo(name = "achievement_task", typeAffinity = TEXT)
-    private String achievementTask;
+    @ColumnInfo(name = "achievement_condition", typeAffinity = TEXT)
+    private String achievementCondition;
 
     @ColumnInfo(name = "language", typeAffinity = TEXT)
     private String language;
@@ -36,12 +36,12 @@ public class AchievementEntity {
     private boolean awardReceived;
 
     public AchievementEntity(int id, int award, int tasksToComplete, int completedTasks,
-                             String achievementTask, String language, boolean completed, boolean awardReceived) {
+                             String achievementCondition, String language, boolean completed, boolean awardReceived) {
         this.id = id;
         this.award = award;
         this.tasksToComplete = tasksToComplete;
         this.completedTasks = completedTasks;
-        this.achievementTask = achievementTask;
+        this.achievementCondition = achievementCondition;
         this.language = language;
         this.completed = completed;
         this.awardReceived = awardReceived;
@@ -79,12 +79,12 @@ public class AchievementEntity {
         this.tasksToComplete = tasksToComplete;
     }
 
-    public String getAchievementTask() {
-        return achievementTask;
+    public String getAchievementCondition() {
+        return achievementCondition;
     }
 
-    public void setAchievementTask(String achievementTask) {
-        this.achievementTask = achievementTask;
+    public void setAchievementCondition(String achievementCondition) {
+        this.achievementCondition = achievementCondition;
     }
 
     public String getLanguage() {

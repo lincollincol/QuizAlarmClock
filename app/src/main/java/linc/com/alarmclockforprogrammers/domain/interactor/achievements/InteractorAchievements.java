@@ -1,46 +1,40 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.achievements;
 
-import java.util.List;
+import java.util.Map;
 
-import io.reactivex.Observable;
-import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
-import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
+import io.reactivex.Completable;
+import io.reactivex.Single;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAchievements;
+import linc.com.alarmclockforprogrammers.domain.model.Achievement;
 
 public class InteractorAchievements {
 
     private RepositoryAchievements repository;
-    private PreferencesAlarm preferences;
 
-    public InteractorAchievements(RepositoryAchievements repository, PreferencesAlarm preferences) {
+    public InteractorAchievements(RepositoryAchievements repository) {
         this.repository = repository;
-        this.preferences = preferences;
     }
 
-    public Observable<List<AchievementEntity>> getAchievements() {
+    public Single<Map<Integer, Achievement>> execute() {
+        repository.updateLocalAchievementsVersion()
+            .subscribe();
         return repository.getAchievements();
     }
 
-    public void updateAcgievementsInLocal() {
-        this.repository.updateLocalAchievementsVersion((remoteVersion) -> {
-            if(!preferences.getLocalAchievementsVersion().equals(remoteVersion)) {
-                this.repository.updateLocalAchievements();
-                this.preferences.saveLocalAchievementsVersion(remoteVersion);
-            }
-        });
+    public Completable accomplishAchievement(int id) {
+        return repository.getAchievement(id)
+                .zipWith(repository.getBalance(), (achievement, balance) -> {
+                    achievement.setAwardReceived(true);
+                    balance += achievement.getAward();
+                    repository.saveBalance(balance)
+                            .subscribe();
+                    repository.updateAchievement(achievement)
+                            .subscribe();
+                    return achievement;
+                }).ignoreElement();
     }
 
-    public int getBalance() {
-        return this.preferences.getBalance();
-    }
-
-    public void increaseBalance(int award) {
-        int newBalance = this.preferences.getBalance() + award;
-        this.preferences.saveBalance(newBalance);
-    }
-
-    public void updateAchievement(AchievementEntity achievement) {
-        this.repository.updateAchievement(achievement)
-                .subscribe();
+    public Single<Integer> getBalance() {
+        return this.repository.getBalance();
     }
 }

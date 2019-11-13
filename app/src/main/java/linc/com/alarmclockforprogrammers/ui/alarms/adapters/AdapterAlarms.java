@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -32,30 +33,29 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
 
     public AdapterAlarms(OnAlarmClicked onAlarmClicked) {
         this.onAlarmClicked = onAlarmClicked;
-        this.alarms = new HashMap<>();
+        this.alarms = new LinkedHashMap<>();
         keys = new ArrayList<>();
     }
 
     public void setAlarms(Map<Integer, AlarmViewModel> alarms) {
         this.alarms.clear();
+        this.keys.clear();
         this.alarms.putAll(alarms);
-
-        keys.clear();
-        keys.addAll(alarms.keySet());
+        this.keys.addAll(alarms.keySet());
         notifyDataSetChanged();
     }
 
     public void removeAlarm(int id) {
         int keyPosition = keys.indexOf(id);
-        keys.remove(keyPosition);
         alarms.remove(id);
-        notifyDataSetChanged();
+        keys.remove(keyPosition);
+        notifyItemRemoved(keyPosition);
     }
 
     public void updateAlarm(AlarmViewModel alarmViewModel) {
         Log.d("SIZES", "updateAlarm: " + keys.size() + " alarms " +alarms.size());
         alarms.put(alarmViewModel.getId(), alarmViewModel);
-        notifyDataSetChanged();
+        notifyItemChanged(keys.indexOf(alarmViewModel.getId()));
     }
 
     @NonNull

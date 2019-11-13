@@ -8,20 +8,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -32,10 +26,9 @@ import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 import linc.com.alarmclockforprogrammers.data.database.alarms.AlarmDao;
 import linc.com.alarmclockforprogrammers.data.database.questions.QuestionsDao;
 import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
-import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
+import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.utils.JsonUtil;
-import linc.com.alarmclockforprogrammers.utils.callbacks.VersionUpdateCallback;
 
 public class RepositoryAlarms {
 
@@ -43,7 +36,7 @@ public class RepositoryAlarms {
     private QuestionsDao questionsDao;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private PreferencesAlarm preferences;
+    private LocalPreferencesManager preferences;
 
     private JsonUtil<String> jsonUtil;
     private AlarmEntityMapper mapper;
@@ -52,7 +45,7 @@ public class RepositoryAlarms {
 
     public RepositoryAlarms(AlarmDao alarmDao,
                             QuestionsDao questionsDao,
-                            PreferencesAlarm preferences,
+                            LocalPreferencesManager preferences,
                             JsonUtil<String> jsonUtil,
                             AlarmEntityMapper mapper) {
         this.alarmDao = alarmDao;
@@ -61,7 +54,7 @@ public class RepositoryAlarms {
         this.jsonUtil = jsonUtil;
         this.mapper = mapper;
         this.firebaseDatabase = FirebaseDatabase.getInstance();
-        this.alarms = new HashMap<>();
+        this.alarms = new LinkedHashMap<>();
     }
 
     /** Alarms*/

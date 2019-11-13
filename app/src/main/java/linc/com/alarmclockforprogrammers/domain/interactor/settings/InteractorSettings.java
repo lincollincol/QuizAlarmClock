@@ -1,12 +1,12 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.settings;
 
-import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
+import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 
 public class InteractorSettings {
 
-    private PreferencesAlarm preferences;
+    private LocalPreferencesManager preferences;
 
-    public InteractorSettings(PreferencesAlarm preferences) {
+    public InteractorSettings(LocalPreferencesManager preferences) {
         this.preferences = preferences;
     }
 

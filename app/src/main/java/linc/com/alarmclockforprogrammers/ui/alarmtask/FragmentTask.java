@@ -26,7 +26,7 @@ import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
 import linc.com.alarmclockforprogrammers.data.mapper.QuestionEntityMapper;
-import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
+import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.domain.interactor.task.InteractorTaskImpl;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryTaskImpl;
 import linc.com.alarmclockforprogrammers.infrastructure.Player;
@@ -70,7 +70,7 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
                             database.questionsDao(),
                             database.alarmDao(),
                             database.achievementsDao(),
-                            new PreferencesAlarm(getActivity()),
+                            new LocalPreferencesManager(getActivity()),
                             new QuestionEntityMapper(new JsonUtil<>(new Gson()))
                     ), new Player(getActivity())),
                     new QuestionViewModelMapper()

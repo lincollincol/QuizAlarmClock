@@ -1,5 +1,6 @@
 package linc.com.alarmclockforprogrammers.data.repository;
 
+import android.arch.persistence.db.SimpleSQLiteQuery;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -10,55 +11,106 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
 import linc.com.alarmclockforprogrammers.data.database.achievements.AchievementsDao;
-import linc.com.alarmclockforprogrammers.utils.callbacks.VersionUpdateCallback;
+import linc.com.alarmclockforprogrammers.data.mapper.AchievementEntityMapper;
+import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
+import linc.com.alarmclockforprogrammers.domain.model.Achievement;
 
 public class RepositoryAchievements {
 
     private AchievementsDao achievementsDao;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private LocalPreferencesManager preferences;
 
-    public RepositoryAchievements(AchievementsDao achievementsDao) {
-        this.firebaseDatabase = FirebaseDatabase.getInstance();
+    private Map<Integer, Achievement> achievements;
+    private AchievementEntityMapper mapper;
+
+    public RepositoryAchievements(AchievementsDao achievementsDao,
+                                  LocalPreferencesManager preferences,
+                                  AchievementEntityMapper mapper) {
         this.achievementsDao = achievementsDao;
+        this.preferences = preferences;
+        this.mapper = mapper;
+        this.firebaseDatabase = FirebaseDatabase.getInstance();
+        this.achievements = new LinkedHashMap<>();
     }
 
-    public Observable<List<AchievementEntity>> getAchievements() {
-        return Observable.create((ObservableOnSubscribe<List<AchievementEntity>>) emitter -> {
-            try{
-                emitter.onNext(achievementsDao.getAll());
-                emitter.onComplete();
-            }catch (Exception e){
-                emitter.onError(e);
-            }
-        }).subscribeOn(Schedulers.io())
+    public Single<Map<Integer, Achievement>> getAchievements() {
+        return Single.create((SingleOnSubscribe<Map<Integer, Achievement>>) emitter ->{
+                List<AchievementEntity> achievementEntities = achievementsDao.getAll();
+                achievements.clear();
+                for(AchievementEntity achievementEntity : achievementEntities) {
+                    this.achievements.put(achievementEntity.getId(), mapper.toAchievement(achievementEntity));
+                }
+                emitter.onSuccess(achievements);
+        })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public void updateLocalAchievementsVersion(VersionUpdateCallback callback) {
+    public Single<Achievement> getAchievement(int id) {
+        return Single.fromCallable(() -> achievements.get(id));
+    }
+
+    public Completable updateLocalAchievementsVersion() {
+        return Completable.create(emitter -> {
+            this.databaseReference = this.firebaseDatabase.getReference("achievements_version");
+            this.databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String remoteVersion = ((String)dataSnapshot.getValue());
+                    Log.d("THREAD NAME?", "getAchievements: " + Thread.currentThread().getName());
+                    Log.d("VERSION", "onDataChange: new VERSION IN " + remoteVersion);
+                    if(!remoteVersion.equals(preferences.getLocalAchievementsVersion())) {
+                        updateLocalAchievements();
+                        preferences.saveLocalAchievementsVersion(remoteVersion);
+                        Log.d("VERSION", "onDataChange: new version  =  " + remoteVersion);
+                    }
+                    emitter.onComplete();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+        }).subscribeOn(Schedulers.io());
+    }
+
+    /*public void updateLocalAchievementsVersion() {
         this.databaseReference = this.firebaseDatabase.getReference("achievements_version");
         this.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                callback.onRemoteUpdated(((String)dataSnapshot.getValue()));
+                String remoteVersion = ((String)dataSnapshot.getValue());
+                Log.d("THREAD NAME?", "getAchievements: " + Thread.currentThread().getName());
+                Log.d("VERSION", "onDataChange: new VERSION IN " + remoteVersion);
+                if(!remoteVersion.equals(preferences.getLocalAchievementsVersion())) {
+                    updateLocalAchievements();
+                    preferences.saveLocalAchievementsVersion(remoteVersion);
+                    Log.d("VERSION", "onDataChange: new version  =  " + remoteVersion);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-    }
+    }*/
 
-    public void updateLocalAchievements() {
+    private void updateLocalAchievements() {
         List<AchievementEntity> achievements = new ArrayList<>();
         this.databaseReference = this.firebaseDatabase.getReference("achievements");
         this.databaseReference.addValueEventListener(new ValueEventListener() {
@@ -98,11 +150,21 @@ public class RepositoryAchievements {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Completable updateAchievement(AchievementEntity achievements) {
+    public Completable updateAchievement(Achievement achievement) {
+        Log.d("UPDATE_AC", "updateAchievement: updated = " + achievement.getAward());
         return Completable.fromAction(() ->
-                this.achievementsDao.update(achievements)
+                this.achievementsDao.update(mapper.toAchievementEntity(achievement))
         )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    public Single<Integer> getBalance() {
+        return Single.fromCallable(() -> preferences.getInteger("BALANCE"));
+    }
+
+    public Completable saveBalance(int balance) {
+        return Completable.fromAction(() -> preferences.saveInteger(balance, "BALANCE"));
+    }
+
 }

@@ -164,7 +164,7 @@
             app:layout_constraintBottom_toBottomOf="@id/alarm_settings__task_enable_title"/>
 
 
-        <!--Expand achievementTask settings-->
+        <!--Expand achievementCondition settings-->
         <android.support.constraint.Group
             android:id="@+id/alarm_settings__task_expand"
             android:layout_width="wrap_content"

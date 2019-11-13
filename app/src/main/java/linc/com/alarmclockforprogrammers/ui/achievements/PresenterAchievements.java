@@ -1,48 +1,45 @@
 package linc.com.alarmclockforprogrammers.ui.achievements;
 
-import java.util.List;
+import android.util.Log;
 
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
 import linc.com.alarmclockforprogrammers.domain.interactor.achievements.InteractorAchievements;
+import linc.com.alarmclockforprogrammers.ui.mapper.AchievementViewModelMapper;
 
 public class PresenterAchievements {
 
     private ViewAchievements view;
     private InteractorAchievements interactor;
+    private AchievementViewModelMapper mapper;
 
-    private List<AchievementEntity> achievements;
-
-    public PresenterAchievements(ViewAchievements view, InteractorAchievements interactor) {
-        this.view = view;
+    public PresenterAchievements(InteractorAchievements interactor, AchievementViewModelMapper mapper) {
         this.interactor = interactor;
+        this.mapper = mapper;
     }
 
-    public void setData() {
-        updateView();
+    public void bindView(ViewAchievements view) {
+        this.view = view;
         this.view.disableDrawerMenu();
-        this.interactor.updateAcgievementsInLocal();
+        Disposable d = this.interactor.execute()
+                .subscribe(achievements -> {
+                        view.setAchievements(mapper.toAchievementViewModelMap(achievements));
+                        updateBalance();
+                });
     }
 
     public void returnToAlarms() {
         this.view.openAlarmsFragment();
     }
 
-    public void receiveAward(int position) {
-        AchievementEntity achievement = this.achievements.get(position);
-        achievement.setAwardReceived(true);
-        this.interactor.increaseBalance(achievement.getAward());
-        this.interactor.updateAchievement(achievement);
-        updateView();
+    public void receiveAward(int id) {
+        Disposable d = this.interactor.accomplishAchievement(id)
+                .subscribe(() -> view.markReceived(id));
+        updateBalance();
     }
 
-    private void updateView() {
-        Disposable d = this.interactor.getAchievements()
-                .subscribe(achievements ->{
-                    this.achievements = achievements;
-                    this.view.setAchievements(achievements);
-                });
-        this.view.setBalance(interactor.getBalance());
+    private void updateBalance() {
+        Disposable d = this.interactor.getBalance()
+                .subscribe(balance -> this.view.setBalance(balance));
     }
 }
 

@@ -1,12 +1,12 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.wakeactivity;
 
-import linc.com.alarmclockforprogrammers.data.preferences.PreferencesAlarm;
+import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 
 public class InteractorWakeActivity {
 
-    private PreferencesAlarm preferences;
+    private LocalPreferencesManager preferences;
 
-    public InteractorWakeActivity(PreferencesAlarm preferences) {
+    public InteractorWakeActivity(LocalPreferencesManager preferences) {
         this.preferences = preferences;
     }
 

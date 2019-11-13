@@ -32,6 +32,8 @@ public class ResUtil {
      * Icons
      */
     public enum Icon {
+        COMPLETED(R.drawable.ic_check),
+        CURRENCY(R.drawable.ic_pay),
         START(R.drawable.ic_start),
         PAUSE(R.drawable.ic_pause),
         STOP(R.drawable.ic_stop),
