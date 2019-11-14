@@ -23,7 +23,8 @@ public class InteractorAlarms {
     }
 
     public Single<Map<Integer, Alarm>> execute() {
-        this.repository.updateLocalQuestionsVersion();
+        this.repository.updateLocalQuestionsVersion()
+            .subscribe();
         return this.repository.getAlarms();
     }
 

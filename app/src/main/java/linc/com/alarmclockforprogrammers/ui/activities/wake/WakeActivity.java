@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
+import linc.com.alarmclockforprogrammers.data.repository.RepositoryWakeActivityImpl;
 import linc.com.alarmclockforprogrammers.domain.interactor.wakeactivity.InteractorWakeActivity;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.ui.alarmdismiss.FragmentAlarmDismiss;
@@ -33,7 +34,9 @@ public class WakeActivity extends AppCompatActivity implements ViewWakeActivity 
         if(presenter == null) {
             this.presenter = new PresenterWakeActivity(
                     this,
-                    new InteractorWakeActivity(new LocalPreferencesManager(this))
+                    new InteractorWakeActivity(
+                            new RepositoryWakeActivityImpl(new LocalPreferencesManager(this))
+                    )
             );
         }
 

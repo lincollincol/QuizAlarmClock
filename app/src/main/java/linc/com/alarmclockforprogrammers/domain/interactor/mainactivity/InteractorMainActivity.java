@@ -1,17 +1,18 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.mainactivity;
 
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
+import linc.com.alarmclockforprogrammers.data.repository.RepositoryMainActivityImpl;
 
 public class InteractorMainActivity {
 
-    private LocalPreferencesManager preferences;
+    private RepositoryMainActivityImpl repository;
 
-    public InteractorMainActivity(LocalPreferencesManager preferences) {
-        this.preferences = preferences;
+    public InteractorMainActivity(RepositoryMainActivityImpl repository) {
+        this.repository = repository;
     }
 
     public boolean getTheme() {
-        return preferences.getTheme();
+        return repository.getTheme();
     }
 
 }

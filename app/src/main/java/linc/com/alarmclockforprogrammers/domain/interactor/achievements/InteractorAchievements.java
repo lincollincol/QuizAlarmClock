@@ -1,6 +1,7 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.achievements;
 
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -15,9 +16,11 @@ public class InteractorAchievements {
         this.repository = repository;
     }
 
-    public Single<Map<Integer, Achievement>> execute() {
-        repository.updateLocalAchievementsVersion()
-            .subscribe();
+    public Completable execute() {
+        return repository.updateLocalAchievementsVersion();
+    }
+
+    public Single<Map<Integer, Achievement>> getAchievements() {
         return repository.getAchievements();
     }
 

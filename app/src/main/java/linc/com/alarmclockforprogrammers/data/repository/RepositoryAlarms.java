@@ -89,58 +89,68 @@ public class RepositoryAlarms {
     }
 
     /** Questions*/
-    public void updateLocalQuestionsVersion() {
-        this.databaseReference = this.firebaseDatabase.getReference("questions_version");
-        this.databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String remoteVersion = ((String)dataSnapshot.getValue());
-                if(remoteVersion.equals(preferences.getLocalQuestionsVersion())) {
-                    updateLocalQuestions();
-                    preferences.saveLocalQuestionsVersion(remoteVersion);
+    public Completable updateLocalQuestionsVersion() {
+        return Completable.create(emitter -> {
+            this.databaseReference = this.firebaseDatabase.getReference("questions_version");
+            this.databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String remoteVersion = ((String)dataSnapshot.getValue());
+                    //todo const
+                    if(!remoteVersion.equals(preferences.getString("LOCAL_QUESTIONS_VERSION"))) {
+                        Disposable d = updateLocalQuestions()
+                            .subscribe(emitter::onComplete);
+                        preferences.saveString(remoteVersion, "LOCAL_QUESTIONS_VERSION");
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    emitter.onError(databaseError.toException());
+                }
+            });
+        }).subscribeOn(Schedulers.io());
     }
 
-    public void updateLocalQuestions() {
-        List<QuestionEntity> questions = new ArrayList<>();
-        this.databaseReference = this.firebaseDatabase.getReference("questions");
-        this.databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    questions.add(new QuestionEntity(
-                                    ((Long) (ds.child("id").getValue())).intValue(),
-                                    ((Long) (ds.child("difficult").getValue())).intValue(),
-                                    ((Long) (ds.child("trueAnswerPosition").getValue())).intValue(),
-                                    (String) (ds.child("programmingLanguage").getValue()),
-                                    (String) (ds.child("preQuestion").getValue()),
-                                    (String) (ds.child("postQuestion").getValue()),
-                                    jsonUtil.listToJson((ArrayList<String>) (ds.child("answers").getValue())),
-                                    (String) (ds.child("htmlCodeSnippet").getValue()),
-                                    ((Boolean) (ds.child("completed").getValue()))));
+    private Completable updateLocalQuestions() {
+        return Completable.create(emitter -> {
+            List<QuestionEntity> questions = new ArrayList<>();
+            this.databaseReference = this.firebaseDatabase.getReference("questions");
+            this.databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                        questions.add(new QuestionEntity(
+                                ((Long) (ds.child("id").getValue())).intValue(),
+                                ((Long) (ds.child("difficult").getValue())).intValue(),
+                                ((Long) (ds.child("trueAnswerPosition").getValue())).intValue(),
+                                (String) (ds.child("programmingLanguage").getValue()),
+                                (String) (ds.child("preQuestion").getValue()),
+                                (String) (ds.child("postQuestion").getValue()),
+                                jsonUtil.listToJson((ArrayList<String>) (ds.child("answers").getValue())),
+                                (String) (ds.child("htmlCodeSnippet").getValue()),
+                                ((Boolean) (ds.child("completed").getValue()))));
+                    }
+                    //todo dispose
+                    Disposable d = updateQuestions(questions)
+                            .subscribe(emitter::onComplete, Throwable::printStackTrace);
                 }
-                Disposable d = updateQuestions(questions)
-                        .subscribe(() -> {}, e -> e.printStackTrace());
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {/** Not implemented*/}
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    emitter.onError(databaseError.toException());
+                }
+            });
+        }).subscribeOn(Schedulers.io());
     }
 
     private Completable updateQuestions(List<QuestionEntity> questions) {
-        Log.d("SIZE", "updateQuestions: " + questions.size());
         return Completable.fromAction(() -> {
             for(QuestionEntity q : questions) {
                 try {
                     questionsDao.insert(q);
                 }catch (Exception e) {
-                    Log.d("ELEMENT EXIST", ""+q.getId() );
+                    e.printStackTrace();
                 }
             }
         })
@@ -148,8 +158,9 @@ public class RepositoryAlarms {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    //todo const
     public Single<Integer> getBalance() {
-        return Single.fromCallable(preferences::getBalance);
+        return Single.fromCallable(() -> preferences.getInteger("BALANCE"));
     }
 
 }

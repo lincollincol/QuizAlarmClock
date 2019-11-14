@@ -21,8 +21,8 @@ public class PresenterAchievements {
         this.view = view;
         this.view.disableDrawerMenu();
         Disposable d = this.interactor.execute()
-                .subscribe(achievements -> {
-                        view.setAchievements(mapper.toAchievementViewModelMap(achievements));
+                .subscribe(() -> {
+                        updateAchievements();
                         updateBalance();
                 });
     }
@@ -35,6 +35,13 @@ public class PresenterAchievements {
         Disposable d = this.interactor.accomplishAchievement(id)
                 .subscribe(() -> view.markReceived(id));
         updateBalance();
+    }
+
+    private void updateAchievements() {
+        Disposable d = interactor.getAchievements()
+            .subscribe(achievementMap -> {
+                view.setAchievements(mapper.toAchievementViewModelMap(achievementMap));
+            });
     }
 
     private void updateBalance() {

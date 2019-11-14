@@ -74,66 +74,51 @@ public class RepositoryAchievements {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String remoteVersion = ((String)dataSnapshot.getValue());
-                    Log.d("THREAD NAME?", "getAchievements: " + Thread.currentThread().getName());
-                    Log.d("VERSION", "onDataChange: new VERSION IN " + remoteVersion);
-                    if(!remoteVersion.equals(preferences.getLocalAchievementsVersion())) {
-                        updateLocalAchievements();
-                        preferences.saveLocalAchievementsVersion(remoteVersion);
-                        Log.d("VERSION", "onDataChange: new version  =  " + remoteVersion);
+                    if(!remoteVersion.equals(preferences.getString("LOCAL_ACHIEVEMENTS_VERSION"))) {
+                        Disposable d = updateLocalAchievements()
+                            .subscribe(() -> {
+                                emitter.onComplete();
+                                preferences.saveString(remoteVersion, "LOCAL_ACHIEVEMENTS_VERSION");
+                            });
                     }
-                    emitter.onComplete();
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {}
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    emitter.onError(databaseError.toException());
+                }
             });
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
-    /*public void updateLocalAchievementsVersion() {
-        this.databaseReference = this.firebaseDatabase.getReference("achievements_version");
-        this.databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String remoteVersion = ((String)dataSnapshot.getValue());
-                Log.d("THREAD NAME?", "getAchievements: " + Thread.currentThread().getName());
-                Log.d("VERSION", "onDataChange: new VERSION IN " + remoteVersion);
-                if(!remoteVersion.equals(preferences.getLocalAchievementsVersion())) {
-                    updateLocalAchievements();
-                    preferences.saveLocalAchievementsVersion(remoteVersion);
-                    Log.d("VERSION", "onDataChange: new version  =  " + remoteVersion);
+    private Completable updateLocalAchievements() {
+        return Completable.create(emitter -> {
+            List<AchievementEntity> achievements = new ArrayList<>();
+            this.databaseReference = this.firebaseDatabase.getReference("achievements");
+            this.databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                        achievements.add(new AchievementEntity(
+                                ((Long) (ds.child("id").getValue())).intValue(),
+                                ((Long) (ds.child("award").getValue())).intValue(),
+                                ((Long) (ds.child("tasksToComplete").getValue())).intValue(),
+                                ((Long) (ds.child("completedTasks").getValue())).intValue(),
+                                (String) (ds.child("achievementTask").getValue()),
+                                (String) (ds.child("language").getValue()),
+                                ((Boolean) (ds.child("completed").getValue())),
+                                ((Boolean) (ds.child("awardReceived").getValue()))));
+                    }
+                    Disposable d = updateAchievements(achievements)
+                            .subscribe(emitter::onComplete, Throwable::printStackTrace);
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
-    }*/
-
-    private void updateLocalAchievements() {
-        List<AchievementEntity> achievements = new ArrayList<>();
-        this.databaseReference = this.firebaseDatabase.getReference("achievements");
-        this.databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    achievements.add(new AchievementEntity(
-                            ((Long) (ds.child("id").getValue())).intValue(),
-                            ((Long) (ds.child("award").getValue())).intValue(),
-                            ((Long) (ds.child("tasksToComplete").getValue())).intValue(),
-                            ((Long) (ds.child("completedTasks").getValue())).intValue(),
-                            (String) (ds.child("achievementTask").getValue()),
-                            (String) (ds.child("language").getValue()),
-                            ((Boolean) (ds.child("completed").getValue())),
-                            ((Boolean) (ds.child("awardReceived").getValue()))));
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    emitter.onError(databaseError.toException());
                 }
-                Disposable d = updateAchievements(achievements)
-                        .subscribe(() -> {}, e -> e.printStackTrace());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {/** Not implemented*/}
-        });
+            });
+        }).subscribeOn(Schedulers.io());
     }
 
     private Completable updateAchievements(List<AchievementEntity> achievements) {

@@ -27,6 +27,7 @@ import java.util.List;
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
+import linc.com.alarmclockforprogrammers.data.repository.RepositoryMainActivityImpl;
 import linc.com.alarmclockforprogrammers.domain.interactor.mainactivity.InteractorMainActivity;
 import linc.com.alarmclockforprogrammers.ui.achievements.FragmentAchievements;
 import linc.com.alarmclockforprogrammers.ui.alarms.FragmentAlarms;
@@ -51,7 +52,9 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
         if(presenter == null) {
             presenter = new PresenterMainActivity(
                     this,
-                    new InteractorMainActivity(new LocalPreferencesManager(this))
+                    new InteractorMainActivity(
+                            new RepositoryMainActivityImpl(new LocalPreferencesManager(this))
+                    )
             );
         }
 

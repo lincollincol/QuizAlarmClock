@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
+import linc.com.alarmclockforprogrammers.data.repository.RepositorySettingsImpl;
 import linc.com.alarmclockforprogrammers.domain.interactor.settings.InteractorSettings;
 import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
 
@@ -34,7 +35,9 @@ public class FragmentSettings extends BaseFragment implements ViewSettings,
 
         if(presenter == null) {
             this.presenter = new PresenterSettings(this,
-                    new InteractorSettings(new LocalPreferencesManager(getActivity()))
+                    new InteractorSettings(
+                            new RepositorySettingsImpl(new LocalPreferencesManager(getActivity()))
+                    )
             );
         }
     }

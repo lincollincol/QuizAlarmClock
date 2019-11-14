@@ -57,12 +57,6 @@ public class RepositoryTaskImpl implements RepositoryTask {
         return mapper.toQuestion(questions.get(position));
     }
 
-
-
-
-
-
-
     // todo rename
     public Completable setQuestionCompleted(QuestionEntity question) {
         return Completable.fromAction(() -> {
@@ -95,11 +89,11 @@ public class RepositoryTaskImpl implements RepositoryTask {
 
 
     public int getBalance() {
-        return preferences.getBalance();
+        return preferences.getInteger("BALANCE");
     }
 
     public void saveBalance(int balance) {
-        preferences.saveBalance(balance);
+        preferences.saveInteger(balance, "BALANCE");
     }
 
 
