@@ -24,8 +24,20 @@ public class PresenterTask {
 
     public void bind(ViewTask view, int alarmId) {
         this.view = view;
+
+        Disposable theme = interactor.getTheme()
+                .subscribe(isDarkTheme -> view.prepareAnimation(isDarkTheme?
+                        ResUtil.Animation.DARK_THEME_ANIMATION.getAnimation() :
+                        ResUtil.Animation.LIGHT_THEME_ANIMATION.getAnimation())
+                );
+
+        this.view.showLoadAnimation();
+
         Disposable d = this.interactor.execute(alarmId)
-            .subscribe(this::nextQuestion, Throwable::printStackTrace);
+            .subscribe(() -> {
+                nextQuestion();
+                view.hideLoadAnimation();
+            }, Throwable::printStackTrace);
         addDisposable(d);
     }
 

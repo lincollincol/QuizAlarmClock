@@ -91,6 +91,21 @@ public class ResUtil {
     }
 
     /**
+     * Animations
+     */
+    public enum Animation{
+        LIGHT_THEME_ANIMATION(R.raw.load_anim_light),
+        DARK_THEME_ANIMATION(R.raw.load_anim_dark);
+
+        private final int animation;
+
+        Animation(int animation) {
+            this.animation = animation;
+        }
+        public int getAnimation() { return animation; }
+    }
+
+    /**
      * String array
      */
     public enum Array {

@@ -51,4 +51,16 @@
         app:layout_constraintBottom_toBottomOf="@id/achievements__balance_image"
         app:layout_constraintRight_toRightOf="parent"/>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/achievements__loading_animation"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="gone"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

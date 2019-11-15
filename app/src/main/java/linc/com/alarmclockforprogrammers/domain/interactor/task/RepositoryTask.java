@@ -14,5 +14,5 @@ public interface RepositoryTask {
     Completable loadQuestions(int alarmId);
     int getBalance();
     void saveBalance(int newValue);
-
+    Single<Boolean> getTheme();
 }

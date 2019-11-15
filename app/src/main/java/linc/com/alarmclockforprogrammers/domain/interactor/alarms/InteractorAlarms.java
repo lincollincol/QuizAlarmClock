@@ -57,10 +57,11 @@ public class InteractorAlarms {
                 });
     }
 
-
-
     public Single<Integer> getBalance() {
         return repository.getBalance();
     }
 
+    public Single<Boolean> getTheme() {
+        return repository.getTheme();
+    }
 }

@@ -5,6 +5,10 @@ import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
 
 public interface ViewTask {
 
+    void prepareAnimation(int animation);
+    void showLoadAnimation();
+    void hideLoadAnimation();
+
     void showQuestion(QuestionViewModel question);
     void showBalance(int balance);
     void highlightAnswers(int position, @ColorInt int color);

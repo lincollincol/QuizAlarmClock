@@ -9,6 +9,10 @@ import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
 
 public interface ViewAlarms {
 
+    void prepareAnimation(int animation);
+    void showLoadAnimation();
+    void hideLoadAnimation();
+
     void setAlarmsData(Map<Integer, AlarmViewModel> alarms);
     void setBalance(int balance);
     void setDrawerState(boolean isEnable);

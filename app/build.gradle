@@ -48,7 +48,9 @@ dependencies {
 
     // Objects
     implementation 'com.google.code.gson:gson:2.8.5'
-    //
+
+    // Animations
+    implementation 'com.airbnb.android:lottie:2.7.0'
 
 }
 

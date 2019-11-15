@@ -18,5 +18,6 @@ public interface InteractorTask {
     Single<Boolean> checkTaskCompletion();
     Single<Boolean> isTaskPassed();
     Single<Integer> getBalance();
+    Single<Boolean> getTheme();
     void stop();
 }

@@ -163,4 +163,8 @@ public class RepositoryAlarms {
         return Single.fromCallable(() -> preferences.getInteger("BALANCE"));
     }
 
+    public Single<Boolean> getTheme() {
+        return Single.fromCallable(() -> preferences.getBoolean("DARK_THEME_CHECKED"));
+    }
+
 }

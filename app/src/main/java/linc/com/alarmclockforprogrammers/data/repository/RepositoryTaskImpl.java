@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.data.database.alarms.AlarmDao;
@@ -96,5 +97,7 @@ public class RepositoryTaskImpl implements RepositoryTask {
         preferences.saveInteger(balance, "BALANCE");
     }
 
-
+    public Single<Boolean> getTheme() {
+        return Single.fromCallable(() -> preferences.getBoolean("DARK_THEME_CHECKED"));
+    }
 }

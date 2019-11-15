@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import java.util.Map;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
@@ -34,13 +36,8 @@ import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
 public class FragmentAchievements extends BaseFragment implements
         AdapterAchievements.OnReceiveClickListener, ViewAchievements {
 
-    //todo load achievements at first maybe with animation
-    //todo load achievements at first maybe with animation
-    //todo load achievements at first maybe with animation
-    //todo load achievements at first maybe with animation
-    //todo load achievements at first maybe with animation
-
     private TextView balance;
+    private LottieAnimationView loadingAnimation;
 
     private AdapterAchievements adapter;
     private PresenterAchievements presenter;
@@ -72,6 +69,7 @@ public class FragmentAchievements extends BaseFragment implements
         Toolbar toolbar = view.findViewById(R.id.achievements__toolbar);
         RecyclerView achievementsList = view.findViewById(R.id.achievements__list_of_achievements);
         this.balance = view.findViewById(R.id.achievements__balance);
+        this.loadingAnimation = view.findViewById(R.id.achievements__loading_animation);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         SnapHelper snapHelper = new CustomSnapHelper();
@@ -91,7 +89,23 @@ public class FragmentAchievements extends BaseFragment implements
     @Override
     public void onClick(int id) {
         this.presenter.receiveAward(id);
-        Log.d("ID_ID_ALARM_ID_ID", "onClick: " + id);
+    }
+
+    @Override
+    public void prepareAnimation(int animation) {
+        loadingAnimation.setAnimation(animation);
+    }
+
+    @Override
+    public void showLoadAnimation() {
+        loadingAnimation.setVisibility(View.VISIBLE);
+        loadingAnimation.playAnimation();
+    }
+
+    @Override
+    public void hideLoadAnimation() {
+        loadingAnimation.setVisibility(View.GONE);
+        loadingAnimation.cancelAnimation();
     }
 
     @Override

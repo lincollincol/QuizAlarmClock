@@ -5,6 +5,7 @@ import android.util.Log;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.achievements.InteractorAchievements;
 import linc.com.alarmclockforprogrammers.ui.mapper.AchievementViewModelMapper;
+import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class PresenterAchievements {
 
@@ -20,9 +21,18 @@ public class PresenterAchievements {
     public void bindView(ViewAchievements view) {
         this.view = view;
         this.view.disableDrawerMenu();
+        Disposable theme = interactor.getTheme()
+                .subscribe(isDarkTheme -> view.prepareAnimation(isDarkTheme?
+                        ResUtil.Animation.DARK_THEME_ANIMATION.getAnimation() :
+                        ResUtil.Animation.LIGHT_THEME_ANIMATION.getAnimation())
+                );
+
+        this.view.showLoadAnimation();
+
         Disposable d = this.interactor.execute()
-                .subscribe(() -> {
-                        updateAchievements();
+                .subscribe(achievementMap -> {
+                        view.setAchievements(mapper.toAchievementViewModelMap(achievementMap));
+                        view.hideLoadAnimation();
                         updateBalance();
                 });
     }
@@ -35,13 +45,6 @@ public class PresenterAchievements {
         Disposable d = this.interactor.accomplishAchievement(id)
                 .subscribe(() -> view.markReceived(id));
         updateBalance();
-    }
-
-    private void updateAchievements() {
-        Disposable d = interactor.getAchievements()
-            .subscribe(achievementMap -> {
-                view.setAchievements(mapper.toAchievementViewModelMap(achievementMap));
-            });
     }
 
     private void updateBalance() {

@@ -104,6 +104,10 @@ public class InteractorTaskImpl implements InteractorTask{
         return Single.fromCallable(() -> repository.getBalance());
     }
 
+    public Single<Boolean> getTheme() {
+        return repository.getTheme();
+    }
+
     @Override
     public void stop() {
         player.stop();

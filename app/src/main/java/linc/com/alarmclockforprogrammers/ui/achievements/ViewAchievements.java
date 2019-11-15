@@ -9,6 +9,10 @@ import linc.com.alarmclockforprogrammers.ui.viewmodel.AchievementViewModel;
 
 public interface ViewAchievements {
 
+    void prepareAnimation(int animation);
+    void showLoadAnimation();
+    void hideLoadAnimation();
+
     void disableDrawerMenu();
     void setAchievements(Map<Integer, AchievementViewModel> achievements);
     void setBalance(int balance);

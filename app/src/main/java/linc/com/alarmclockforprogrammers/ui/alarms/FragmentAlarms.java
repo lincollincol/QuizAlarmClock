@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.Gson;
 
 import java.util.Map;
@@ -49,6 +50,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     private AdapterAlarms adapterAlarms;
     private PresenterAlarms presenter;
 
+    private LottieAnimationView loadingAnimation;
     private Transition enterAnimation;
     private Transition returnAnimation;
 
@@ -94,6 +96,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
         RecyclerView alarmsListRV = view.findViewById(R.id.alarms__list_of_alarms);
         FloatingActionButton fab = view.findViewById(R.id.alarms__add_alarm);
         this.balance = view.findViewById(R.id.alarms__balance);
+        this.loadingAnimation = view.findViewById(R.id.alarms__loading_animation);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         SnapHelper snapHelper = new CustomSnapHelper();
@@ -106,15 +109,30 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
         fab.setOnClickListener(this);
 
         presenter.bind(this);
-        Log.d("CREATE_FRAG", "onCreateView: ");
 
         return view;
     }
 
     @Override
+    public void prepareAnimation(int animation) {
+        loadingAnimation.setAnimation(animation);
+    }
+
+    @Override
+    public void showLoadAnimation() {
+        loadingAnimation.setVisibility(View.VISIBLE);
+        loadingAnimation.playAnimation();
+    }
+
+    @Override
+    public void hideLoadAnimation() {
+        loadingAnimation.setVisibility(View.GONE);
+        loadingAnimation.cancelAnimation();
+    }
+
+    @Override
     public void setAlarmsData(Map<Integer, AlarmViewModel> alarms) {
         this.adapterAlarms.setAlarms(alarms);
-        Log.d("DATA_RESET", "setAlarmsData: ");
     }
 
     @Override

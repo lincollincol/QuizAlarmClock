@@ -1,9 +1,13 @@
 package linc.com.alarmclockforprogrammers.ui.alarms;
 
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarms.InteractorAlarms;
 import linc.com.alarmclockforprogrammers.ui.mapper.AlarmViewModelMapper;
+import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
 import static linc.com.alarmclockforprogrammers.utils.Consts.ENABLE;
@@ -22,12 +26,24 @@ public class PresenterAlarms {
     void bind(ViewAlarms view) {
         this.view = view;
         this.view.setDrawerState(ENABLE);
+
+        Disposable theme = interactor.getTheme()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(isDarkTheme -> view.prepareAnimation(isDarkTheme?
+                                    ResUtil.Animation.DARK_THEME_ANIMATION.getAnimation() :
+                                    ResUtil.Animation.LIGHT_THEME_ANIMATION.getAnimation())
+                );
+        this.view.showLoadAnimation();
+
+
         Disposable balance = interactor.getBalance()
                 .subscribe(view::setBalance);
+
         Disposable d = interactor.execute()
-                .subscribe(alarms ->
-                        view.setAlarmsData(mapper.toAlarmViewModelMap(alarms))
-                );
+                .subscribe(alarms ->{
+                    view.setAlarmsData(mapper.toAlarmViewModelMap(alarms));
+                    view.hideLoadAnimation();
+                });
     }
 
     public void openAlarmCreator() {

@@ -20,6 +20,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.Gson;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
@@ -55,6 +56,7 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
     private FloatingActionButton nextQuestion;
     private FloatingActionButton payForQuestion;
 
+    private LottieAnimationView loadingAnimation;
     private ObjectAnimator progressAnimation;
     private PresenterTask presenter;
 
@@ -91,6 +93,7 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
         this.answersGroup = view.findViewById(R.id.wake__answers_group);
         this.nextQuestion = view.findViewById(R.id.wake__next_question);
         this.payForQuestion = view.findViewById(R.id.wake__pay_for_answer);
+        this.loadingAnimation = view.findViewById(R.id.task__loading_animation);
 
         this.nextQuestion.setOnClickListener(this);
         this.payForQuestion.setOnClickListener(this);
@@ -125,6 +128,23 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         this.presenter.optionSelected();
+    }
+
+    @Override
+    public void prepareAnimation(int animation) {
+        this.loadingAnimation.setAnimation(animation);
+    }
+
+    @Override
+    public void showLoadAnimation() {
+        this.loadingAnimation.setVisibility(View.VISIBLE);
+        this.loadingAnimation.playAnimation();
+    }
+
+    @Override
+    public void hideLoadAnimation() {
+        this.loadingAnimation.setVisibility(View.GONE);
+        this.loadingAnimation.cancelAnimation();
     }
 
     @Override

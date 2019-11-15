@@ -76,11 +76,14 @@ public class RepositoryAchievements {
                     String remoteVersion = ((String)dataSnapshot.getValue());
                     if(!remoteVersion.equals(preferences.getString("LOCAL_ACHIEVEMENTS_VERSION"))) {
                         Disposable d = updateLocalAchievements()
-                            .subscribe(() -> {
+                            .subscribe(() ->{
                                 emitter.onComplete();
                                 preferences.saveString(remoteVersion, "LOCAL_ACHIEVEMENTS_VERSION");
                             });
+                        return;
                     }
+                    emitter.onComplete();
+
                 }
 
                 @Override
@@ -150,6 +153,10 @@ public class RepositoryAchievements {
 
     public Completable saveBalance(int balance) {
         return Completable.fromAction(() -> preferences.saveInteger(balance, "BALANCE"));
+    }
+
+    public Single<Boolean> getTheme() {
+        return Single.fromCallable(() -> preferences.getBoolean("DARK_THEME_CHECKED"));
     }
 
 }

@@ -1,10 +1,14 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.achievements;
 
+import android.util.Log;
+
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAchievements;
 import linc.com.alarmclockforprogrammers.domain.model.Achievement;
 
@@ -16,13 +20,17 @@ public class InteractorAchievements {
         this.repository = repository;
     }
 
-    public Completable execute() {
-        return repository.updateLocalAchievementsVersion();
+    public Single<Map<Integer, Achievement>> execute() {
+        return Single.create(emitter -> {
+            Disposable localUpdate = repository.updateLocalAchievementsVersion()
+                    .subscribe(() -> {
+                        Log.d("COMPLETED_REQ ", "execute: ");
+                        Disposable achievements = repository.getAchievements()
+                                .subscribe(emitter::onSuccess);
+                    });
+        });
     }
 
-    public Single<Map<Integer, Achievement>> getAchievements() {
-        return repository.getAchievements();
-    }
 
     public Completable accomplishAchievement(int id) {
         return repository.getAchievement(id)
@@ -40,4 +48,9 @@ public class InteractorAchievements {
     public Single<Integer> getBalance() {
         return this.repository.getBalance();
     }
+
+    public Single<Boolean> getTheme() {
+        return repository.getTheme();
+    }
+
 }
