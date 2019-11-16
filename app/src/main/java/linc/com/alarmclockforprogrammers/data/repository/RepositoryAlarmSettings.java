@@ -1,9 +1,5 @@
 package linc.com.alarmclockforprogrammers.data.repository;
 
-import android.util.Log;
-
-import java.util.Arrays;
-
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
@@ -27,8 +23,9 @@ public class RepositoryAlarmSettings {
     public Single<Alarm> getAlarmById(int id) {
         return Single.create((SingleOnSubscribe<Alarm>) emitter -> {
             try{
-                AlarmEntity alarmEntity = alarmDao.getAlarmById(id) == null ?
-                        AlarmEntity.getInstance() : alarmDao.getAlarmById(id);
+                AlarmEntity alarmEntity = id != 0 ? alarmDao.getAlarmById(id) :
+                        AlarmEntity.createInstance(alarmDao.getNumberOfAlarms()+1);
+
                 Alarm alarm = mapper.toAlarm(alarmEntity);
                 emitter.onSuccess(alarm);
             }catch (Exception e){
@@ -39,12 +36,8 @@ public class RepositoryAlarmSettings {
     }
 
     public Completable saveAlarm(Alarm alarm) {
-        return Completable.fromAction(
-                //todo map tom entity
-                () -> {
-                    AlarmEntity alarmEntity = mapper.toAlarmEntity(alarm);
-                    alarmDao.insertAlarm(alarmEntity);
-                }
+        return Completable.fromAction(() ->
+                    alarmDao.insertAlarm(mapper.toAlarmEntity(alarm))
         ).subscribeOn(Schedulers.io())
          .observeOn(AndroidSchedulers.mainThread());
     }

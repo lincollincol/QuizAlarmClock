@@ -3,6 +3,7 @@ package linc.com.alarmclockforprogrammers.infrastructure.service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -24,6 +25,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         // Set new day for alarm clock repeat
         AlarmHandler ah = new AlarmHandler(context);
         ah.setReminderAlarm(alarm);
+
+        Log.d("ALARM_SERVICE", "onReceive: ID = " + alarm.getId());
+        Log.d("ALARM_SERVICE", "onReceive: diff = " + alarm.getDifficult());
+        Log.d("ALARM_SERVICE", "onReceive: lang = " + alarm.getLanguage());
 
         wakeActivity.putExtra("ALARM_JSON",
                 intent.getStringExtra("ALARM_JSON"));

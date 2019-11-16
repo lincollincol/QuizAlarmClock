@@ -112,7 +112,8 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
                     ResUtil.Color.ACTIVE.getColor() : ResUtil.Color.NOT_ACTIVE.getColor());
 
             this.time.setText(alarm.getTime());
-            this.programmingLanguage.setText(ResUtil.Array.LANGUAGES.getItem(alarm.getLanguagePosition()));
+            this.programmingLanguage.setText(String.valueOf(alarm.getId()));
+//            this.programmingLanguage.setText(ResUtil.Array.LANGUAGES.getItem(alarm.getLanguagePosition()));
             this.days.setText(alarm.getWeekdayMarks(ResUtil.Array.WEEKDAYS_MARKS.getArray()));
         }
 

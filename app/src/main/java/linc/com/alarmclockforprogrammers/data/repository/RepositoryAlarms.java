@@ -148,8 +148,10 @@ public class RepositoryAlarms {
         return Completable.fromAction(() -> {
             for(QuestionEntity q : questions) {
                 try {
+                    Log.d("UPDATE", "updateQuestions: " + q.getId());
                     questionsDao.insert(q);
                 }catch (Exception e) {
+                    Log.d("EXIST", "updateQuestions: " + q.getId());
                     e.printStackTrace();
                 }
             }

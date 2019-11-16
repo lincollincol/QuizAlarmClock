@@ -28,9 +28,14 @@ public class InteractorTaskImpl implements InteractorTask{
     }
 
     @Override
-    public Completable execute(int alarmId) {
-        player.start();
-        return repository.loadQuestions(alarmId);
+    public Single<Question> execute(int alarmId) {
+        return Single.create(emitter -> {
+            player.start();
+            Disposable d = repository.loadQuestions(alarmId)
+                    .subscribe(() ->
+                            emitter.onSuccess(repository.getQuestion(currentQuestion)),
+                            emitter::onError);
+        });
     }
 
     @Override

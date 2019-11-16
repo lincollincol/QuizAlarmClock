@@ -15,8 +15,8 @@ import static android.arch.persistence.room.ColumnInfo.TEXT;
 @Entity(tableName = "alarms")
 public class AlarmEntity {
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "_id")
+    @PrimaryKey
+    @ColumnInfo(name = "_id", typeAffinity = INTEGER)
     private int id;
 
     @ColumnInfo(name = "time", typeAffinity = INTEGER)
@@ -45,6 +45,19 @@ public class AlarmEntity {
 
     public AlarmEntity(long time, String label, String days, String songPath,
                        String language, int difficult, boolean task, boolean enable) {
+        this.time = time;
+        this.label = label;
+        this.days = days;
+        this.songPath = songPath;
+        this.language = language;
+        this.difficult = difficult;
+        this.task = task;
+        this.enable = enable;
+    }
+
+    private AlarmEntity(int id, long time, String label, String days, String songPath,
+                       String language, int difficult, boolean task, boolean enable) {
+        this.id = id;
         this.time = time;
         this.label = label;
         this.days = days;
@@ -127,10 +140,11 @@ public class AlarmEntity {
         this.enable = enable;
     }
 
+    //todo to const
     /** Return default empty alarm object*/
     @Ignore
-    public static AlarmEntity getInstance() {
-        return new AlarmEntity(0,"", "",
+    public static AlarmEntity createInstance(int id) {
+        return new AlarmEntity(id, 0,"", "",
                 "default", "Java",0,false, false);
     }
 }

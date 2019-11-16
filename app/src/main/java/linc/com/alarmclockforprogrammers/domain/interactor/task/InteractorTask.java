@@ -9,7 +9,7 @@ import linc.com.alarmclockforprogrammers.domain.model.Question;
 
 public interface InteractorTask {
 
-    Completable execute(int alarmId);
+    Single<Question> execute(int alarmId);
     Observable<Boolean> checkAnswer(int answerPosition);
     Single<Integer> calculatePaymentPrice();
     Single<Integer> makePayment();

@@ -1,5 +1,7 @@
 package linc.com.alarmclockforprogrammers.data.repository;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +48,10 @@ public class RepositoryTaskImpl implements RepositoryTask {
         return Completable.create(emitter -> {
             if(questions.isEmpty()) {
                 AlarmEntity alarm = alarmDao.getAlarmById(alarmId);
+
+                Log.d("REPOSITORY_DATA", "loadQuestions: id = " + alarm.getId());
+                Log.d("REPOSITORY_DATA", "loadQuestions: lang = " + alarm.getLanguage());
+
                 questions = questionsDao.getByLanguage(alarm.getLanguage(), alarm.getDifficult());
                 Collections.shuffle(questions);
                 emitter.onComplete();

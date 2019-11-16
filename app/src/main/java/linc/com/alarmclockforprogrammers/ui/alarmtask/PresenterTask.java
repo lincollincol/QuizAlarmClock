@@ -5,7 +5,9 @@ import android.util.Log;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.task.InteractorTask;
+import linc.com.alarmclockforprogrammers.domain.model.Question;
 import linc.com.alarmclockforprogrammers.ui.mapper.QuestionViewModelMapper;
+import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
 import linc.com.alarmclockforprogrammers.utils.Consts;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
@@ -34,9 +36,10 @@ public class PresenterTask {
         this.view.showLoadAnimation();
 
         Disposable d = this.interactor.execute(alarmId)
-            .subscribe(() -> {
-                nextQuestion();
+            .subscribe(question -> {
+                view.showQuestion(mapper.toQuestionViewModel(question));
                 view.hideLoadAnimation();
+                displayBalance();
             }, Throwable::printStackTrace);
         addDisposable(d);
     }

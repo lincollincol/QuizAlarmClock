@@ -20,6 +20,9 @@ public interface AlarmDao {
     @Query("SELECT * FROM alarms WHERE _id = :id")
     AlarmEntity getAlarmById(int id);
 
+    @Query("SELECT COUNT(*) FROM alarms")
+    int getNumberOfAlarms();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAlarm(AlarmEntity alarm);
 

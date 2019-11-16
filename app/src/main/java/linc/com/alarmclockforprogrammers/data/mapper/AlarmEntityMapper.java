@@ -34,7 +34,6 @@ public class AlarmEntityMapper {
                 alarm.isContainsTask(),
                 alarm.isEnable()
         );
-        //todo id
         alarmEntity.setId(alarm.getId());
         return alarmEntity;
     }

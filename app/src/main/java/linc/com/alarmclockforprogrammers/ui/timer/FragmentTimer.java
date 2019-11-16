@@ -22,6 +22,8 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.internal.JavaVersion;
+
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.domain.interactor.timer.InteractorTimerImpl;
 import linc.com.alarmclockforprogrammers.infrastructure.TimerManager;
@@ -199,7 +201,7 @@ public class FragmentTimer extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         presenter.unbind();
+        super.onDestroy();
     }
 }
