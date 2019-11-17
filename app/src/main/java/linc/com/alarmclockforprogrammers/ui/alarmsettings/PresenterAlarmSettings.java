@@ -98,7 +98,7 @@ public class PresenterAlarmSettings {
     }
 
     /**
-     * Task settings
+     * Test settings
      */
     void taskEnable(boolean enable) {
         this.alarmViewModel.setContainsTask(enable);

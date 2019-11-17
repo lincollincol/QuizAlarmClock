@@ -7,30 +7,26 @@ public class InteractorAlarmDismiss {
 
     private RepositoryDismiss repository;
     private MediaManager player;
+    private VibrationManager vibrationManager;
 
     public InteractorAlarmDismiss(RepositoryDismiss repository,
-                                  MediaManager player) {
+                                  MediaManager player,
+                                  VibrationManager vibrationManager) {
         this.repository = repository;
         this.player = player;
+        this.vibrationManager = vibrationManager;
     }
 
     public void startAlarm(int alarmId) {
         Disposable d = this.repository.getAlarmById(alarmId)
-                .subscribe( alarm -> playSong(alarm.getSongPath()));
+                .subscribe( alarm -> {
+                    player.startPlayer(alarm.getSongPath());
+                    vibrationManager.startVibration();
+                });
     }
 
     public void stopAlarm() {
-        stopPlayer();
-    }
-
-    private void playSong(String path) {
-        if(!path.equals("default")) {
-            this.player.setSong(path);
-        }
-        this.player.start();
-    }
-
-    private void stopPlayer() {
-        this.player.stop();
+        player.stopPlayer();
+        vibrationManager.stopVibration();
     }
 }

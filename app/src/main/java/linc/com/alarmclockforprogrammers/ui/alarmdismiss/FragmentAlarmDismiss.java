@@ -12,7 +12,8 @@ import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryDismiss;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss.InteractorAlarmDismiss;
-import linc.com.alarmclockforprogrammers.infrastructure.Player;
+import linc.com.alarmclockforprogrammers.infrastructure.PlayerManager;
+import linc.com.alarmclockforprogrammers.infrastructure.VibrationManagerImpl;
 import linc.com.alarmclockforprogrammers.ui.activities.wake.WakeActivity;
 import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
 
@@ -29,8 +30,11 @@ public class FragmentAlarmDismiss extends BaseFragment implements ViewAlarmDismi
 
         if(presenter == null) {
             this.presenter = new PresenterAlarmDismiss(this,
-                    new InteractorAlarmDismiss(new RepositoryDismiss(database.alarmDao()),
-                                        new Player(getActivity()))
+                    new InteractorAlarmDismiss(
+                            new RepositoryDismiss(database.alarmDao()),
+                            new PlayerManager(getActivity()),
+                            new VibrationManagerImpl(getActivity())
+                    )
             );
         }
 

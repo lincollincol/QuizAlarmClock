@@ -1,13 +1,9 @@
-package linc.com.alarmclockforprogrammers.ui.alarmtask;
+package linc.com.alarmclockforprogrammers.ui.alarmtest;
 
 import android.support.annotation.ColorInt;
 import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
 
-public interface ViewTask {
-
-    void prepareAnimation(int animation);
-    void showLoadAnimation();
-    void hideLoadAnimation();
+public interface ViewTest {
 
     void showQuestion(QuestionViewModel question);
     void showBalance(int balance);

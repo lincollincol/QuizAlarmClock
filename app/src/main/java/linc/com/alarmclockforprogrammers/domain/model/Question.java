@@ -85,16 +85,4 @@ public class Question {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
-
-    public int getQuestionsAmount() {
-        return ((difficult < 1) ? 3 : (difficult > 1) ? 1 : 2);
-    }
-
-    public int getSkipPrice() {
-        return ((difficult < 1) ? 1 : (difficult > 1) ? 5 : 2);
-    }
-
-    public int getTestAward() {
-        return ((difficult < 1) ? 2 : (difficult > 1) ? 4 : 3);
-    }
 }

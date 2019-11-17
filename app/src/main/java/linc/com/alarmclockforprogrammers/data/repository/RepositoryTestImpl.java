@@ -1,67 +1,70 @@
 package linc.com.alarmclockforprogrammers.data.repository;
 
-import android.util.Log;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.data.database.alarms.AlarmDao;
 import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
 import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
+import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
 import linc.com.alarmclockforprogrammers.data.mapper.QuestionEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
-import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.data.database.achievements.AchievementsDao;
 import linc.com.alarmclockforprogrammers.data.database.questions.QuestionsDao;
-import linc.com.alarmclockforprogrammers.domain.interactor.task.RepositoryTask;
+import linc.com.alarmclockforprogrammers.domain.interactor.alarmtest.RepositoryTest;
+import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.domain.model.Question;
 
-public class RepositoryTaskImpl implements RepositoryTask {
+public class RepositoryTestImpl implements RepositoryTest {
 
     private QuestionsDao questionsDao;
     private AlarmDao alarmDao;
     private AchievementsDao achievementsDao;
     private LocalPreferencesManager preferences;
 
-    private List<QuestionEntity> questions;
-    private QuestionEntityMapper mapper;
+    private QuestionEntityMapper questionMapper;
+    private AlarmEntityMapper alarmMapper;
 
-    public RepositoryTaskImpl(QuestionsDao questionsDao,
+    public RepositoryTestImpl(QuestionsDao questionsDao,
                               AlarmDao alarmDao,
                               AchievementsDao achievementsDao,
                               LocalPreferencesManager preferences,
-                              QuestionEntityMapper mapper) {
+                              QuestionEntityMapper questionMapper,
+                              AlarmEntityMapper alarmMapper) {
         this.questionsDao = questionsDao;
         this.alarmDao = alarmDao;
         this.achievementsDao = achievementsDao;
         this.preferences = preferences;
-        this.mapper = mapper;
-        this.questions = new ArrayList<>();
+        this.questionMapper = questionMapper;
+        this.alarmMapper = alarmMapper;
     }
 
-    public Completable loadQuestions(int alarmId) {
-        return Completable.create(emitter -> {
-            if(questions.isEmpty()) {
-                AlarmEntity alarm = alarmDao.getAlarmById(alarmId);
+    @Override
+    public Single<Alarm> getAlarm(int alarmId) {
+        return Single.create((SingleOnSubscribe<Alarm>)  emitter ->
+            emitter.onSuccess(alarmMapper.toAlarm(alarmDao.getAlarmById(alarmId)))
+        ).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
-                Log.d("REPOSITORY_DATA", "loadQuestions: id = " + alarm.getId());
-                Log.d("REPOSITORY_DATA", "loadQuestions: lang = " + alarm.getLanguage());
-
-                questions = questionsDao.getByLanguage(alarm.getLanguage(), alarm.getDifficult());
-                Collections.shuffle(questions);
-                emitter.onComplete();
-            }
+    @Override
+    public Single<List<Question>> getQuestions(String language, int difficult) {
+        return Single.create((SingleOnSubscribe<List<Question>>)  emitter -> {
+            List<QuestionEntity> questionEntities = questionsDao.getByParams(language, difficult);
+            Collections.shuffle(questionEntities);
+            emitter.onSuccess(questionMapper.toQuestionsList(questionEntities));
         }).subscribeOn(Schedulers.io())
-          .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Question getQuestion(int position) {
-        return mapper.toQuestion(questions.get(position));
+    @Override
+    public Completable loadQuestions(int alarmId) {
+        return null;
     }
 
     // todo rename
@@ -91,7 +94,7 @@ public class RepositoryTaskImpl implements RepositoryTask {
             }
 
         }).subscribeOn(Schedulers.io())
-          .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 
@@ -103,6 +106,7 @@ public class RepositoryTaskImpl implements RepositoryTask {
         preferences.saveInteger(balance, "BALANCE");
     }
 
+    //todo remove
     public Single<Boolean> getTheme() {
         return Single.fromCallable(() -> preferences.getBoolean("DARK_THEME_CHECKED"));
     }

@@ -17,7 +17,7 @@ public interface QuestionsDao {
     List<QuestionEntity> getAll();
 
     @Query("SELECT * FROM questions WHERE language = :language AND difficult = :difficult")
-    List<QuestionEntity> getByLanguage(String language, int difficult);
+    List<QuestionEntity> getByParams(String language, int difficult);
 
     @Insert(onConflict = OnConflictStrategy.FAIL)
     void insert(QuestionEntity question);

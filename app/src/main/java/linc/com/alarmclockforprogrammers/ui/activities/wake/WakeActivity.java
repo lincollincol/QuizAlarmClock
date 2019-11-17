@@ -19,7 +19,7 @@ import linc.com.alarmclockforprogrammers.data.repository.RepositoryWakeActivityI
 import linc.com.alarmclockforprogrammers.domain.interactor.wakeactivity.InteractorWakeActivity;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.ui.alarmdismiss.FragmentAlarmDismiss;
-import linc.com.alarmclockforprogrammers.ui.alarmtask.FragmentTask;
+import linc.com.alarmclockforprogrammers.ui.alarmtest.FragmentTest;
 
 
 public class WakeActivity extends AppCompatActivity implements ViewWakeActivity {
@@ -51,7 +51,7 @@ public class WakeActivity extends AppCompatActivity implements ViewWakeActivity 
         if(!alarm.isContainsTask()) {
             wakeFragment = new FragmentAlarmDismiss();
         }else {
-            wakeFragment = new FragmentTask();
+            wakeFragment = new FragmentTest();
         }
 
         data.putInt("ALARM_ID", alarm.getId());

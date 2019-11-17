@@ -1,44 +1,31 @@
-package linc.com.alarmclockforprogrammers.ui.alarmtask;
-
-import android.util.Log;
+package linc.com.alarmclockforprogrammers.ui.alarmtest;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.domain.interactor.task.InteractorTask;
-import linc.com.alarmclockforprogrammers.domain.model.Question;
+import linc.com.alarmclockforprogrammers.domain.interactor.alarmtest.InteractorTest;
 import linc.com.alarmclockforprogrammers.ui.mapper.QuestionViewModelMapper;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
 import linc.com.alarmclockforprogrammers.utils.Consts;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
-public class PresenterTask {
+public class PresenterTest {
 
-    private ViewTask view;
-    private InteractorTask interactor;
+    private ViewTest view;
+    private InteractorTest interactor;
     private QuestionViewModelMapper mapper;
     private CompositeDisposable disposables;
 
-    public PresenterTask(InteractorTask interactor, QuestionViewModelMapper mapper) {
+    public PresenterTest(InteractorTest interactor, QuestionViewModelMapper mapper) {
         this.interactor = interactor;
         this.mapper = mapper;
         this.disposables = new CompositeDisposable();
     }
 
-    public void bind(ViewTask view, int alarmId) {
+    public void bind(ViewTest view, int alarmId) {
         this.view = view;
-
-        Disposable theme = interactor.getTheme()
-                .subscribe(isDarkTheme -> view.prepareAnimation(isDarkTheme?
-                        ResUtil.Animation.DARK_THEME_ANIMATION.getAnimation() :
-                        ResUtil.Animation.LIGHT_THEME_ANIMATION.getAnimation())
-                );
-
-        this.view.showLoadAnimation();
 
         Disposable d = this.interactor.execute(alarmId)
             .subscribe(question -> {
                 view.showQuestion(mapper.toQuestionViewModel(question));
-                view.hideLoadAnimation();
                 displayBalance();
             }, Throwable::printStackTrace);
         addDisposable(d);
@@ -92,15 +79,15 @@ public class PresenterTask {
         addDisposable(d);
     }
 
-    void finishTask() {
+    void finishAlarm() {
         view.closeActivity();
     }
 
     private void checkCompletion() {
-        Disposable d = interactor.checkTaskCompletion()
+        Disposable d = interactor.checkTestCompletion()
                 .subscribe(completed -> {
                     if(completed) {
-                        finishTest();
+                        completeTest();
                     }else {
                         nextQuestion();
                     }
@@ -122,8 +109,8 @@ public class PresenterTask {
         addDisposable(d);
     }
 
-    private void finishTest() {
-        Disposable d = interactor.isTaskPassed()
+    private void completeTest() {
+        Disposable d = interactor.completeTest()
                 .subscribe(passed -> {
                     String message = passed ? ResUtil.Message.TASK_SUCCESS.getMessage() :
                                               ResUtil.Message.TASK_FAIL.getMessage();

@@ -48,8 +48,8 @@
     <!--Wake -->
     <string name="dialog_message_pay">Are you sure? Pay %1$d</string>
     <string name="dialog_message_completed">Task completed!
-        <br/>You answered the questions correctly!</string>
-    <string name="dialog_message_failed">Task failed! <br/>You didn"'"t answer the questions correctly!</string>
+        <br/>You answered the tasks correctly!</string>
+    <string name="dialog_message_failed">Task failed! <br/>You didn"'"t answer the tasks correctly!</string>
     <string name="title_dialog_skip_question">Skip</string>
     <string name="dialog_yes_positive">Yes</string>
     <string name="dialog_no_negative">No</string>

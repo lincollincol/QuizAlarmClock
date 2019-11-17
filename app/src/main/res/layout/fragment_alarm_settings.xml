@@ -132,7 +132,7 @@
             app:layout_constraintTop_toTopOf="@id/alarm_settings__alarm_enable_title"
             app:layout_constraintBottom_toBottomOf="@+id/alarm_settings__alarm_enable_title"/>
 
-        <!--Task enable-->
+        <!--Test enable-->
         <TextView
             android:id="@+id/alarm_settings__task_enable_title"
             android:layout_width="wrap_content"

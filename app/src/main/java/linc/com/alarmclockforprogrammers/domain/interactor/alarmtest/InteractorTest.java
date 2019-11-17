@@ -1,13 +1,10 @@
-package linc.com.alarmclockforprogrammers.domain.interactor.task;
+package linc.com.alarmclockforprogrammers.domain.interactor.alarmtest;
 
-import io.reactivex.Completable;
-import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
 import linc.com.alarmclockforprogrammers.domain.model.Question;
 
-public interface InteractorTask {
+public interface InteractorTest {
 
     Single<Question> execute(int alarmId);
     Observable<Boolean> checkAnswer(int answerPosition);
@@ -15,9 +12,8 @@ public interface InteractorTask {
     Single<Integer> makePayment();
     Single<Integer> timeOut();
     Single<Question> nextQuestion();
-    Single<Boolean> checkTaskCompletion();
-    Single<Boolean> isTaskPassed();
+    Single<Boolean> checkTestCompletion();
+    Single<Boolean> completeTest();
     Single<Integer> getBalance();
-    Single<Boolean> getTheme();
     void stop();
 }

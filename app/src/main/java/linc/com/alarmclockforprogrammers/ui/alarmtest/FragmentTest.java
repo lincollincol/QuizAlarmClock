@@ -1,4 +1,4 @@
-package linc.com.alarmclockforprogrammers.ui.alarmtask;
+package linc.com.alarmclockforprogrammers.ui.alarmtest;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -20,17 +20,18 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.Gson;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
+import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
 import linc.com.alarmclockforprogrammers.data.mapper.QuestionEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
-import linc.com.alarmclockforprogrammers.domain.interactor.task.InteractorTaskImpl;
-import linc.com.alarmclockforprogrammers.data.repository.RepositoryTaskImpl;
-import linc.com.alarmclockforprogrammers.infrastructure.Player;
+import linc.com.alarmclockforprogrammers.domain.interactor.alarmtest.InteractorTestImpl;
+import linc.com.alarmclockforprogrammers.data.repository.RepositoryTestImpl;
+import linc.com.alarmclockforprogrammers.infrastructure.PlayerManager;
+import linc.com.alarmclockforprogrammers.infrastructure.VibrationManagerImpl;
 import linc.com.alarmclockforprogrammers.ui.activities.wake.WakeActivity;
 import linc.com.alarmclockforprogrammers.ui.mapper.QuestionViewModelMapper;
 import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
@@ -40,13 +41,8 @@ import static linc.com.alarmclockforprogrammers.utils.Consts.ANIMATION_END;
 import static linc.com.alarmclockforprogrammers.utils.Consts.ANIMATION_START;
 import static linc.com.alarmclockforprogrammers.utils.Consts.TWO_MINUTES;
 
-public class FragmentTask extends Fragment implements ViewTask, View.OnClickListener,
+public class FragmentTest extends Fragment implements ViewTest, View.OnClickListener,
         Animator.AnimatorListener, RadioGroup.OnCheckedChangeListener {
-
-    //todo lottie animation, when questions do not displayed
-    //todo lottie animation, when questions do not displayed
-    //todo lottie animation, when questions do not displayed
-    //todo lottie animation, when questions do not displayed
 
     private TextView balance;
     private TextView preQuestion;
@@ -56,9 +52,8 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
     private FloatingActionButton nextQuestion;
     private FloatingActionButton payForQuestion;
 
-    private LottieAnimationView loadingAnimation;
     private ObjectAnimator progressAnimation;
-    private PresenterTask presenter;
+    private PresenterTest presenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,14 +62,15 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
         AppDatabase database = AlarmApp.getInstance().getDatabase();
 
         if(presenter == null) {
-            this.presenter = new PresenterTask(
-                    new InteractorTaskImpl(new RepositoryTaskImpl(
+            this.presenter = new PresenterTest(
+                    new InteractorTestImpl(new RepositoryTestImpl(
                             database.questionsDao(),
                             database.alarmDao(),
                             database.achievementsDao(),
                             new LocalPreferencesManager(getActivity()),
-                            new QuestionEntityMapper(new JsonUtil<>(new Gson()))
-                    ), new Player(getActivity())),
+                            new QuestionEntityMapper(new JsonUtil<>(new Gson())),
+                            new AlarmEntityMapper()
+                    ), new PlayerManager(getActivity()), new VibrationManagerImpl(getActivity())),
                     new QuestionViewModelMapper()
             );
         }
@@ -93,7 +89,6 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
         this.answersGroup = view.findViewById(R.id.wake__answers_group);
         this.nextQuestion = view.findViewById(R.id.wake__next_question);
         this.payForQuestion = view.findViewById(R.id.wake__pay_for_answer);
-        this.loadingAnimation = view.findViewById(R.id.task__loading_animation);
 
         this.nextQuestion.setOnClickListener(this);
         this.payForQuestion.setOnClickListener(this);
@@ -128,23 +123,6 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         this.presenter.optionSelected();
-    }
-
-    @Override
-    public void prepareAnimation(int animation) {
-        this.loadingAnimation.setAnimation(animation);
-    }
-
-    @Override
-    public void showLoadAnimation() {
-        this.loadingAnimation.setVisibility(View.VISIBLE);
-        this.loadingAnimation.playAnimation();
-    }
-
-    @Override
-    public void hideLoadAnimation() {
-        this.loadingAnimation.setVisibility(View.GONE);
-        this.loadingAnimation.cancelAnimation();
     }
 
     @Override
@@ -218,7 +196,7 @@ public class FragmentTask extends Fragment implements ViewTask, View.OnClickList
         dialogBuilder.setCancelable(false)
                 .setTitle(R.string.title_dialog_task)
                 .setMessage(message)
-                .setPositiveButton(R.string.dialog_got_it_positive, (dialog, id) -> presenter.finishTask())
+                .setPositiveButton(R.string.dialog_got_it_positive, (dialog, id) -> presenter.finishAlarm())
                 .show();
     }
 
