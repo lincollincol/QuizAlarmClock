@@ -28,4 +28,7 @@ public interface AchievementsDao {
     @Update
     void update(AchievementEntity achievement);
 
+    @Update
+    void updateList(List<AchievementEntity> achievements);
+
 }

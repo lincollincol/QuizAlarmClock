@@ -8,6 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss.MediaManager;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss.VibrationManager;
+import linc.com.alarmclockforprogrammers.domain.model.Achievement;
 import linc.com.alarmclockforprogrammers.domain.model.Question;
 import linc.com.alarmclockforprogrammers.domain.model.Test;
 
@@ -36,7 +37,7 @@ public class InteractorTestImpl implements InteractorTest {
                                 .subscribe(questions -> {
                                     this.player.startPlayer(alarm.getSongPath());
                                     this.vibrationManager.startVibration();
-                                    this.test = new Test(questions, alarm.getDifficult());
+                                    this.test = new Test(questions, alarm.getLanguage(), alarm.getDifficult());
                                     emitter.onSuccess(test.getQuestion());
                                 },emitter::onError);
                     });
@@ -89,6 +90,26 @@ public class InteractorTestImpl implements InteractorTest {
             repository.saveBalance(repository.getBalance() +
                     (testPassed ? test.getTaskAward() : -test.getTaskAward()));
             emitter.onSuccess(testPassed);
+
+            Disposable d = repository.getAchievements(test.getLanguage())
+                    .subscribe(achievements -> {
+                        for(Achievement a : achievements) {
+                            if(a.isCompleted()) {
+                                continue;
+                            }
+                            // Set number of completed tasks
+                            a.setCompletedTasks((a.getCompletedTasks() + test.getCorrectAnswers()));
+
+                            // Set achievement completed
+                            if(a.getCompletedTasks() >= a.getTasksToComplete()) {
+                                a.setCompleted(true);
+                            }
+
+                            repository.updateAchievements(achievements)
+                                    .subscribe();
+                        }
+                    });
+
         });
     }
 

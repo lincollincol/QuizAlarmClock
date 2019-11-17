@@ -9,14 +9,15 @@ import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.data.database.alarms.AlarmDao;
-import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
 import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
+import linc.com.alarmclockforprogrammers.data.mapper.AchievementEntityMapper;
 import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
 import linc.com.alarmclockforprogrammers.data.mapper.QuestionEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.data.database.achievements.AchievementsDao;
 import linc.com.alarmclockforprogrammers.data.database.questions.QuestionsDao;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarmtest.RepositoryTest;
+import linc.com.alarmclockforprogrammers.domain.model.Achievement;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.domain.model.Question;
 
@@ -29,19 +30,22 @@ public class RepositoryTestImpl implements RepositoryTest {
 
     private QuestionEntityMapper questionMapper;
     private AlarmEntityMapper alarmMapper;
+    private AchievementEntityMapper achievementMapper;
 
     public RepositoryTestImpl(QuestionsDao questionsDao,
                               AlarmDao alarmDao,
                               AchievementsDao achievementsDao,
                               LocalPreferencesManager preferences,
                               QuestionEntityMapper questionMapper,
-                              AlarmEntityMapper alarmMapper) {
+                              AlarmEntityMapper alarmMapper,
+                              AchievementEntityMapper achievementMapper) {
         this.questionsDao = questionsDao;
         this.alarmDao = alarmDao;
         this.achievementsDao = achievementsDao;
         this.preferences = preferences;
         this.questionMapper = questionMapper;
         this.alarmMapper = alarmMapper;
+        this.achievementMapper = achievementMapper;
     }
 
     @Override
@@ -63,51 +67,26 @@ public class RepositoryTestImpl implements RepositoryTest {
     }
 
     @Override
-    public Completable loadQuestions(int alarmId) {
-        return null;
+    public Single<List<Achievement>> getAchievements(String language) {
+        return Single.fromCallable(() ->
+                achievementMapper.toAchievementsList(achievementsDao.getByLanguage(language))
+        ).subscribeOn(Schedulers.io());
     }
 
-    // todo rename
-    public Completable setQuestionCompleted(QuestionEntity question) {
-        return Completable.fromAction(() -> {
-            this.questionsDao.update(question);
-            List<AchievementEntity> achievements = achievementsDao
-                    .getByLanguage(question.getProgrammingLanguage());
-
-            // todo set achieve completed in the interactor
-
-
-            for(AchievementEntity a : achievements) {
-                if(a.isCompleted()) {
-                    continue;
-                }
-
-                // Set number of completed tasks
-                a.setCompletedTasks((a.getCompletedTasks() + 1));
-
-                // Set achievement completed
-                if(a.getCompletedTasks() >= a.getTasksToComplete()) {
-                    a.setCompleted(true);
-                }
-
-                this.achievementsDao.update(a);
-            }
-
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    @Override
+    public Completable updateAchievements(List<Achievement> achievements) {
+        return Completable.fromAction(() ->
+            achievementsDao.updateList(achievementMapper.toAchievementEntitiesList(achievements))
+        ).subscribeOn(Schedulers.io());
     }
 
-
+    @Override
     public int getBalance() {
         return preferences.getInteger("BALANCE");
     }
 
+    @Override
     public void saveBalance(int balance) {
         preferences.saveInteger(balance, "BALANCE");
-    }
-
-    //todo remove
-    public Single<Boolean> getTheme() {
-        return Single.fromCallable(() -> preferences.getBoolean("DARK_THEME_CHECKED"));
     }
 }

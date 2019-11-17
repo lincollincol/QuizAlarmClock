@@ -4,13 +4,15 @@ import java.util.List;
 
 public class Test {
 
-    private List<Question> tasks;
     private int difficult;
     private byte currentTask;
     private byte correctAnswers;
+    private String language;
+    private List<Question> tasks;
 
-    public Test(List<Question> tasks, int difficult) {
+    public Test(List<Question> tasks, String language, int difficult) {
         this.tasks = tasks;
+        this.language = language;
         this.difficult = difficult;
         this.currentTask = 0;
         this.correctAnswers = 0;
@@ -59,7 +61,8 @@ public class Test {
      * @return completion state
      */
     public boolean isTasksCompleted() {
-        return currentTask == (getQuestionsAmount() * 2 - 1);
+        return currentTask == (getQuestionsAmount() * 2 - 1)
+                || correctAnswers >= getQuestionsAmount();
     }
 
     /**
@@ -95,4 +98,12 @@ public class Test {
         return ((difficult < 1) ? 3 : (difficult > 1) ? 1 : 2);
     }
 
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public byte getCorrectAnswers() {
+        return correctAnswers;
+    }
 }

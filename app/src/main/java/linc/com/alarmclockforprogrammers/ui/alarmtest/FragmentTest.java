@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
+import linc.com.alarmclockforprogrammers.data.mapper.AchievementEntityMapper;
 import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
 import linc.com.alarmclockforprogrammers.data.mapper.QuestionEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
@@ -69,7 +70,8 @@ public class FragmentTest extends Fragment implements ViewTest, View.OnClickList
                             database.achievementsDao(),
                             new LocalPreferencesManager(getActivity()),
                             new QuestionEntityMapper(new JsonUtil<>(new Gson())),
-                            new AlarmEntityMapper()
+                            new AlarmEntityMapper(),
+                            new AchievementEntityMapper()
                     ), new PlayerManager(getActivity()), new VibrationManagerImpl(getActivity())),
                     new QuestionViewModelMapper()
             );
