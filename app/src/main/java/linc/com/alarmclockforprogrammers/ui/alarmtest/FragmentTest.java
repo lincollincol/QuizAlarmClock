@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
+import linc.com.alarmclockforprogrammers.data.database.LocalDatabase;
 import linc.com.alarmclockforprogrammers.data.mapper.AchievementEntityMapper;
 import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
 import linc.com.alarmclockforprogrammers.data.mapper.QuestionEntityMapper;
@@ -60,7 +60,7 @@ public class FragmentTest extends Fragment implements ViewTest, View.OnClickList
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AppDatabase database = AlarmApp.getInstance().getDatabase();
+        LocalDatabase database = AlarmApp.getInstance().getDatabase();
 
         if(presenter == null) {
             this.presenter = new PresenterTest(

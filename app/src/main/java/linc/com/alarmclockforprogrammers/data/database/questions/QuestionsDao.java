@@ -19,6 +19,9 @@ public interface QuestionsDao {
     @Query("SELECT * FROM questions WHERE language = :language AND difficult = :difficult")
     List<QuestionEntity> getByParams(String language, int difficult);
 
+    @Query("SELECT COUNT(*) FROM questions")
+    int getItemCount();
+
     @Insert(onConflict = OnConflictStrategy.FAIL)
     void insert(QuestionEntity question);
 

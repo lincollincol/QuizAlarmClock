@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
+import linc.com.alarmclockforprogrammers.data.database.LocalDatabase;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryDismiss;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss.InteractorAlarmDismiss;
 import linc.com.alarmclockforprogrammers.infrastructure.PlayerManager;
@@ -26,7 +26,7 @@ public class FragmentAlarmDismiss extends BaseFragment implements ViewAlarmDismi
         super.onCreate(savedInstanceState);
 
         int alarmId = getArguments().getInt("ALARM_ID");
-        AppDatabase database = AlarmApp.getInstance().getDatabase();
+        LocalDatabase database = AlarmApp.getInstance().getDatabase();
 
         if(presenter == null) {
             this.presenter = new PresenterAlarmDismiss(this,

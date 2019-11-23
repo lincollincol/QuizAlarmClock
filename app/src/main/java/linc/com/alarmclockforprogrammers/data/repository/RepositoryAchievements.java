@@ -67,77 +67,6 @@ public class RepositoryAchievements {
         return Single.fromCallable(() -> achievements.get(id));
     }
 
-    public Completable updateLocalAchievementsVersion() {
-        return Completable.create(emitter -> {
-            this.databaseReference = this.firebaseDatabase.getReference("achievements_version");
-            this.databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String remoteVersion = ((String)dataSnapshot.getValue());
-                    if(!remoteVersion.equals(preferences.getString("LOCAL_ACHIEVEMENTS_VERSION"))) {
-                        Disposable d = updateLocalAchievements()
-                            .subscribe(() ->{
-                                emitter.onComplete();
-                                preferences.saveString(remoteVersion, "LOCAL_ACHIEVEMENTS_VERSION");
-                            });
-                        return;
-                    }
-                    emitter.onComplete();
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    emitter.onError(databaseError.toException());
-                }
-            });
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    private Completable updateLocalAchievements() {
-        return Completable.create(emitter -> {
-            List<AchievementEntity> achievements = new ArrayList<>();
-            this.databaseReference = this.firebaseDatabase.getReference("achievements");
-            this.databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                        achievements.add(new AchievementEntity(
-                                ((Long) (ds.child("id").getValue())).intValue(),
-                                ((Long) (ds.child("award").getValue())).intValue(),
-                                ((Long) (ds.child("tasksToComplete").getValue())).intValue(),
-                                ((Long) (ds.child("completedTasks").getValue())).intValue(),
-                                (String) (ds.child("achievementTask").getValue()),
-                                (String) (ds.child("language").getValue()),
-                                ((Boolean) (ds.child("completed").getValue())),
-                                ((Boolean) (ds.child("awardReceived").getValue()))));
-                    }
-                    Disposable d = updateAchievements(achievements)
-                            .subscribe(emitter::onComplete, Throwable::printStackTrace);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    emitter.onError(databaseError.toException());
-                }
-            });
-        }).subscribeOn(Schedulers.io());
-    }
-
-    private Completable updateAchievements(List<AchievementEntity> achievements) {
-        return Completable.fromAction(() -> {
-            for(AchievementEntity a : achievements) {
-                try {
-                    this.achievementsDao.insert(a);
-                }catch (Exception e) {
-                    Log.d("ELEMENT EXIST", ""+a.getId() );
-                }
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
     public Completable updateAchievement(Achievement achievement) {
         Log.d("UPDATE_AC", "updateAchievement: updated = " + achievement.getAward());
         return Completable.fromAction(() ->
@@ -155,8 +84,6 @@ public class RepositoryAchievements {
         return Completable.fromAction(() -> preferences.saveInteger(balance, "BALANCE"));
     }
 
-    public Single<Boolean> getTheme() {
-        return Single.fromCallable(() -> preferences.getBoolean("DARK_THEME_CHECKED"));
-    }
+
 
 }

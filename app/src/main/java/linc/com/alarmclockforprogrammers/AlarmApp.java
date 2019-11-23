@@ -3,13 +3,11 @@ package linc.com.alarmclockforprogrammers;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 
-import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
-import linc.com.alarmclockforprogrammers.domain.model.Alarm;
+import linc.com.alarmclockforprogrammers.data.database.LocalDatabase;
 
 public class AlarmApp extends Application {
 
@@ -18,7 +16,7 @@ public class AlarmApp extends Application {
     //todo check case, when 2 alarms execute
 
     public static AlarmApp instance;
-    private AppDatabase database;
+    private LocalDatabase database;
     private Activity currentActivity;
     public Context context;
 
@@ -26,7 +24,7 @@ public class AlarmApp extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        database = AppDatabase.getDatabase(this);
+        database = LocalDatabase.getDatabase(this);
         context = getApplicationContext();
 
         if(!FirebaseApp.getApps(this).isEmpty()) {
@@ -38,7 +36,7 @@ public class AlarmApp extends Application {
         return instance;
     }
 
-    public AppDatabase getDatabase() {
+    public LocalDatabase getDatabase() {
         return database;
     }
 

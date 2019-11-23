@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.Map;
 
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
@@ -15,21 +16,44 @@ public class InteractorAlarms {
 
     private RepositoryAlarms repository;
     private AlarmHandler alarmHandler;
+    private InternetConnectionManager internetConnection;
 
     public InteractorAlarms(RepositoryAlarms repository,
-                            AlarmHandler alarmHandler) {
+                            AlarmHandler alarmHandler,
+                            InternetConnectionManager internetConnection) {
         this.repository = repository;
         this.alarmHandler = alarmHandler;
+        this.internetConnection = internetConnection;
     }
 
     public Single<Map<Integer, Alarm>> execute() {
-        this.repository.updateLocalQuestionsVersion()
-            .subscribe();
-        return this.repository.getAlarms();
+        return Single.create(emitter -> {
+            //todo test this function
+            //todo test this function
+            //todo test this function
+            Disposable firstUpdate = repository.checkFirstUpdate()
+                    .subscribe(notUpdated -> {
+                        if(notUpdated) {
+                            if(!internetConnection.isConnected()) {
+                                emitter.onError(new Exception());
+                                return;
+                            }
+                            Disposable alarms = getAlarms()
+                                    .subscribe(emitter::onSuccess);
+                        }
+                    });
+        });
     }
 
-    public Single<Alarm> getAlarm(int position) {
-        return repository.getAlarm(position);
+    public Single<Map<Integer, Alarm>> getAlarms() {
+        return this.repository.updateLocalQuestionsVersion()
+                .andThen(repository.updateLocalAchievementsVersion())
+                .toSingle(() -> repository.getAlarms())
+                .flatMap(mapSingle -> mapSingle);
+    }
+
+    public Single<Alarm> getAlarmById(int id) {
+        return repository.getAlarm(id);
     }
 
     public Completable deleteAlarm(int id) {
@@ -47,7 +71,6 @@ public class InteractorAlarms {
     public Single<Alarm> enableAlarm(int id, boolean enable) {
         return repository.getAlarm(id)
                 .doOnSuccess(alarm -> {
-                    Log.d("ENABLE_SET", "enableAlarm: " + enable);
                     alarm.setEnable(enable);
                     if(!enable) {
                         this.alarmHandler.cancelReminderAlarm(alarm);
@@ -64,4 +87,5 @@ public class InteractorAlarms {
     public Single<Boolean> getTheme() {
         return repository.getTheme();
     }
+
 }

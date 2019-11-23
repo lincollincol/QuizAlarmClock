@@ -75,6 +75,7 @@ public class ResUtil {
      * Text
      */
     public enum Message {
+        NO_INTERNET(R.string.dialog_message_no_internet),
         TASK_SUCCESS(R.string.dialog_message_completed),
         TASK_FAIL(R.string.dialog_message_failed),
         PAYMENT_PRICE(R.string.dialog_message_pay);

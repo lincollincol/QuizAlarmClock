@@ -13,18 +13,18 @@ import linc.com.alarmclockforprogrammers.data.database.alarms.AlarmDao;
 import linc.com.alarmclockforprogrammers.data.database.questions.QuestionsDao;
 
 @Database(entities = {AlarmEntity.class, QuestionEntity.class, AchievementEntity.class}, version = 8, exportSchema = false)
-public abstract class AppDatabase extends RoomDatabase {
+public abstract class LocalDatabase extends RoomDatabase {
 
     public abstract AlarmDao alarmDao();
     public abstract QuestionsDao questionsDao();
     public abstract AchievementsDao achievementsDao();
-    private static AppDatabase database;
+    private static LocalDatabase database;
 
-    public static AppDatabase getDatabase(Context mContext){
+    public static LocalDatabase getDatabase(Context mContext){
         if(database == null){
-            synchronized (AppDatabase.class) {
+            synchronized (LocalDatabase.class) {
                 if(database == null) {
-                    database = Room.databaseBuilder(mContext, AppDatabase.class, "alarms_db")
+                    database = Room.databaseBuilder(mContext, LocalDatabase.class, "alarms_db")
                             .fallbackToDestructiveMigration()
                             .build();
                 }

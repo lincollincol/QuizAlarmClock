@@ -29,7 +29,7 @@ import java.util.Locale;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
+import linc.com.alarmclockforprogrammers.data.database.LocalDatabase;
 import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarmsettings.InteractorAlarmSettingsImpl;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarmSettings;
@@ -37,7 +37,6 @@ import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
 import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
 import linc.com.alarmclockforprogrammers.ui.mapper.AlarmViewModelMapper;
 import linc.com.alarmclockforprogrammers.utils.PathUtil;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static android.app.Activity.RESULT_OK;
 import static linc.com.alarmclockforprogrammers.utils.Consts.NORMAL_SPEED;
@@ -66,7 +65,7 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AppDatabase database = AlarmApp.getInstance().getDatabase();
+        LocalDatabase database = AlarmApp.getInstance().getDatabase();
         int alarmId = 0;
 
         if(presenter == null) {

@@ -21,18 +21,10 @@ public class PresenterAchievements {
     public void bindView(ViewAchievements view) {
         this.view = view;
         this.view.disableDrawerMenu();
-        Disposable theme = interactor.getTheme()
-                .subscribe(isDarkTheme -> view.prepareAnimation(isDarkTheme?
-                        ResUtil.Animation.DARK_THEME_ANIMATION.getAnimation() :
-                        ResUtil.Animation.LIGHT_THEME_ANIMATION.getAnimation())
-                );
-
-        this.view.showLoadAnimation();
 
         Disposable d = this.interactor.execute()
                 .subscribe(achievementMap -> {
                         view.setAchievements(mapper.toAchievementViewModelMap(achievementMap));
-                        view.hideLoadAnimation();
                         updateBalance();
                 });
     }

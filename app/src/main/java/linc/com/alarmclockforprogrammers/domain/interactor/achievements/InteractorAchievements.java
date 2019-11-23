@@ -21,14 +21,7 @@ public class InteractorAchievements {
     }
 
     public Single<Map<Integer, Achievement>> execute() {
-        return Single.create(emitter -> {
-            Disposable localUpdate = repository.updateLocalAchievementsVersion()
-                    .subscribe(() -> {
-                        Log.d("COMPLETED_REQ ", "execute: ");
-                        Disposable achievements = repository.getAchievements()
-                                .subscribe(emitter::onSuccess);
-                    });
-        });
+        return repository.getAchievements();
     }
 
 
@@ -49,8 +42,5 @@ public class InteractorAchievements {
         return this.repository.getBalance();
     }
 
-    public Single<Boolean> getTheme() {
-        return repository.getTheme();
-    }
 
 }

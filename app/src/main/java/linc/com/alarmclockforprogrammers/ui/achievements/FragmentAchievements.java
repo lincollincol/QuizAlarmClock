@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ import java.util.Map;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
+import linc.com.alarmclockforprogrammers.data.database.LocalDatabase;
 import linc.com.alarmclockforprogrammers.data.mapper.AchievementEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.domain.interactor.achievements.InteractorAchievements;
@@ -37,7 +36,6 @@ public class FragmentAchievements extends BaseFragment implements
         AdapterAchievements.OnReceiveClickListener, ViewAchievements {
 
     private TextView balance;
-    private LottieAnimationView loadingAnimation;
 
     private AdapterAchievements adapter;
     private PresenterAchievements presenter;
@@ -46,7 +44,7 @@ public class FragmentAchievements extends BaseFragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AppDatabase database = AlarmApp.getInstance().getDatabase();
+        LocalDatabase database = AlarmApp.getInstance().getDatabase();
 
         if(presenter == null) {
             presenter = new PresenterAchievements(
@@ -69,7 +67,6 @@ public class FragmentAchievements extends BaseFragment implements
         Toolbar toolbar = view.findViewById(R.id.achievements__toolbar);
         RecyclerView achievementsList = view.findViewById(R.id.achievements__list_of_achievements);
         this.balance = view.findViewById(R.id.achievements__balance);
-        this.loadingAnimation = view.findViewById(R.id.achievements__loading_animation);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         SnapHelper snapHelper = new CustomSnapHelper();
@@ -89,23 +86,6 @@ public class FragmentAchievements extends BaseFragment implements
     @Override
     public void onClick(int id) {
         this.presenter.receiveAward(id);
-    }
-
-    @Override
-    public void prepareAnimation(int animation) {
-        loadingAnimation.setAnimation(animation);
-    }
-
-    @Override
-    public void showLoadAnimation() {
-        loadingAnimation.setVisibility(View.VISIBLE);
-        loadingAnimation.playAnimation();
-    }
-
-    @Override
-    public void hideLoadAnimation() {
-        loadingAnimation.setVisibility(View.GONE);
-        loadingAnimation.cancelAnimation();
     }
 
     @Override

@@ -22,6 +22,9 @@ public interface AchievementsDao {
     @Query("SELECT * FROM achievements WHERE language = :language")
     List<AchievementEntity> getByLanguage(String language);
 
+    @Query("SELECT COUNT(*) FROM achievements")
+    int getItemCount();
+
     @Insert(onConflict = OnConflictStrategy.FAIL)
     void insert(AchievementEntity achievement);
 

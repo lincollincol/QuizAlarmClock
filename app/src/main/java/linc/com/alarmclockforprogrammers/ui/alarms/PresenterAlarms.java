@@ -1,8 +1,5 @@
 package linc.com.alarmclockforprogrammers.ui.alarms;
 
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarms.InteractorAlarms;
@@ -23,26 +20,33 @@ public class PresenterAlarms {
         this.mapper = mapper;
     }
 
+    // todo on complete -> stop ;oading -> get alarms
+
+
     void bind(ViewAlarms view) {
         this.view = view;
         this.view.setDrawerState(ENABLE);
-
-        Disposable theme = interactor.getTheme()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(isDarkTheme -> view.prepareAnimation(isDarkTheme?
-                                    ResUtil.Animation.DARK_THEME_ANIMATION.getAnimation() :
-                                    ResUtil.Animation.LIGHT_THEME_ANIMATION.getAnimation())
-                );
-        this.view.showLoadAnimation();
-
-
         Disposable balance = interactor.getBalance()
                 .subscribe(view::setBalance);
+        getData();
+    }
+
+    public void getData() {
+        Disposable theme = interactor.getTheme()
+                .subscribe(isDarkTheme -> {
+                    view.prepareAnimation(isDarkTheme?
+                            ResUtil.Animation.DARK_THEME_ANIMATION.getAnimation() :
+                            ResUtil.Animation.LIGHT_THEME_ANIMATION.getAnimation());
+                    view.showLoadAnimation();
+                });
 
         Disposable d = interactor.execute()
                 .subscribe(alarms ->{
                     view.setAlarmsData(mapper.toAlarmViewModelMap(alarms));
                     view.hideLoadAnimation();
+                }, e -> {
+                    view.hideLoadAnimation();
+                    view.showConnectionDialog(ResUtil.Message.NO_INTERNET.getMessage());
                 });
     }
 
@@ -53,14 +57,14 @@ public class PresenterAlarms {
 
     public void openAlarmEditor(int position) {
         this.view.setDrawerState(DISABLE);
-        Disposable d = interactor.getAlarm(position)
+        Disposable d = interactor.getAlarmById(position)
                 .subscribe(alarm -> view.openAlarmEditor(alarm.getId()),
                         Throwable::printStackTrace
                 );
     }
 
     public void alarmSelected(int id) {
-        Disposable d = interactor.getAlarm(id)
+        Disposable d = interactor.getAlarmById(id)
                 .subscribe(alarm ->
                         view.openBottomSheetDialog(mapper.toAlarmViewModel(alarm)),
                         Throwable::printStackTrace

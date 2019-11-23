@@ -10,11 +10,11 @@ import android.support.transition.Explode;
 import android.support.transition.Transition;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +26,16 @@ import com.google.gson.Gson;
 import java.util.Map;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
-import linc.com.alarmclockforprogrammers.data.database.AppDatabase;
+import linc.com.alarmclockforprogrammers.data.database.LocalDatabase;
 import linc.com.alarmclockforprogrammers.R;
+import linc.com.alarmclockforprogrammers.data.database.RemoteDatabase;
 import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarms.InteractorAlarms;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarms;
 import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
 import linc.com.alarmclockforprogrammers.infrastructure.CustomSnapHelper;
+import linc.com.alarmclockforprogrammers.infrastructure.InternetConnectionManagerImpl;
 import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.alarms.adapters.AdapterAlarms;
 import linc.com.alarmclockforprogrammers.ui.alarmsettings.FragmentAlarmSettings;
@@ -49,8 +51,8 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     private TextView balance;
     private AdapterAlarms adapterAlarms;
     private PresenterAlarms presenter;
-
     private LottieAnimationView loadingAnimation;
+
     private Transition enterAnimation;
     private Transition returnAnimation;
 
@@ -58,17 +60,20 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AppDatabase database = AlarmApp.getInstance().getDatabase();
+        LocalDatabase database = AlarmApp.getInstance().getDatabase();
 
         if(presenter == null) {
             this.presenter = new PresenterAlarms(new InteractorAlarms(
                     new RepositoryAlarms(
+                            new RemoteDatabase(),
                             database.alarmDao(),
                             database.questionsDao(),
+                            database.achievementsDao(),
                             new LocalPreferencesManager(getActivity()),
                             new JsonUtil<>(new Gson()),
                             new AlarmEntityMapper()),
-                    new AlarmHandler(getActivity())
+                    new AlarmHandler(getActivity()),
+                    new InternetConnectionManagerImpl(getActivity())
             ), new AlarmViewModelMapper());
         }
 
@@ -128,6 +133,17 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     public void hideLoadAnimation() {
         loadingAnimation.setVisibility(View.GONE);
         loadingAnimation.cancelAnimation();
+    }
+
+    @Override
+    public void showConnectionDialog(String message) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
+                new ContextThemeWrapper(getActivity(), R.style.AlertDialogStyle));
+        dialogBuilder.setCancelable(false)
+                .setTitle(R.string.dialog_title_no_internet)
+                .setMessage(message)
+                .setPositiveButton(R.string.dialog_try_again_no_internet, (dialog, id) -> presenter.getData())
+                .show();
     }
 
     @Override
