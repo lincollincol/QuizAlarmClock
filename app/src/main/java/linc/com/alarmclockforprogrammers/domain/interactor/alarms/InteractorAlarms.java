@@ -3,11 +3,17 @@ package linc.com.alarmclockforprogrammers.domain.interactor.alarms;
 import android.util.Log;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiConsumer;
+import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarms;
@@ -16,41 +22,30 @@ public class InteractorAlarms {
 
     private RepositoryAlarms repository;
     private AlarmHandler alarmHandler;
-    private InternetConnectionManager internetConnection;
 
     public InteractorAlarms(RepositoryAlarms repository,
-                            AlarmHandler alarmHandler,
-                            InternetConnectionManager internetConnection) {
+                            AlarmHandler alarmHandler) {
         this.repository = repository;
         this.alarmHandler = alarmHandler;
-        this.internetConnection = internetConnection;
     }
 
     public Single<Map<Integer, Alarm>> execute() {
-        return Single.create(emitter -> {
-            //todo test this function
-            //todo test this function
-            //todo test this function
-            Disposable firstUpdate = repository.checkFirstUpdate()
+        return Single.create((SingleOnSubscribe<Map<Integer, Alarm>>)  emitter -> {
+            Disposable d = repository.checkFirstUpdate()
                     .subscribe(notUpdated -> {
                         if(notUpdated) {
-                            if(!internetConnection.isConnected()) {
-                                emitter.onError(new Exception());
-                                return;
-                            }
-                            Disposable alarms = getAlarms()
-                                    .subscribe(emitter::onSuccess);
+                            emitter.onError(new Exception());
+                            return;
                         }
+                        Disposable alarms = repository.getAlarms()
+                                .subscribe(emitter::onSuccess);
                     });
-        });
+        })
+                .subscribeOn(Schedulers.io())
+                //todo schedulers.ui
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Single<Map<Integer, Alarm>> getAlarms() {
-        return this.repository.updateLocalQuestionsVersion()
-                .andThen(repository.updateLocalAchievementsVersion())
-                .toSingle(() -> repository.getAlarms())
-                .flatMap(mapSingle -> mapSingle);
-    }
 
     public Single<Alarm> getAlarmById(int id) {
         return repository.getAlarm(id);
@@ -84,8 +79,5 @@ public class InteractorAlarms {
         return repository.getBalance();
     }
 
-    public Single<Boolean> getTheme() {
-        return repository.getTheme();
-    }
 
 }

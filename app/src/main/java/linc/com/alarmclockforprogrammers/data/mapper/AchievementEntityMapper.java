@@ -1,5 +1,6 @@
 package linc.com.alarmclockforprogrammers.data.mapper;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -21,6 +22,18 @@ public class AchievementEntityMapper {
                 achievement.isCompleted(),
                 achievement.isAwardReceived()
         );
+    }
+
+    public AchievementEntity toAchievementEntity(@NotNull DataSnapshot dataSnapshot) {
+        return new AchievementEntity(
+                ((Long) (dataSnapshot.child("id").getValue())).intValue(),
+                ((Long) (dataSnapshot.child("award").getValue())).intValue(),
+                ((Long) (dataSnapshot.child("tasksToComplete").getValue())).intValue(),
+                ((Long) (dataSnapshot.child("completedTasks").getValue())).intValue(),
+                (String) (dataSnapshot.child("achievementTask").getValue()),
+                (String) (dataSnapshot.child("language").getValue()),
+                ((Boolean) (dataSnapshot.child("completed").getValue())),
+                ((Boolean) (dataSnapshot.child("awardReceived").getValue())));
     }
 
     public Achievement toAchievement(@NotNull AchievementEntity achievementEntity) {

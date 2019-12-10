@@ -2,6 +2,8 @@ package linc.com.alarmclockforprogrammers.data.repository;
 
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 
+import static linc.com.alarmclockforprogrammers.utils.Consts.THEME;
+
 public class RepositoryWakeActivityImpl {
 
     private LocalPreferencesManager preferences;
@@ -11,6 +13,6 @@ public class RepositoryWakeActivityImpl {
     }
 
     public boolean getTheme() {
-        return preferences.getBoolean("DARK_THEME_CHECKED");
+        return preferences.getBoolean(THEME);
     }
 }

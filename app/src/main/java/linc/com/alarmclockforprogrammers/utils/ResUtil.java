@@ -75,7 +75,10 @@ public class ResUtil {
      * Text
      */
     public enum Message {
-        NO_INTERNET(R.string.dialog_message_no_internet),
+        TITLE_CONNECTION(R.string.dialog_title_no_connection),
+        TITLE_UPDATING(R.string.dialog_title_updating),
+        NO_CONNECTION(R.string.dialog_message_no_connection),
+        UPDATING(R.string.dialog_message_updating),
         TASK_SUCCESS(R.string.dialog_message_completed),
         TASK_FAIL(R.string.dialog_message_failed),
         PAYMENT_PRICE(R.string.dialog_message_pay);
@@ -95,8 +98,9 @@ public class ResUtil {
      * Animations
      */
     public enum Animation{
-        LIGHT_THEME_ANIMATION(R.raw.load_anim_light),
-        DARK_THEME_ANIMATION(R.raw.load_anim_dark);
+        CONNECTION_ERROR(R.raw.internet_error),
+        UPDATING_LIGHT(R.raw.updating_light),
+        UPDATING_DARK(R.raw.updating_dark),;
 
         private final int animation;
 

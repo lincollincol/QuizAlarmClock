@@ -13,10 +13,11 @@
     <string name="item_menu_settings">Settings</string>
     <string name="item_menu_about">About</string>
 
-    <!--Alarms-->
-    <string name="dialog_title_no_internet">No internet connection!</string>
-    <string name="dialog_message_no_internet">Please connect your device to internet and try again</string>
-    <string name="dialog_try_again_no_internet">Try again</string>
+    <!--Dialog version update-->
+    <string name="dialog_title_no_connection">Connection error</string>
+    <string name="dialog_title_updating">Updating</string>
+    <string name="dialog_message_no_connection">No internet connection! Please turn on internet&#8230;</string>
+    <string name="dialog_message_updating">Please wait&#8230;</string>
 
     <!--AlarmSettings alert dialogs-->
     <string name="title_dialog_week_days">Select days</string>

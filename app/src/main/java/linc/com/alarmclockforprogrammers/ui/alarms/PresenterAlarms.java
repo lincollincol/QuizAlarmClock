@@ -1,5 +1,10 @@
 package linc.com.alarmclockforprogrammers.ui.alarms;
 
+import android.util.Log;
+
+import java.sql.Time;
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarms.InteractorAlarms;
@@ -20,9 +25,6 @@ public class PresenterAlarms {
         this.mapper = mapper;
     }
 
-    // todo on complete -> stop ;oading -> get alarms
-
-
     void bind(ViewAlarms view) {
         this.view = view;
         this.view.setDrawerState(ENABLE);
@@ -32,22 +34,10 @@ public class PresenterAlarms {
     }
 
     public void getData() {
-        Disposable theme = interactor.getTheme()
-                .subscribe(isDarkTheme -> {
-                    view.prepareAnimation(isDarkTheme?
-                            ResUtil.Animation.DARK_THEME_ANIMATION.getAnimation() :
-                            ResUtil.Animation.LIGHT_THEME_ANIMATION.getAnimation());
-                    view.showLoadAnimation();
-                });
-
         Disposable d = interactor.execute()
                 .subscribe(alarms ->{
                     view.setAlarmsData(mapper.toAlarmViewModelMap(alarms));
-                    view.hideLoadAnimation();
-                }, e -> {
-                    view.hideLoadAnimation();
-                    view.showConnectionDialog(ResUtil.Message.NO_INTERNET.getMessage());
-                });
+                }, e -> this.view.showUpdateDialog());
     }
 
     public void openAlarmCreator() {

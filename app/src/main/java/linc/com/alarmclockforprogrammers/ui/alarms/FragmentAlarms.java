@@ -29,7 +29,9 @@ import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.data.database.LocalDatabase;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.database.RemoteDatabase;
+import linc.com.alarmclockforprogrammers.data.mapper.AchievementEntityMapper;
 import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
+import linc.com.alarmclockforprogrammers.data.mapper.QuestionEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarms.InteractorAlarms;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarms;
@@ -51,7 +53,6 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     private TextView balance;
     private AdapterAlarms adapterAlarms;
     private PresenterAlarms presenter;
-    private LottieAnimationView loadingAnimation;
 
     private Transition enterAnimation;
     private Transition returnAnimation;
@@ -65,15 +66,12 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
         if(presenter == null) {
             this.presenter = new PresenterAlarms(new InteractorAlarms(
                     new RepositoryAlarms(
-                            new RemoteDatabase(),
                             database.alarmDao(),
                             database.questionsDao(),
                             database.achievementsDao(),
                             new LocalPreferencesManager(getActivity()),
-                            new JsonUtil<>(new Gson()),
                             new AlarmEntityMapper()),
-                    new AlarmHandler(getActivity()),
-                    new InternetConnectionManagerImpl(getActivity())
+                    new AlarmHandler(getActivity())
             ), new AlarmViewModelMapper());
         }
 
@@ -101,7 +99,6 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
         RecyclerView alarmsListRV = view.findViewById(R.id.alarms__list_of_alarms);
         FloatingActionButton fab = view.findViewById(R.id.alarms__add_alarm);
         this.balance = view.findViewById(R.id.alarms__balance);
-        this.loadingAnimation = view.findViewById(R.id.alarms__loading_animation);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         SnapHelper snapHelper = new CustomSnapHelper();
@@ -119,31 +116,9 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     }
 
     @Override
-    public void prepareAnimation(int animation) {
-        loadingAnimation.setAnimation(animation);
-    }
-
-    @Override
-    public void showLoadAnimation() {
-        loadingAnimation.setVisibility(View.VISIBLE);
-        loadingAnimation.playAnimation();
-    }
-
-    @Override
-    public void hideLoadAnimation() {
-        loadingAnimation.setVisibility(View.GONE);
-        loadingAnimation.cancelAnimation();
-    }
-
-    @Override
-    public void showConnectionDialog(String message) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.AlertDialogStyle));
-        dialogBuilder.setCancelable(false)
-                .setTitle(R.string.dialog_title_no_internet)
-                .setMessage(message)
-                .setPositiveButton(R.string.dialog_try_again_no_internet, (dialog, id) -> presenter.getData())
-                .show();
+    public void showUpdateDialog() {
+        FragmentVersionUpdateDialog d = new FragmentVersionUpdateDialog();
+        d.show(getFragmentManager(), "DIALOG");
     }
 
     @Override

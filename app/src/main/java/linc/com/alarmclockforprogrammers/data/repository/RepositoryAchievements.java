@@ -30,11 +30,11 @@ import linc.com.alarmclockforprogrammers.data.mapper.AchievementEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.domain.model.Achievement;
 
+import static linc.com.alarmclockforprogrammers.utils.Consts.BALANCE;
+
 public class RepositoryAchievements {
 
     private AchievementsDao achievementsDao;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
     private LocalPreferencesManager preferences;
 
     private Map<Integer, Achievement> achievements;
@@ -46,7 +46,6 @@ public class RepositoryAchievements {
         this.achievementsDao = achievementsDao;
         this.preferences = preferences;
         this.mapper = mapper;
-        this.firebaseDatabase = FirebaseDatabase.getInstance();
         this.achievements = new LinkedHashMap<>();
     }
 
@@ -77,11 +76,11 @@ public class RepositoryAchievements {
     }
 
     public Single<Integer> getBalance() {
-        return Single.fromCallable(() -> preferences.getInteger("BALANCE"));
+        return Single.fromCallable(() -> preferences.getInteger(BALANCE));
     }
 
     public Completable saveBalance(int balance) {
-        return Completable.fromAction(() -> preferences.saveInteger(balance, "BALANCE"));
+        return Completable.fromAction(() -> preferences.saveInteger(balance, BALANCE));
     }
 
 

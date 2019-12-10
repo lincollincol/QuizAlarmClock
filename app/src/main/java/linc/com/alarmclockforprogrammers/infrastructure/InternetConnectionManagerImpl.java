@@ -10,6 +10,7 @@ import linc.com.alarmclockforprogrammers.domain.interactor.alarms.InternetConnec
 public class InternetConnectionManagerImpl implements InternetConnectionManager {
 
     private Context context;
+    private boolean lastConnectionState;
 
     public InternetConnectionManagerImpl(Context context) {
         this.context = context;
@@ -22,9 +23,16 @@ public class InternetConnectionManagerImpl implements InternetConnectionManager 
 
         for (NetworkInfo network : cm.getAllNetworkInfo()) {
             if(network.isConnected()) {
+                this.lastConnectionState = true;
                 return true;
             }
         }
+        this.lastConnectionState = false;
         return false;
+    }
+
+    @Override
+    public boolean lastState() {
+        return this.lastConnectionState;
     }
 }

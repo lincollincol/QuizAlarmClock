@@ -21,6 +21,8 @@ import linc.com.alarmclockforprogrammers.domain.model.Achievement;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.domain.model.Question;
 
+import static linc.com.alarmclockforprogrammers.utils.Consts.BALANCE;
+
 public class RepositoryTestImpl implements RepositoryTest {
 
     private QuestionsDao questionsDao;
@@ -82,11 +84,11 @@ public class RepositoryTestImpl implements RepositoryTest {
 
     @Override
     public int getBalance() {
-        return preferences.getInteger("BALANCE");
+        return preferences.getInteger(BALANCE);
     }
 
     @Override
     public void saveBalance(int balance) {
-        preferences.saveInteger(balance, "BALANCE");
+        preferences.saveInteger(balance, BALANCE);
     }
 }

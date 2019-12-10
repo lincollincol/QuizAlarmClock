@@ -4,14 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import static linc.com.alarmclockforprogrammers.utils.Consts.WITHOUT_VERSION;
+
 public class LocalPreferencesManager {
-
-    // todo replace hardcoded IDs to constants
-    //LOCAL_QUESTIONS_VERSION
-    //LOCAL_ACHIEVEMENTS_VERSION
-    //BALANCE
-    //DARK_THEME_CHECKED
-
 
     private Context context;
 
@@ -39,17 +34,17 @@ public class LocalPreferencesManager {
      */
 
     public String getString(final String KEY) {
-        return getPreferences()//todo def val to const
-                .getString(KEY, "0");
+        return getPreferences()
+                .getString(KEY, WITHOUT_VERSION);
     }
 
     public int getInteger(final String KEY) {
-        return getPreferences()//todo def val to const
+        return getPreferences()
                 .getInt(KEY, 0);
     }
 
     public boolean getBoolean(final String KEY) {
-        return getPreferences()//todo def val to const
+        return getPreferences()
                 .getBoolean(KEY, false);
     }
 

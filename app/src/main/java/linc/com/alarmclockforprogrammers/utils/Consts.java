@@ -2,7 +2,24 @@ package linc.com.alarmclockforprogrammers.utils;
 
 public final class Consts {
 
-    // FragmentTimer constants
+
+    /**
+     * Shared preferences constants
+     */
+    public static final String QUESTIONS_LOCAL_VERSION = "local_question s_version";
+    public static final String QUESTIONS_REMOTE_VERSION = "questions_version";
+    public static final String QUESTIONS_REMOTE = "questions";
+
+    public static final String ACHIEVEMENTS_LOCAL_VERSION = "local_achievements_version";
+    public static final String ACHIEVEMENTS_REMOTE_VERSION = "achievements_version";
+    public static final String ACHIEVEMENTS_REMOTE = "achievements";
+
+    public static final String WITHOUT_VERSION = "0";
+    public static final String THEME = "theme";
+    public static final String BALANCE = "balance";
+
+
+    // FragmentTimer constants //todo time constants
     public static final long ONE_HOUR = 3600000;
     public static final long ONE_MINUTE = 60000;
     public static final long TWO_MINUTES = 120000;
