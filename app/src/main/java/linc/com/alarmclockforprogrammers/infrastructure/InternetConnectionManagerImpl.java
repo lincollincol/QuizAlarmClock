@@ -11,6 +11,7 @@ public class InternetConnectionManagerImpl implements InternetConnectionManager 
 
     private Context context;
     private boolean lastConnectionState;
+    private boolean firstStateChecked;
 
     public InternetConnectionManagerImpl(Context context) {
         this.context = context;
@@ -32,7 +33,12 @@ public class InternetConnectionManagerImpl implements InternetConnectionManager 
     }
 
     @Override
-    public boolean lastState() {
+    public boolean previousConnectionState() {
+        if(!firstStateChecked) {
+            this.firstStateChecked = true;
+            return !isConnected();
+        }
         return this.lastConnectionState;
     }
+
 }
