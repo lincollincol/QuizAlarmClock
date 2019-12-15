@@ -1,7 +1,9 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss;
 
+import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryDismiss;
+import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 
 public class InteractorAlarmDismiss {
 
@@ -17,12 +19,15 @@ public class InteractorAlarmDismiss {
         this.vibrationManager = vibrationManager;
     }
 
-    public void startAlarm(int alarmId) {
-        Disposable d = this.repository.getAlarmById(alarmId)
-                .subscribe( alarm -> {
-                    player.startPlayer(alarm.getSongPath());
-                    vibrationManager.startVibration();
-                });
+    public Single<Alarm> startAlarm(int alarmId) {
+        return Single.create(emitter -> {
+            Disposable d = repository.getAlarmById(alarmId)
+                    .subscribe(alarm -> {
+                        player.startPlayer(alarm.getSongPath());
+                        vibrationManager.startVibration();
+                        emitter.onSuccess(alarm);
+                    });
+        });
     }
 
     public void stopAlarm() {

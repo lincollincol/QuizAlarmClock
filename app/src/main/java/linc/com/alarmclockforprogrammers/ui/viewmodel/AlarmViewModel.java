@@ -1,5 +1,7 @@
 package linc.com.alarmclockforprogrammers.ui.viewmodel;
 
+import linc.com.alarmclockforprogrammers.utils.ResUtil;
+
 public class AlarmViewModel {
 
     private int id;
@@ -64,6 +66,9 @@ public class AlarmViewModel {
 
     public void setContainsTask(boolean containsTask) {
         this.containsTask = containsTask;
+        int taskChecked = containsTask ? 0 : -1;
+        languagePosition = taskChecked;
+        difficultPosition = taskChecked;
     }
 
     public boolean isEnable() {
@@ -106,6 +111,14 @@ public class AlarmViewModel {
             }
         }
         marks.setLength(Math.max(marks.length() - 2, 0));
-        return marks.toString().isEmpty() ? "Select days" : marks.toString();
+        return marks.toString().isEmpty() ? "Days not selected" : marks.toString();
+    }
+
+    @Override
+    public String toString() {
+        return String.format( (containsTask ? "%3$s(%2$s)\n%1$s" : "Default alarm\n%1$s"),
+                getWeekdayMarks(ResUtil.Array.WEEKDAYS_MARKS.getArray()),
+                ResUtil.Array.DIFFICULT.getItem(difficultPosition),
+                ResUtil.Array.LANGUAGES.getItem(languagePosition));
     }
 }

@@ -85,6 +85,10 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
 
     }
 
+    public void setBar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -189,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
 
     //todo param diff transitions
     private void replaceFragment(BaseFragment fragment) {
-
         Transition enterAnimation = new TransitionSet()
                 .addTransition(new Fade(Fade.IN)
                         .addTarget(R.id.alarms__list_of_alarms)

@@ -15,36 +15,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:attr/selectableItemBackground"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <android.support.constraint.Guideline
-            android:id="@+id/item_alarms__margin_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="50dp"/>
-
-        <android.support.constraint.Guideline
-            android:id="@+id/item_alarms__margin_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="50dp"/>
-
-        <TextView
-            android:id="@+id/item_alarm__programming_language"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Java"
-            android:textSize="@dimen/text_medium"
-            android:textColor="?attr/text_default_color"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="@id/item_alarm__time"
-            app:layout_constraintRight_toRightOf="@id/item_alarm__time"
-            app:layout_constraintBottom_toTopOf="@id/item_alarm__time"
-            app:layout_constraintVertical_bias="0.9"/>
+        android:background="?android:attr/selectableItemBackground">
 
         <TextView
             android:id="@+id/item_alarm__time"
@@ -52,39 +23,40 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
             android:text="9:00"
+            android:textColor="?attr/text_default_color"
             android:textSize="@dimen/text_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4"/>
+
+        <TextView
+            android:id="@+id/item_alarm__days"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:textAlignment="center"
+            android:text="selected days"
+            android:textSize="@dimen/text_small"
             android:textColor="?attr/text_default_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/item_alarm__days"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:maxLines="2"
-            android:text="weekdays"
-            android:textSize="@dimen/text_small"
-            android:textColor="?attr/text_default_color"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@id/item_alarm__time"
-            app:layout_constraintRight_toRightOf="@id/item_alarm__time"
-            app:layout_constraintTop_toBottomOf="@id/item_alarm__time"
-            app:layout_constraintVertical_bias="0.1" />
-
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.7"/>
 
         <View
             android:id="@+id/item_alarm__enable_indicator"
             android:layout_width="0dp"
             android:layout_height="5dp"
             android:background="@drawable/shape_enable_indicator"
-            app:layout_constraintTop_toBottomOf="@id/item_alarm__days"
+            app:layout_constraintLeft_toLeftOf="@id/item_alarm__time"
+            app:layout_constraintRight_toRightOf="@id/item_alarm__time"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/item_alarms__margin_start"
-            app:layout_constraintRight_toLeftOf="@id/item_alarms__margin_end"/>
+            app:layout_constraintVertical_bias="0.9"/>
 
     </android.support.constraint.ConstraintLayout>
 

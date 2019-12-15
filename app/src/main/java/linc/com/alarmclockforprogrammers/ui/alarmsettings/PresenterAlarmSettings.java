@@ -1,6 +1,7 @@
 package linc.com.alarmclockforprogrammers.ui.alarmsettings;
 
 import android.util.Log;
+import android.view.View;
 
 import java.io.File;
 
@@ -74,7 +75,7 @@ public class PresenterAlarmSettings {
         view.showDaysSelectionDialog(ResUtil.Array.WEEKDAYS.getArray(), alarmViewModel.getSelectedDays());
     }
 
-    void selecdSong() {
+    void selecedSong() {
         view.openFileManager();
     }
 
@@ -102,7 +103,10 @@ public class PresenterAlarmSettings {
      */
     void taskEnable(boolean enable) {
         this.alarmViewModel.setContainsTask(enable);
-        view.showTaskSettings(enable);
+        this.view.showDifficult(ResUtil.Array.DIFFICULT.getItem(alarmViewModel.getDifficultPosition()));
+        this.view.showLanguage(ResUtil.Array.LANGUAGES.getItem(alarmViewModel.getLanguagePosition()));
+        view.showTaskSettings(enable ? View.VISIBLE : View.GONE);
+
     }
 
     void selectDifficult() {
@@ -128,6 +132,7 @@ public class PresenterAlarmSettings {
     private void setAlarmData(Alarm alarm) {
         this.alarmViewModel = mapper.toAlarmViewModel(alarm);
         this.view.showTime(alarmViewModel.getHour(), alarmViewModel.getMinute());
+        this.view.showLabel(alarmViewModel.getLabel());
         this.view.showAlarmSong(alarmViewModel.getSongPath());
         this.view.showTaskState(alarmViewModel.isContainsTask());
         this.view.showEnableState(alarmViewModel.isEnable());

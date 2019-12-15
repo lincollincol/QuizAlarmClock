@@ -14,6 +14,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -66,8 +69,6 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
         super.onCreate(savedInstanceState);
 
         LocalDatabase database = AlarmApp.getInstance().getDatabase();
-        int alarmId = 0;
-
         if(presenter == null) {
             this.presenter = new PresenterAlarmSettings(
                     new InteractorAlarmSettingsImpl(
@@ -81,13 +82,6 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
                     new PathUtil(getActivity())
             );
         }
-
-        if(getArguments() != null) {
-             alarmId = getArguments().getInt("alarm_id");
-        }
-
-        this.presenter.bind(this, alarmId);
-
     }
 
     @Nullable
@@ -130,6 +124,22 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
         hourPicker.setOnValueChangedListener(this);
         minutePicker.setOnValueChangedListener(this);
 
+        alarmLabel.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                presenter.labelEntered(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+        });
+
+        this.presenter.bind(this, getArguments().getInt("alarm_id"));
+
+
         return view;
     }
 
@@ -158,7 +168,7 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
                 this.presenter.selectLanguage();
                 break;
             case R.id.alarm_settings__song_layout:
-                this.presenter.selecdSong();
+                this.presenter.selecedSong();
                 break;
             case R.id.alarm_settings__save:
                 this.presenter.saveAlarm();
@@ -182,19 +192,24 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
     }
 
     @Override
-    public void showTaskSettings(boolean isChecked) {
+    public void showTaskSettings(int visibility) {
         TransitionManager.beginDelayedTransition(container,
                 new Slide(Gravity.BOTTOM)
                         .setInterpolator(new FastOutSlowInInterpolator())
                         .setDuration(NORMAL_SPEED)
         );
-        this.taskExpand.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        this.taskExpand.setVisibility(visibility);
     }
 
     @Override
     public void showTime(int hour, int minute) {
         this.hourPicker.setValue(hour);
         this.minutePicker.setValue(minute);
+    }
+
+    @Override
+    public void showLabel(String label) {
+        this.alarmLabel.setText(label);
     }
 
     @Override

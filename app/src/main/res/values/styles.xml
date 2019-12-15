@@ -132,6 +132,8 @@
     <!--Toolbar back arrow color-->
     <style name="ThemeToolbar" parent="Theme.AppCompat.Light">
         <item name="android:tint">?attr/icon_default_color</item>
+        <item name="android:minHeight">32dp</item>
+        <item name="android:minWidth">32dp</item>
     </style>
 
     <!-- Activity restart animation-->

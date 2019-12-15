@@ -44,12 +44,8 @@ public class FragmentBottomDialog extends BottomSheetDialogFragment implements V
         deleteButton.setOnClickListener(this);
         enableAlarm.setChecked(alarm.isEnable());
         enableAlarm.setOnCheckedChangeListener(this);
-
         alarmTime.setText(alarm.getTime());
-        alarmDetails.setText((ResUtil.Array.LANGUAGES.getItem(alarm.getLanguagePosition())
-                        + "/" + ResUtil.Array.DIFFICULT.getItem(alarm.getDifficultPosition())
-                        + "\n" + alarm.getWeekdayMarks(ResUtil.Array.WEEKDAYS_MARKS.getArray())
-        ));
+        alarmDetails.setText(alarm.toString());
 
         return view;
     }

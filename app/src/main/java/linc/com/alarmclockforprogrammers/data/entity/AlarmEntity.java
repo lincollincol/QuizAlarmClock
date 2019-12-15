@@ -145,7 +145,7 @@ public class AlarmEntity {
     @Ignore
     public static AlarmEntity createInstance(int id) {
         return new AlarmEntity(id, 0,"", "",
-                "default", "Java",0,false, false);
+                "default song", "",-1,false, false);
     }
 }
 

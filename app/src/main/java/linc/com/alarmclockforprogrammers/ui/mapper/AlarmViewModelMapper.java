@@ -14,6 +14,7 @@ import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class AlarmViewModelMapper {
 
+    //todo map with resUtil
     public AlarmViewModel toAlarmViewModel(Alarm alarm) {
         final AlarmViewModel alarmViewModel = new AlarmViewModel();
         alarmViewModel.setId(alarm.getId());

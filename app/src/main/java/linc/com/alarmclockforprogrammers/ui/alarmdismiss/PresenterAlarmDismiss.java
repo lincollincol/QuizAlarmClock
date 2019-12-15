@@ -1,5 +1,6 @@
 package linc.com.alarmclockforprogrammers.ui.alarmdismiss;
 
+import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss.InteractorAlarmDismiss;
 
 public class PresenterAlarmDismiss {
@@ -13,7 +14,8 @@ public class PresenterAlarmDismiss {
     }
 
     public void bind(int alarmId) {
-        this.interactor.startAlarm(alarmId);
+        Disposable d = interactor.startAlarm(alarmId)
+                .subscribe(alarm -> view.setLabel(alarm.getLabel()));
     }
 
     public void unbind() {

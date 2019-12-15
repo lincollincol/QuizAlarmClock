@@ -2,30 +2,36 @@ package linc.com.alarmclockforprogrammers.ui.settings;
 
 import android.util.Log;
 
+import io.reactivex.Completable;
+import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.settings.InteractorSettings;
+import linc.com.alarmclockforprogrammers.utils.Consts;
 
 public class PresenterSettings {
 
     private ViewSettings view;
     private InteractorSettings interactor;
 
-    private boolean isDarkMode;
 
     public PresenterSettings(ViewSettings view, InteractorSettings interactor) {
         this.view = view;
         this.interactor = interactor;
     }
 
-    public void setData() {
-        this.isDarkMode = interactor.getTheme();
-        this.view.disableDrawerMenu();
-        this.view.setSelectedTheme(isDarkMode);
+
+    public void bind() {
+        Disposable d = interactor.getTheme()
+                .subscribe(view::setSelectedTheme);
+        this.view.setDrawerEnable(Consts.DISABLE);
     }
 
-    public void modeStateChanged() {
-        this.isDarkMode = !isDarkMode;
-        Log.d("MODE_MODE_MODE", "modeStateChanged: " + isDarkMode);
-        this.view.setSelectedTheme(isDarkMode);
+    public void unbind() {
+        this.view.restartActivity();
+        this.view.openAlarmsFragment();
+    }
+
+    public void changeTheme(boolean checked) {
+        this.interactor.saveTheme(checked);
     }
 
     public void rateApp() {
@@ -34,15 +40,6 @@ public class PresenterSettings {
 
     public void sendMessage() {
         this.view.openMessageActivity();
-    }
-
-    public void saveTheme() {
-        if(interactor.getTheme() != isDarkMode) {
-            this.interactor.saveTheme(isDarkMode);
-            this.view.restartActivity();
-            return;
-        }
-        this.view.openAlarmsFragment();
     }
 
 }

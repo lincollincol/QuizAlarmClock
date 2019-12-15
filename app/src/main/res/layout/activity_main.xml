@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:background="@android:color/transparent"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginStart="@dimen/margin_start_toolbar"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />

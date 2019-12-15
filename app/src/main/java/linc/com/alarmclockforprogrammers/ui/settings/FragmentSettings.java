@@ -11,7 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
@@ -24,7 +26,7 @@ import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
 import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
 
 public class FragmentSettings extends BaseFragment implements ViewSettings,
-        View.OnClickListener {
+        View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private SwitchCompat switchTheme;
     private PresenterSettings presenter;
@@ -46,38 +48,31 @@ public class FragmentSettings extends BaseFragment implements ViewSettings,
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+
         Toolbar toolbar = view.findViewById(R.id.settings__toolbar);
-        LinearLayout darkModeLayout = view.findViewById(R.id.settings__dark_mode);
-        LinearLayout rateLayout = view.findViewById(R.id.settings__rate);
-        LinearLayout supportLayout = view.findViewById(R.id.settings__support);
+        TextView rateView = view.findViewById(R.id.settings__rate);
+        TextView supportView = view.findViewById(R.id.settings__support  );
         this.switchTheme = view.findViewById(R.id.settings__dark_mode_toggle);
 
         toolbar.setNavigationOnClickListener(this);
-        darkModeLayout.setOnClickListener(this);
-        rateLayout.setOnClickListener(this);
-        supportLayout.setOnClickListener(this);
-        this.switchTheme.setOnClickListener(this);
+        rateView.setOnClickListener(this);
+        supportView.setOnClickListener(this);
+        switchTheme.setOnCheckedChangeListener(this);
 
-        this.presenter.setData();
+        this.presenter.bind();
         return view;
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.settings__dark_mode:
-                this.presenter.modeStateChanged();
-                break;
-            case R.id.settings__dark_mode_toggle:
-                this.presenter.modeStateChanged();
-                break;
             case R.id.settings__rate:
                 this.presenter.rateApp();
                 break;
             case R.id.settings__support:
                 this.presenter.sendMessage();
                 break;
-            default: this.presenter.saveTheme();
+            default: this.presenter.unbind();
         }
     }
 
@@ -110,8 +105,8 @@ public class FragmentSettings extends BaseFragment implements ViewSettings,
     }
 
     @Override
-    public void disableDrawerMenu() {
-        ((MainActivity) getActivity()).setDrawerEnabled(DISABLE);
+    public void setDrawerEnable(boolean enable) {
+        ((MainActivity) getActivity()).setDrawerEnabled(enable);
     }
 
     @Override
@@ -126,7 +121,11 @@ public class FragmentSettings extends BaseFragment implements ViewSettings,
 
     @Override
     public void onBackPressed() {
-        this.presenter.saveTheme();
+        this.presenter.unbind();
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        presenter.changeTheme(isChecked);
+    }
 }

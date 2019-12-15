@@ -12,123 +12,68 @@
         android:theme="@style/ThemeToolbar"
         android:background="@android:color/transparent"
         android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_start_toolbar"
         app:navigationIcon="@drawable/ic_back"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/settings__dark_mode"
+    <TextView
+        android:id="@+id/settings__dark_mode_title"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:gravity="center"
+        android:paddingStart="@dimen/margin_medium"
+        android:paddingEnd="@dimen/margin_medium"
+        android:text="Dark theme"
         android:background="?attr/selectableItemBackground"
+        android:textSize="@dimen/text_medium"
+        android:textColor="?attr/text_default_color"
         app:layout_constraintTop_toBottomOf="@id/settings__toolbar"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"/>
 
-        <ImageView
-            android:id="@+id/settings__dark_mode_icon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:src="@drawable/ic_theme"
-            android:tint="?attr/button_default_color" />
-
-        <TextView
-            android:id="@+id/settings__dark_mode_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="80"
-            android:text="Dark theme"
-            android:textSize="@dimen/text_medium"
-            android:textColor="?attr/text_default_color" />
-
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/settings__dark_mode_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_medium"
-            app:trackTint="@drawable/switch_toggle_track"
-            app:thumbTint="?attr/switch_thumb_color" />
-
-    </LinearLayout>
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/settings__dark_mode_toggle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:thumb="@drawable/switch_thumb"
+        app:track="@drawable/switch_track"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/settings__dark_mode_title"
+        app:layout_constraintBottom_toBottomOf="@id/settings__dark_mode_title"/>
 
     <View
         android:id="@+id/settings__divider_other"
         style="@style/Divider"
-        app:layout_constraintTop_toBottomOf="@id/settings__dark_mode"
+        app:layout_constraintTop_toBottomOf="@id/settings__dark_mode_title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <LinearLayout
+    <TextView
         android:id="@+id/settings__rate"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:gravity="center"
+        android:paddingStart="@dimen/margin_medium"
+        android:paddingEnd="@dimen/margin_medium"
+        android:text="Rate us"
         android:background="?attr/selectableItemBackground"
+        android:textSize="@dimen/text_medium"
+        android:textColor="?attr/text_default_color"
         app:layout_constraintTop_toBottomOf="@id/settings__divider_other"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent" />
 
-        <ImageView
-            android:id="@+id/settings__rate_icon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:src="@drawable/ic_rate"
-            android:tint="?attr/button_default_color"/>
-
-        <TextView
-            android:id="@+id/settings__rate_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="90"
-            android:text="Rate us"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:textSize="@dimen/text_medium"
-            android:textColor="?attr/text_default_color"
-            app:layout_constraintTop_toTopOf="@+id/settings__rate_icon"
-            app:layout_constraintBottom_toBottomOf="@+id/settings__rate_icon"
-            app:layout_constraintLeft_toRightOf="@+id/settings__rate_icon"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
         android:id="@+id/settings__support"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:gravity="center"
+        android:paddingStart="@dimen/margin_medium"
+        android:paddingEnd="@dimen/margin_medium"
+        android:text="Support"
         android:background="?attr/selectableItemBackground"
+        android:textSize="@dimen/text_medium"
+        android:textColor="?attr/text_default_color"
         app:layout_constraintTop_toBottomOf="@id/settings__rate"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <ImageView
-            android:id="@+id/settings__support_icon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:src="@drawable/ic_support"
-            android:tint="?attr/button_default_color" />
-
-        <TextView
-            android:id="@+id/settings__support_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="90"
-            android:text="Support"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:textSize="@dimen/text_medium"
-            android:textColor="?attr/text_default_color" />
-
-    </LinearLayout>
-
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

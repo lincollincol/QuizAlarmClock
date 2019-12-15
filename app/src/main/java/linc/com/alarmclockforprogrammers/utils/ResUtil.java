@@ -130,17 +130,23 @@ public class ResUtil {
         }
 
         public String getItem(int position) {
+            if(position == -1) {
+                return "";
+            }
             return getStringArray(array)[position];
         }
 
-        public int getItemPosition(String language) {
+        public int getItemPosition(String item) {
+            if(item.isEmpty()) {
+                return -1;
+            }
             String[] languages = getStringArray(array);
             for(int i = 0; i < languages.length; i++) {
-                if(languages[i].equals(language)) {
+                if(languages[i].equals(item)) {
                     return i;
                 }
             }
-            return -1;
+            return 0;
         }
     }
 

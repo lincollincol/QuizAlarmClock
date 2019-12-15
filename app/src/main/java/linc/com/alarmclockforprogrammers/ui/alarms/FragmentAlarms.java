@@ -159,6 +159,10 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     public void openAlarmCreator() {
         FragmentAlarmSettings alarmSettings = new FragmentAlarmSettings();
 
+        Bundle data = new Bundle();
+        data.putInt("alarm_id", 0);
+
+
 /*        alarmSettings.setEnterTransition(enterAnimation);
         alarmSettings.setReturnTransition(returnAnimation);*/
 

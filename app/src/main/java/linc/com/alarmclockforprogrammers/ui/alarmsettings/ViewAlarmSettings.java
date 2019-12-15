@@ -2,8 +2,9 @@ package linc.com.alarmclockforprogrammers.ui.alarmsettings;
 
 public interface ViewAlarmSettings {
 
-    void showTaskSettings(boolean isChecked);
+    void showTaskSettings(int visibility);
     void showTime(int hour, int minute);
+    void showLabel(String label);
     void showWeekdays(String days);
     void showAlarmSong(String songName);
     void showDifficult(String difficult);
