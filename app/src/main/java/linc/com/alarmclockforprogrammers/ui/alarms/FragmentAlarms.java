@@ -166,6 +166,8 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
 /*        alarmSettings.setEnterTransition(enterAnimation);
         alarmSettings.setReturnTransition(returnAnimation);*/
 
+        alarmSettings.setArguments(data);
+
         getFragmentManager().beginTransaction()
                 .replace(R.id.alarms_container, alarmSettings)
                 .addToBackStack(null)

@@ -2,6 +2,7 @@ package linc.com.alarmclockforprogrammers.infrastructure;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -20,10 +21,12 @@ public class PlayerManager implements MediaManager {
 
     @Override
     public void startPlayer(String path) throws IOException {
-        if(!path.equals("default")) {
+        Log.d("PATH_HTAP", "startPlayer: " + path);
+        if(!path.equals("default song")) {
             this.player.reset();
             this.player.setDataSource(path);
             this.player.prepare();
+            player.setVolume(0.5f, 0.5f);
         }
         this.player.start();
     }

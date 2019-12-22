@@ -26,8 +26,7 @@ public class PathUtil {
     }
 
     @SuppressLint("NewApi")
-    public String getPath(final File file) {
-        Uri uri = Uri.fromFile(file);
+    public String getPath(final Uri uri) {
         // DocumentProvider
         if (DocumentsContract.isDocumentUri(context, uri)) {
             if(isSDCard(uri)) {

@@ -85,10 +85,6 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
 
     }
 
-    public void setBar(Toolbar toolbar) {
-        setSupportActionBar(toolbar);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();

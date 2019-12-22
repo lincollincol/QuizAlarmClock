@@ -16,7 +16,9 @@ public interface ViewAlarmSettings {
     void showDifficultSelectionDialog(String[] difficultModes, int position);
     void showLanguageSelectionDialog(String[] languages, int position);
 
-    void showPermissionRequest();
-    void openFileManager();
+    void showFilesPermissionDialog();
+    void showAdminPermissionDialog();
+    void showFileManager();
+    void showAdminSettings();
     void openAlarmsFragment();
 }

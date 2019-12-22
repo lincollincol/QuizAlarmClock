@@ -27,7 +27,8 @@ public class PresenterSettings {
 
     public void unbind() {
         this.view.restartActivity();
-        this.view.openAlarmsFragment();
+        //todo fix
+//        this.view.openAlarmsFragment();
     }
 
     public void changeTheme(boolean checked) {

@@ -1,5 +1,6 @@
 package linc.com.alarmclockforprogrammers.ui.alarmsettings;
 
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 
@@ -9,6 +10,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarmsettings.InteractorAlarmSettings;
 import linc.com.alarmclockforprogrammers.domain.model.Alarm;
+import linc.com.alarmclockforprogrammers.infrastructure.ScreenLockManager;
 import linc.com.alarmclockforprogrammers.ui.mapper.AlarmViewModelMapper;
 import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
 import linc.com.alarmclockforprogrammers.utils.PathUtil;
@@ -20,15 +22,18 @@ public class PresenterAlarmSettings {
     private InteractorAlarmSettings interactor;
     private CompositeDisposable disposables;
 
+    private ScreenLockManager screenLockManager;
     private AlarmViewModel alarmViewModel;
     private AlarmViewModelMapper mapper;
     private PathUtil pathUtil;
 
     public PresenterAlarmSettings(InteractorAlarmSettings interactor,
                                   AlarmViewModelMapper mapper,
+                                  ScreenLockManager screenLockManager,
                                   PathUtil pathUtil) {
         this.interactor = interactor;
         this.mapper = mapper;
+        this.screenLockManager = screenLockManager;
         this.pathUtil = pathUtil;
         this.disposables = new CompositeDisposable();
     }
@@ -44,6 +49,12 @@ public class PresenterAlarmSettings {
         //todo interactor.dispose
     }
 
+    void checkAdminPermission() {
+        if(!screenLockManager.isAdminActive()) {
+            view.showAdminPermissionDialog();
+        }
+    }
+
     void saveAlarm() {
         Disposable d = interactor.saveAlarm(mapper.toAlarm(alarmViewModel))
             .subscribe(view::openAlarmsFragment);
@@ -51,6 +62,10 @@ public class PresenterAlarmSettings {
 
     void cancelChanges() {
         view.openAlarmsFragment();
+    }
+
+    void openAdminSettings() {
+        view.showAdminSettings();
     }
 
     /**
@@ -76,7 +91,7 @@ public class PresenterAlarmSettings {
     }
 
     void selecedSong() {
-        view.openFileManager();
+        view.showFileManager();
     }
 
     void daysSelected(boolean[] days) {
@@ -84,13 +99,14 @@ public class PresenterAlarmSettings {
         view.showWeekdays(alarmViewModel.getWeekdayMarks(ResUtil.Array.WEEKDAYS_MARKS.getArray()));
     }
 
-    void songSelected(String path) {
-        File song = new File(path);
-        Log.d("PATH", "songSelected: " + song.getAbsolutePath());
-        pathUtil.getPath(song);
+    void songSelected(Uri uri) {
+        File song = new File(pathUtil.getPath(uri));
         //todo permission
-        view.showPermissionRequest();
-        alarmViewModel.setSongPath(path);
+        Log.d("PATH", "songSelected: " + song.getAbsolutePath());
+        Log.d("PATH", "songSelected: NAME" + song.getName());
+        Log.d("PATH", "songSelected: PATH" + song.getPath());
+        view.showFilesPermissionDialog();
+        alarmViewModel.setSongPath(song.getPath());
         view.showAlarmSong(song.getName());
     }
 

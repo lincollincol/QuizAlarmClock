@@ -36,7 +36,7 @@
         android:id="@+id/alarms__balance_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_large"
         android:src="@drawable/ic_pay"
         android:tint="?attr/button_default_color"
         app:layout_constraintRight_toLeftOf="@+id/alarms__balance"

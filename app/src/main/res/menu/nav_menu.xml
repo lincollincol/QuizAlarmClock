@@ -11,15 +11,15 @@
 
         <item android:id="@+id/menu_timer"
               android:title="@string/item_menu_timer"
-              android:icon="@drawable/ic_alarm"/>
+              android:icon="@drawable/ic_timer"/>
 
         <item android:id="@+id/menu_stopwatch"
               android:title="@string/item_menu_stopwatch"
-              android:icon="@drawable/ic_alarm"/>
+              android:icon="@drawable/ic_stopwatch"/>
 
         <item android:id="@+id/menu_achievements"
               android:title="@string/item_menu_achievements"
-              android:icon="@drawable/ic_alarm"/>
+              android:icon="@drawable/ic_achievement"/>
     </group>
 
 

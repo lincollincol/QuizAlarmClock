@@ -67,6 +67,7 @@
             android:id="@+id/alarm_settings__song_layout"
             android:layout_width="0dp"
             android:layout_height="50dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:background="?attr/selectableItemBackground"
             app:layout_constraintLeft_toLeftOf="parent"

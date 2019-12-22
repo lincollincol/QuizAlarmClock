@@ -1,7 +1,11 @@
 package linc.com.alarmclockforprogrammers.ui.alarmsettings;
 
 import android.Manifest;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import java.util.List;
 import java.util.Locale;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
@@ -37,6 +42,8 @@ import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarmsettings.InteractorAlarmSettingsImpl;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarmSettings;
 import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
+import linc.com.alarmclockforprogrammers.infrastructure.ScreenLockManager;
+import linc.com.alarmclockforprogrammers.infrastructure.service.DeviceAdmin;
 import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
 import linc.com.alarmclockforprogrammers.ui.mapper.AlarmViewModelMapper;
 import linc.com.alarmclockforprogrammers.utils.PathUtil;
@@ -79,9 +86,16 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
                             new AlarmHandler(getActivity())
                     ),
                     new AlarmViewModelMapper(),
+                    new ScreenLockManager(getActivity()),
                     new PathUtil(getActivity())
             );
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.checkAdminPermission();
     }
 
     @Nullable
@@ -281,18 +295,46 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
     }
 
     @Override
-    public void showPermissionRequest() {
+    public void showFilesPermissionDialog() {
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }, 1);
     }
 
     @Override
-    public void openFileManager() {
+    public void showAdminPermissionDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
+                new ContextThemeWrapper(getActivity(), R.style.AlertDialogStyle));
+        dialogBuilder.setCancelable(true)
+                .setTitle("Screen lock permission")
+                .setMessage("Enable admin mode for correct alarms")
+                //todo ref OK
+                .setPositiveButton("OK", (dialog, which) -> {
+                    presenter.openAdminSettings();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    presenter.backToAlarms();
+                    dialog.cancel();
+                })
+                .show();
+    }
+
+    @Override
+    public void showFileManager() {
         Intent openFilesDir = new Intent(Intent.ACTION_GET_CONTENT)
                 //todo to const
                 .setType("audio/mpeg");
         startActivityForResult(openFilesDir, 0);
+    }
+
+    @Override
+    public void showAdminSettings() {
+        //todo get from string
+        Intent intent = new Intent(DevicePolicyManager. ACTION_ADD_DEVICE_ADMIN);
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN , new ComponentName(getActivity(), DeviceAdmin.class)) ;
+        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION , "We need to lock or unlock app, when alarm") ;
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -301,7 +343,7 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
         if (data != null && requestCode == 0) {
             Uri uri = data.getData();
             if (resultCode == RESULT_OK) {
-                this.presenter.songSelected(uri.getPath());
+                this.presenter.songSelected(uri);
             }
         }
     }
