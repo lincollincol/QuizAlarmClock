@@ -3,11 +3,11 @@ package linc.com.alarmclockforprogrammers.ui.alarmsettings;
 import android.Manifest;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.Group;
@@ -20,7 +20,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,7 +31,6 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import java.util.List;
 import java.util.Locale;
 
 import linc.com.alarmclockforprogrammers.AlarmApp;
@@ -43,7 +41,7 @@ import linc.com.alarmclockforprogrammers.domain.interactor.alarmsettings.Interac
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarmSettings;
 import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
 import linc.com.alarmclockforprogrammers.infrastructure.ScreenLockManager;
-import linc.com.alarmclockforprogrammers.infrastructure.service.DeviceAdmin;
+import linc.com.alarmclockforprogrammers.infrastructure.service.AdminReceiver;
 import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
 import linc.com.alarmclockforprogrammers.ui.mapper.AlarmViewModelMapper;
 import linc.com.alarmclockforprogrammers.utils.PathUtil;
@@ -90,6 +88,9 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
                     new PathUtil(getActivity())
             );
         }
+
+
+
     }
 
     @Override
@@ -182,7 +183,7 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
                 this.presenter.selectLanguage();
                 break;
             case R.id.alarm_settings__song_layout:
-                this.presenter.selecedSong();
+                this.presenter.selectSong();
                 break;
             case R.id.alarm_settings__save:
                 this.presenter.saveAlarm();
@@ -306,12 +307,13 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
     public void showAdminPermissionDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
                 new ContextThemeWrapper(getActivity(), R.style.AlertDialogStyle));
-        dialogBuilder.setCancelable(true)
+        dialogBuilder.setCancelable(false)
                 .setTitle("Screen lock permission")
                 .setMessage("Enable admin mode for correct alarms")
                 //todo ref OK
                 .setPositiveButton("OK", (dialog, which) -> {
                     presenter.openAdminSettings();
+                    dialog.cancel();
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {
                     presenter.backToAlarms();
@@ -332,7 +334,7 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
     public void showAdminSettings() {
         //todo get from string
         Intent intent = new Intent(DevicePolicyManager. ACTION_ADD_DEVICE_ADMIN);
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN , new ComponentName(getActivity(), DeviceAdmin.class)) ;
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN , new ComponentName(getActivity(), AdminReceiver.class)) ;
         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION , "We need to lock or unlock app, when alarm") ;
         startActivityForResult(intent, 1);
     }

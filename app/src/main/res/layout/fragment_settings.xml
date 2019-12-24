@@ -42,10 +42,34 @@
         app:layout_constraintTop_toTopOf="@id/settings__dark_mode_title"
         app:layout_constraintBottom_toBottomOf="@id/settings__dark_mode_title"/>
 
+    <TextView
+        android:id="@+id/settings__device_admin_title"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:paddingStart="@dimen/margin_medium"
+        android:paddingEnd="@dimen/margin_medium"
+        android:gravity="center_vertical"
+        android:text="Device admin"
+        android:background="?attr/selectableItemBackground"
+        android:textSize="@dimen/text_medium"
+        android:textColor="?attr/text_default_color"
+        app:layout_constraintTop_toBottomOf="@id/settings__dark_mode_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/settings__device_admin_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_small"
+        app:layout_constraintRight_toRightOf="@id/settings__dark_mode_toggle"
+        app:layout_constraintTop_toTopOf="@id/settings__device_admin_title"
+        app:layout_constraintBottom_toBottomOf="@id/settings__device_admin_title"/>
+
     <View
         android:id="@+id/settings__divider_other"
         style="@style/Divider"
-        app:layout_constraintTop_toBottomOf="@id/settings__dark_mode_title"
+        app:layout_constraintTop_toBottomOf="@id/settings__device_admin_title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
@@ -78,5 +102,20 @@
         app:layout_constraintTop_toBottomOf="@id/settings__rate"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/settings__uninstall_app"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:paddingStart="@dimen/margin_medium"
+        android:paddingEnd="@dimen/margin_medium"
+        android:textSize="@dimen/text_medium"
+        android:textColor="#FF0000"
+        android:gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
+        android:text="Uninstall application"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">AlarmClock for programmers</string>
 
+    <string name="settings_admin_activated">Activated</string>
+    <string name="settings_admin_not_activated">Not activated</string>
+
     <!--Navigation drawer menu-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

@@ -90,13 +90,16 @@ public class PresenterAlarmSettings {
         view.showDaysSelectionDialog(ResUtil.Array.WEEKDAYS.getArray(), alarmViewModel.getSelectedDays());
     }
 
-    void selecedSong() {
-        view.showFileManager();
-    }
 
     void daysSelected(boolean[] days) {
         this.alarmViewModel.setSelectedDays(days);
         view.showWeekdays(alarmViewModel.getWeekdayMarks(ResUtil.Array.WEEKDAYS_MARKS.getArray()));
+    }
+
+
+    void selectSong() {
+        view.showFilesPermissionDialog();
+        view.showFileManager();
     }
 
     void songSelected(Uri uri) {
@@ -105,7 +108,6 @@ public class PresenterAlarmSettings {
         Log.d("PATH", "songSelected: " + song.getAbsolutePath());
         Log.d("PATH", "songSelected: NAME" + song.getName());
         Log.d("PATH", "songSelected: PATH" + song.getPath());
-        view.showFilesPermissionDialog();
         alarmViewModel.setSongPath(song.getPath());
         view.showAlarmSong(song.getName());
     }

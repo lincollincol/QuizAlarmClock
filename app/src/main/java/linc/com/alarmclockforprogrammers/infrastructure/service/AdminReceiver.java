@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-public class DeviceAdmin extends DeviceAdminReceiver {
+public class AdminReceiver extends DeviceAdminReceiver {
 
     @Override
     public void onEnabled (Context context , Intent intent) {

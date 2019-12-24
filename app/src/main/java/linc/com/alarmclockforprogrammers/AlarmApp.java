@@ -11,11 +11,6 @@ import linc.com.alarmclockforprogrammers.data.database.LocalDatabase;
 
 public class AlarmApp extends Application {
 
-    //todo check case, when 2 alarms execute
-    //todo check case, when 2 alarms execute
-    //todo check case, when 2 alarms execute
-
-
     public static AlarmApp instance;
     private LocalDatabase database;
     private Activity currentActivity;

@@ -4,7 +4,7 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 
-import linc.com.alarmclockforprogrammers.infrastructure.service.DeviceAdmin;
+import linc.com.alarmclockforprogrammers.infrastructure.service.AdminReceiver;
 
 public class ScreenLockManager {
 
@@ -12,7 +12,7 @@ public class ScreenLockManager {
     private ComponentName compName ;
 
     public ScreenLockManager(Context context) {
-        compName = new ComponentName(context, DeviceAdmin.class);
+        compName = new ComponentName(context, AdminReceiver.class);
         deviceManger = (DevicePolicyManager)
                 context.getSystemService(Context.DEVICE_POLICY_SERVICE ) ;
     }

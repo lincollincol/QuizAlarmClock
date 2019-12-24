@@ -2,6 +2,7 @@ package linc.com.alarmclockforprogrammers.utils;
 
 public final class Consts {
 
+    public static final String APPLICATION_PACKAGE = "package:linc.com.alarmclockforprogrammers";
 
     /**
      * Shared preferences constants

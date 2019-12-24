@@ -75,6 +75,8 @@ public class ResUtil {
      * Text
      */
     public enum Message {
+        ADMIN_ACTIVATED(R.string.settings_admin_activated),
+        ADMIN_NOT_ACTIVATED(R.string.settings_admin_not_activated),
         TITLE_CONNECTION(R.string.dialog_title_no_connection),
         TITLE_UPDATING(R.string.dialog_title_updating),
         NO_CONNECTION(R.string.dialog_message_no_connection),
