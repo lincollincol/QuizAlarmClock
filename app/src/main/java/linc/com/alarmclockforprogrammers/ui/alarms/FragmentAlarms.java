@@ -2,6 +2,7 @@ package linc.com.alarmclockforprogrammers.ui.alarms;
 
 import android.Manifest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,12 +36,15 @@ import linc.com.alarmclockforprogrammers.data.mapper.QuestionEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarms.InteractorAlarms;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarms;
+import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
 import linc.com.alarmclockforprogrammers.infrastructure.CustomSnapHelper;
 import linc.com.alarmclockforprogrammers.infrastructure.InternetConnectionManagerImpl;
 import linc.com.alarmclockforprogrammers.ui.activities.main.MainActivity;
+import linc.com.alarmclockforprogrammers.ui.activities.wake.WakeActivity;
 import linc.com.alarmclockforprogrammers.ui.alarms.adapters.AdapterAlarms;
 import linc.com.alarmclockforprogrammers.ui.alarmsettings.FragmentAlarmSettings;
+import linc.com.alarmclockforprogrammers.ui.alarmtest.FragmentTest;
 import linc.com.alarmclockforprogrammers.ui.base.BaseFragment;
 import linc.com.alarmclockforprogrammers.ui.mapper.AlarmViewModelMapper;
 import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
@@ -191,12 +195,12 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     }
 
     @Override
-    public void hideDeletedItem(int id) {
+    public void hideDeletedAlarm(int id) {
         adapterAlarms.removeAlarm(id);
     }
 
     @Override
-    public void highlightEnable(AlarmViewModel alarmViewModel) {
+    public void highlightEnableAlarm(AlarmViewModel alarmViewModel) {
         adapterAlarms.updateAlarm(alarmViewModel);
     }
 

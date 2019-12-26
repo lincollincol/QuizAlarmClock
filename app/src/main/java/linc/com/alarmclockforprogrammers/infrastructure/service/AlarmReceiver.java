@@ -22,6 +22,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        //todo use jsonUtil
         String alarmJson = intent.getStringExtra("ALARM_JSON");
         Alarm alarm = new Gson().fromJson(alarmJson, Alarm.class);
 

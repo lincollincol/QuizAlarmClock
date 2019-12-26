@@ -32,4 +32,15 @@
         <item>C++</item>
     </array>
 
+    <array name="code_style_languages">
+        <item>Java</item>
+        <item>cc</item>
+        <item>py</item>
+        <item>kotlin</item>
+        <item>cs</item>
+        <item>javascript</item>
+        <item>go</item>
+        <item>bsh</item>
+    </array>
+
 </resources>

@@ -1,5 +1,8 @@
 package linc.com.alarmclockforprogrammers.ui.alarmtest;
 
+import android.util.Log;
+
+import io.github.kbiakov.codeview.highlight.ColorTheme;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarmtest.InteractorTest;
@@ -22,11 +25,14 @@ public class PresenterTest {
 
     public void bind(ViewTest view, int alarmId) {
         this.view = view;
-
         Disposable d = this.interactor.execute(alarmId)
             .subscribe(question -> {
+                Log.d("QUEST_CODE", "bind: " + question.getHtmlCodeSnippet());
                 view.showQuestion(mapper.toQuestionViewModel(question));
+                view.setNextEnable(Consts.DISABLE, ResUtil.Color.DISABLE.getColor());
                 displayBalance();
+                updateCompletionState();
+                setCodeTheme(question.getProgrammingLanguage());
             }, Throwable::printStackTrace);
         addDisposable(d);
     }
@@ -43,9 +49,10 @@ public class PresenterTest {
 
     void checkAnswer(int answerPosition) {
         Disposable d = this.interactor.checkAnswer(answerPosition)
-            .subscribe(correct -> displayAnswer(correct, answerPosition),
-                       Throwable::printStackTrace,
-                       this::checkCompletion
+            .subscribe(correct -> {
+                    displayAnswer(correct, answerPosition);
+                    updateCompletionState();
+                },Throwable::printStackTrace, this::checkCompletion
             );
         disableUiInteraction();
         addDisposable(d);
@@ -63,6 +70,7 @@ public class PresenterTest {
         Disposable d = interactor.makePayment()
                 .subscribe(answerPosition -> {
                     displayAnswer(true, answerPosition);
+                    updateCompletionState();
                     checkCompletion();
                 });
         disableUiInteraction();
@@ -73,6 +81,7 @@ public class PresenterTest {
         Disposable d = interactor.timeOut()
                 .subscribe(answerPosition -> {
                     displayAnswer(true, answerPosition);
+                    updateCompletionState();
                     checkCompletion();
                 });
         disableUiInteraction();
@@ -105,6 +114,7 @@ public class PresenterTest {
                     view.setPayEnable(Consts.ENABLE, ResUtil.Color.ENABLE.getColor());
                     view.setNextEnable(Consts.DISABLE, ResUtil.Color.DISABLE.getColor());
                     displayBalance();
+                    setCodeTheme(question.getProgrammingLanguage());
                 }, Throwable::printStackTrace);
         addDisposable(d);
     }
@@ -123,6 +133,25 @@ public class PresenterTest {
         Disposable d = interactor.getBalance()
                 .subscribe(view::showBalance);
         addDisposable(d);
+    }
+
+    private void updateCompletionState() {
+        Disposable d = interactor.getCorrectAnswersAmount()
+                .zipWith(interactor.getTasksAmount(), (correctAnswers, tasks) -> {
+                    view.showCompletedTasks(correctAnswers+"/"+tasks);
+                    return correctAnswers;
+                })
+                .subscribe();
+    }
+
+    private void setCodeTheme(String language) {
+        Disposable d = interactor.getTheme()
+                .subscribe(darkTheme -> {
+                    ColorTheme theme = darkTheme ? ColorTheme.MONOKAI : ColorTheme.SOLARIZED_LIGHT;
+                    String codeLanguage = ResUtil.Array.CODE_LANGUAGES.getItem(
+                            ResUtil.Array.LANGUAGES.getItemPosition(language));
+                    view.setCodeTheme(theme, codeLanguage);
+                });
     }
 
     private void displayAnswer(boolean correct, int position) {

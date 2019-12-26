@@ -1,15 +1,9 @@
 package linc.com.alarmclockforprogrammers.ui.alarms;
 
-import android.util.Log;
-
-import java.sql.Time;
-import java.util.concurrent.TimeUnit;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import linc.com.alarmclockforprogrammers.domain.interactor.alarms.InteractorAlarms;
 import linc.com.alarmclockforprogrammers.ui.mapper.AlarmViewModelMapper;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
 import static linc.com.alarmclockforprogrammers.utils.Consts.ENABLE;
@@ -64,13 +58,13 @@ public class PresenterAlarms {
     public void deleteAlarm(int id) {
         Disposable d = this.interactor.deleteAlarm(id)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(()->view.hideDeletedItem(id));
+                .subscribe(()->view.hideDeletedAlarm(id));
     }
 
     public void enableAlarm(int id, boolean enable) {
         Disposable d = this.interactor.enableAlarm(id, enable)
                 .subscribe(alarm ->
-                        view.highlightEnable(mapper.toAlarmViewModel(alarm))
+                        view.highlightEnableAlarm(mapper.toAlarmViewModel(alarm))
                 );
     }
 }

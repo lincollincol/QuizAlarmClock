@@ -28,7 +28,7 @@
 
         <item name="dialog_background_color">@color/theme_light_end</item>
         <item name="dialog_positive_color">@color/violet_dark</item>
-        <item name="dialog_negative_color">@color/violet_default</item>
+        <item name="dialog_negative_color">@color/violet_dark</item>
         <item name="dialog_checked_color">@color/violet_dark</item>
         <item name="dialog_unchecked_color">@color/violet_default</item>
         <item name="menu_selected_shape_color">@color/violet_default</item>
@@ -72,7 +72,7 @@
         <item name="background_card_alarm_enable">@color/alarm_enable_dark</item>
 
         <item name="dialog_background_color">@color/theme_dark_start</item>
-        <item name="dialog_positive_color">@color/green_dark</item>
+        <item name="dialog_positive_color">@color/green_default</item>
         <item name="dialog_negative_color">@color/green_default</item>
         <item name="dialog_checked_color">@color/green_dark</item>
         <item name="dialog_unchecked_color">@color/green_default</item>

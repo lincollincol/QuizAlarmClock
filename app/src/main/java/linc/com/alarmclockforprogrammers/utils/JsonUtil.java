@@ -9,6 +9,8 @@ import java.util.List;
 
 public class JsonUtil<T> {
 
+    //todo make this class static
+
     private Gson gson;
 
     public JsonUtil(Gson gson) {

@@ -7,6 +7,7 @@ import android.content.Context;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 
+import io.github.kbiakov.codeview.classifier.CodeProcessor;
 import linc.com.alarmclockforprogrammers.data.database.LocalDatabase;
 
 public class AlarmApp extends Application {

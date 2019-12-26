@@ -94,10 +94,9 @@ public class Test {
      * Calculate number of questions from difficult
      * @return result of ternary operation
      */
-    private int getQuestionsAmount() {
-        return ((difficult < 1) ? 3 : (difficult > 1) ? 1 : 2);
+    public byte getQuestionsAmount() {
+        return (byte)((difficult < 1) ? 3 : (difficult > 1) ? 1 : 2);
     }
-
 
     public String getLanguage() {
         return language;

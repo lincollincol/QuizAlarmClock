@@ -1,5 +1,7 @@
 package linc.com.alarmclockforprogrammers.domain.interactor.alarmtest;
 
+import android.util.Log;
+
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -35,6 +37,7 @@ public class InteractorTestImpl implements InteractorTest {
                         Disposable questDisp = repository
                                 .getQuestions(alarm.getLanguage(), alarm.getDifficult())
                                 .subscribe(questions -> {
+                                    Log.d("ALL_SELECTED_SIZE", "execute: "+questions.size());
                                     this.player.startPlayer(alarm.getSongPath());
                                     this.vibrationManager.startVibration();
                                     this.test = new Test(questions, alarm.getLanguage(), alarm.getDifficult());
@@ -116,6 +119,21 @@ public class InteractorTestImpl implements InteractorTest {
     @Override
     public Single<Integer> getBalance() {
         return Single.fromCallable(repository::getBalance);
+    }
+
+    @Override
+    public Single<Boolean> getTheme() {
+        return repository.getTheme();
+    }
+
+    @Override
+    public Single<Byte> getCorrectAnswersAmount() {
+        return Single.fromCallable(test::getCorrectAnswers);
+    }
+
+    @Override
+    public Single<Byte> getTasksAmount() {
+        return Single.fromCallable(test::getQuestionsAmount);
     }
 
     @Override

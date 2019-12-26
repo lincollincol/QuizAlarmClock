@@ -4,16 +4,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
-import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
 import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
-import linc.com.alarmclockforprogrammers.domain.model.Alarm;
 import linc.com.alarmclockforprogrammers.domain.model.Question;
 import linc.com.alarmclockforprogrammers.utils.JsonUtil;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class QuestionEntityMapper {
 
@@ -46,7 +41,7 @@ public class QuestionEntityMapper {
                 (String) (dataSnapshot.child("preQuestion").getValue()),
                 (String) (dataSnapshot.child("postQuestion").getValue()),
                 jsonUtil.listToJson((ArrayList<String>) (dataSnapshot.child("answers").getValue())),
-                (String) (dataSnapshot.child("htmlCodeSnippet").getValue()),
+                (String) (dataSnapshot.child("compressedCodeSnippet").getValue()),
                 ((Boolean) (dataSnapshot.child("completed").getValue())));
     }
 

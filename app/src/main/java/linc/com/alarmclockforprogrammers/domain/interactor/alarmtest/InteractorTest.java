@@ -15,5 +15,8 @@ public interface InteractorTest {
     Single<Boolean> checkTestCompletion();
     Single<Boolean> completeTest();
     Single<Integer> getBalance();
+    Single<Boolean> getTheme();
+    Single<Byte> getCorrectAnswersAmount();
+    Single<Byte> getTasksAmount();
     void stop();
 }

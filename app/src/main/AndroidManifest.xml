@@ -36,7 +36,8 @@
         </activity>
         <activity android:name=".ui.activities.wake.WakeActivity"
             android:launchMode="singleTask"
-            android:theme="@style/LightTheme"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/LightTheme" />
 
         <receiver android:name=".infrastructure.service.AlarmReceiver">
             <intent-filter>

@@ -119,6 +119,7 @@ public class ResUtil {
 
         DIFFICULT(R.array.difficult_modes),
         LANGUAGES(R.array.programming_languages),
+        CODE_LANGUAGES(R.array.code_style_languages),
         WEEKDAYS(R.array.week_days),
         WEEKDAYS_MARKS(R.array.week_days_marks);
 

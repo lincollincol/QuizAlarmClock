@@ -18,6 +18,6 @@ public interface ViewAlarms {
     void openAlarmCreator();
     void openBottomSheetDialog(AlarmViewModel alarm);
 
-    void hideDeletedItem(int position);
-    void highlightEnable(AlarmViewModel alarmViewModel);
+    void hideDeletedAlarm(int position);
+    void highlightEnableAlarm(AlarmViewModel alarmViewModel);
 }

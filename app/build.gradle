@@ -52,6 +52,9 @@ dependencies {
     // Animations
     implementation 'com.airbnb.android:lottie:2.7.0'
 
+    // Code
+    implementation 'com.github.kbiakov:CodeView-Android:1.1.2'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

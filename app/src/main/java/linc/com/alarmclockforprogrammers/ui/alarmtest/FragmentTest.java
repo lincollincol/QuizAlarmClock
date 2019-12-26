@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import io.github.kbiakov.codeview.CodeView;
+import io.github.kbiakov.codeview.highlight.ColorTheme;
 import linc.com.alarmclockforprogrammers.AlarmApp;
 import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.data.database.LocalDatabase;
@@ -45,14 +47,14 @@ import static linc.com.alarmclockforprogrammers.utils.Consts.TWO_MINUTES;
 public class FragmentTest extends Fragment implements ViewTest, View.OnClickListener,
         Animator.AnimatorListener, RadioGroup.OnCheckedChangeListener {
 
+    private TextView completedTasks;
     private TextView balance;
     private TextView preQuestion;
     private TextView postQuestion;
-    private WebView codeSnippet;
     private RadioGroup answersGroup;
     private FloatingActionButton nextQuestion;
     private FloatingActionButton payForQuestion;
-
+    private CodeView codeSnippet;
     private ObjectAnimator progressAnimation;
     private PresenterTest presenter;
 
@@ -84,6 +86,7 @@ public class FragmentTest extends Fragment implements ViewTest, View.OnClickList
         View view = inflater.inflate(R.layout.fragment_task, container, false);
 
         ProgressBar progressBar = view.findViewById(R.id.wake__time_for_answer);
+        this.completedTasks = view.findViewById(R.id.wake__completed_tasks);
         this.balance = view.findViewById(R.id.wake__balance);
         this.preQuestion = view.findViewById(R.id.wake__pre_question);
         this.postQuestion = view.findViewById(R.id.wake__post_question);
@@ -128,10 +131,18 @@ public class FragmentTest extends Fragment implements ViewTest, View.OnClickList
     }
 
     @Override
+    public void setCodeTheme(ColorTheme theme, String language) {
+        codeSnippet.highlightCode(language)
+                .setColorTheme(theme);
+    }
+
+    @Override
     public void showQuestion(QuestionViewModel question) {
         this.preQuestion.setText(question.getPreQuestion());
         this.postQuestion.setText(question.getPostQuestion());
-        this.codeSnippet.loadData(question.getHtmlCodeSnippet(), "text/html", "utf-8");
+
+        codeSnippet.setCodeContent(question.getHtmlCodeSnippet());
+
         this.answersGroup.clearCheck();
         // Reset radio buttons
         for(int i = 0; i < answersGroup.getChildCount(); i++) {
@@ -143,6 +154,11 @@ public class FragmentTest extends Fragment implements ViewTest, View.OnClickList
     @Override
     public void showBalance(int balance) {
         this.balance.setText(String.valueOf(balance));
+    }
+
+    @Override
+    public void showCompletedTasks(String completedTasks) {
+        this.completedTasks.setText(completedTasks);
     }
 
     @Override

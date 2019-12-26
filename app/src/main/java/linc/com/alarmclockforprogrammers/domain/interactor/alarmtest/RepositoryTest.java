@@ -15,5 +15,6 @@ public interface RepositoryTest {
     Single<List<Achievement>> getAchievements(String language);
     Completable updateAchievements(List<Achievement> achievements);
     int getBalance();
+    Single<Boolean> getTheme();
     void saveBalance(int newValue);
 }

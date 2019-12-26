@@ -83,12 +83,14 @@ public class RepositoryAlarms {
             List<AchievementEntity> achievements = achievementsDao.getAll();
 
             for(QuestionEntity q : questions) {
-                Log.d("ALL_IDS_Q", "question id = " + q.getId());
+                Log.d("ALL_IDS_Q", "question diff = " + q.getDifficult());
+//                Log.d("ALL_IDS_Q", "question code = " + q.getHtmlCodeSnippet());
+                Log.d("ALL_IDS_Q", "question lang = " + q.getProgrammingLanguage());
             }
 
-            for(AchievementEntity a : achievements) {
+            /*for(AchievementEntity a : achievements) {
                 Log.d("ALL_IDS_A", "achievement id = " + a.getId());
-            }
+            }*/
 
             emitter.onSuccess(alarms);
         }).subscribeOn(Schedulers.io())
