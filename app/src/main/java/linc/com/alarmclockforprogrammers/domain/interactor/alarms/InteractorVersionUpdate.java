@@ -38,15 +38,12 @@ public class InteractorVersionUpdate {
                         if(internetConnection.previousConnectionState() != internetConnection.isConnected()) {
                             emitter.onNext(internetConnection.isConnected());
                             if(internetConnection.isConnected() && !updating) {
-                                updatingDisposable = this.repository.updateLocalQuestionsVersion()
-                                        .andThen(repository.updateLocalAchievementsVersion())
+                                updatingDisposable = this.repository.updateLocalVersions()
                                         .subscribe(emitter::onComplete);
                                 updating = true;
                                 Log.d("START_UPDATING", "execute: ");
                             }else {
                                 updatingDisposable.dispose();
-                                if(updatingDisposable != null) {
-                                }
                                 updating = false;
                                 Log.d("STOP_DATA_UPDATING", "execute: ");
                             }

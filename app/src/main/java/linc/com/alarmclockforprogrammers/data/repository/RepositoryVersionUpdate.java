@@ -44,22 +44,33 @@ public class RepositoryVersionUpdate {
         this.preferences = preferences;
     }
 
-    public Completable updateLocalQuestionsVersion() {
+    public Completable updateLocalVersions() {
         return Completable.create(emitter -> {
-            Disposable d = firebase.getDataSnapshot(QUESTIONS_REMOTE_VERSION)
-                    .subscribe(dataSnapshot -> {
-                        String remoteVersion = ((String)dataSnapshot.getValue());
-                        if(!remoteVersion.equals(preferences.getString(QUESTIONS_LOCAL_VERSION))
-                                || questionsDao.getItemCount() == 0) {
-                            Disposable questLocal = updateQuestions()
+            Disposable d = firebase.getDataSnapshot(ACHIEVEMENTS_REMOTE_VERSION)
+                    .zipWith(firebase.getDataSnapshot(QUESTIONS_REMOTE_VERSION), (achieveDS, questionDS) -> {
+                        String achievementsRemoveVersion = ((String) achieveDS.getValue());
+                        String questionsRemoveVersion = ((String) questionDS.getValue());
+
+                        if (!preferences.getString(ACHIEVEMENTS_LOCAL_VERSION).equals(achievementsRemoveVersion)
+                                || achievementsDao.getItemCount() == 0) {
+                            Disposable achieveLocal = updateAchievements()
                                     .subscribe(() -> {
-                                        preferences.saveString(remoteVersion, QUESTIONS_LOCAL_VERSION);
-                                        emitter.onComplete();
+                                        preferences.saveString(achievementsRemoveVersion, ACHIEVEMENTS_LOCAL_VERSION);
                                     });
-                            return;
                         }
+
+                        if(!preferences.getString(QUESTIONS_LOCAL_VERSION).equals(questionsRemoveVersion)
+                                || questionsDao.getItemCount() == 0) {
+                            Disposable questionLocal = updateQuestions()
+                                    .subscribe(() -> {
+                                        preferences.saveString(questionsRemoveVersion, QUESTIONS_LOCAL_VERSION);
+                                    });
+                        }
+
                         emitter.onComplete();
-                    }, emitter::onError);
+                        return achieveDS;
+                    }).subscribe();
+
         });
     }
 
@@ -71,30 +82,6 @@ public class RepositoryVersionUpdate {
                             try {
                                 questionsDao.insert(questionMapper.toQuestionEntity(ds));
                             }catch (Exception ignored) {}
-                        }
-                        emitter.onComplete();
-                    }, emitter::onError);
-        });
-    }
-
-
-    /**
-     * Achievements
-     */
-
-    public Completable updateLocalAchievementsVersion() {
-        return Completable.create(emitter -> {
-            Disposable d = firebase.getDataSnapshot(ACHIEVEMENTS_REMOTE_VERSION)
-                    .subscribe(dataSnapshot -> {
-                        String remoteVersion = ((String)dataSnapshot.getValue());
-                        if(!remoteVersion.equals(preferences.getString(ACHIEVEMENTS_LOCAL_VERSION))
-                                || achievementsDao.getItemCount() == 0) {
-                            Disposable achieveLocal = updateAchievements()
-                                    .subscribe(() -> {
-                                        preferences.saveString(remoteVersion, ACHIEVEMENTS_LOCAL_VERSION);
-                                        emitter.onComplete();
-                                    });
-                            return;
                         }
                         emitter.onComplete();
                     }, emitter::onError);

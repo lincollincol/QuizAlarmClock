@@ -131,7 +131,12 @@ public class PresenterTest {
 
     private void displayBalance() {
         Disposable d = interactor.getBalance()
-                .subscribe(view::showBalance);
+                .subscribe(balance -> {
+                    if(balance <= 0) {
+                        view.setPayEnable(Consts.DISABLE, ResUtil.Color.DISABLE.getColor());
+                    }
+                    view.showBalance(balance);
+                });
         addDisposable(d);
     }
 

@@ -70,6 +70,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
         if(presenter == null) {
             this.presenter = new PresenterAlarms(new InteractorAlarms(
                     new RepositoryAlarms(
+                            new RemoteDatabase(),
                             database.alarmDao(),
                             database.questionsDao(),
                             database.achievementsDao(),

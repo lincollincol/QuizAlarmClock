@@ -13,6 +13,7 @@ import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
 import linc.com.alarmclockforprogrammers.data.database.RemoteDatabase;
 import linc.com.alarmclockforprogrammers.data.database.achievements.AchievementsDao;
@@ -47,6 +48,7 @@ public class RepositoryAlarms {
 
     private AlarmDao alarmDao;
 
+    private RemoteDatabase firebase;
 
     private QuestionsDao questionsDao;
     private AchievementsDao achievementsDao;
@@ -57,11 +59,13 @@ public class RepositoryAlarms {
 
     private Map<Integer, Alarm> alarms;
 
-    public RepositoryAlarms(AlarmDao alarmDao,
+    public RepositoryAlarms(RemoteDatabase firebase,
+                            AlarmDao alarmDao,
                             QuestionsDao questionsDao,
                             AchievementsDao achievementsDao,
                             LocalPreferencesManager preferences,
                             AlarmEntityMapper alarmMapper) {
+        this.firebase = firebase;
         this.alarmDao = alarmDao;
         this.questionsDao = questionsDao;
         this.achievementsDao = achievementsDao;
@@ -116,17 +120,36 @@ public class RepositoryAlarms {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    //todo update locla storage
-    public Single<Boolean> checkFirstUpdate() {
+    public Single<Boolean> checkForUpdate() {
         return Single.create(emitter -> {
-                    emitter.onSuccess(preferences.getString(QUESTIONS_LOCAL_VERSION).equals(WITHOUT_VERSION)
-                            || preferences.getString(ACHIEVEMENTS_LOCAL_VERSION).equals(WITHOUT_VERSION));
+            boolean withoutUpdate = preferences.getString(QUESTIONS_LOCAL_VERSION).equals(WITHOUT_VERSION)
+                    || preferences.getString(ACHIEVEMENTS_LOCAL_VERSION).equals(WITHOUT_VERSION);
+
+            if(withoutUpdate) {
+                emitter.onSuccess(true);
+                return;
+            }
+
+            Disposable d = firebase.getDataSnapshot(ACHIEVEMENTS_REMOTE_VERSION)
+                    .zipWith(firebase.getDataSnapshot(QUESTIONS_REMOTE_VERSION), (achieveDS, questionDS) -> {
+                        String achievementsRemoveVersion = ((String) achieveDS.getValue());
+                        String questionsRemoveVersion = ((String) questionDS.getValue());
+
+                        if (!preferences.getString(ACHIEVEMENTS_LOCAL_VERSION)
+                                .equals(achievementsRemoveVersion) ||
+                                !preferences.getString(QUESTIONS_LOCAL_VERSION)
+                                        .equals(questionsRemoveVersion)) {
+                            emitter.onSuccess(true);
+                        } else {
+                            emitter.onSuccess(false);
+                        }
+                        return achieveDS;
+                    }).subscribe(dataSnapshot -> {}, Throwable::printStackTrace);
         });
     }
 
     public Single<Integer> getBalance() {
         return Single.fromCallable(() -> preferences.getInteger(BALANCE));
     }
-
 
 }

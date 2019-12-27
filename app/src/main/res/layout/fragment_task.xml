@@ -126,7 +126,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="?attr/text_default_color"
                 android:layout_marginTop="@dimen/margin_small"
-                android:textSize="@dimen/text_small" />
+                android:textSize="@dimen/text_small"
+                android:buttonTint="?attr/button_default_color"/>
 
             <RadioButton
                 android:id="@+id/wake__answer_two"
@@ -134,7 +135,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="?attr/text_default_color"
                 android:layout_marginTop="@dimen/margin_small"
-                android:textSize="@dimen/text_small" />
+                android:textSize="@dimen/text_small"
+                android:buttonTint="?attr/button_default_color" />
 
             <RadioButton
                 android:id="@+id/wake__answer_three"
@@ -142,7 +144,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="?attr/text_default_color"
                 android:layout_marginTop="@dimen/margin_small"
-                android:textSize="@dimen/text_small" />
+                android:textSize="@dimen/text_small"
+                android:buttonTint="?attr/button_default_color"/>
 
             <RadioButton
                 android:id="@+id/wake__answer_four"
@@ -150,7 +153,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="?attr/text_default_color"
                 android:layout_marginTop="@dimen/margin_small"
-                android:textSize="@dimen/text_small" />
+                android:textSize="@dimen/text_small"
+                android:buttonTint="?attr/button_default_color"/>
         </RadioGroup>
 
         <android.support.design.widget.FloatingActionButton

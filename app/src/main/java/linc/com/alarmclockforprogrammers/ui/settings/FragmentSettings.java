@@ -36,14 +36,6 @@ import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
 public class FragmentSettings extends BaseFragment implements ViewSettings,
         View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
-    //todo activate admin
-    //todo activate admin
-    //todo activate admin
-    //todo activate admin
-    //todo activate admin
-    //todo activate admin
-    //todo activate admin
-
     private SwitchCompat switchTheme;
     private TextView adminState;
     private PresenterSettings presenter;
@@ -140,8 +132,8 @@ public class FragmentSettings extends BaseFragment implements ViewSettings,
         intent.setType("plain/text");
         intent.setPackage("com.google.android.gm");
         intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "linc.apps.sup@gmail.com" });
-        intent.putExtra(Intent.EXTRA_SUBJECT, "SUPPORT");
-        intent.putExtra(Intent.EXTRA_TEXT, "support !!!!!!!");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Reason: ");
+        intent.putExtra(Intent.EXTRA_TEXT, "Content: ");
         startActivity(Intent.createChooser(intent, ""));
     }
 
