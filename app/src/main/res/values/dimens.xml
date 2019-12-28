@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Global-->
+    <dimen name="padding_default">0dp</dimen>
     <dimen name="padding_small">10dp</dimen>
     <dimen name="padding_medium">20dp</dimen>
     <dimen name="padding_large">30dp</dimen>
@@ -16,12 +17,6 @@
     <dimen name="elevation_card">5dp</dimen>
     <dimen name="elevation_default">10dp</dimen>
     <dimen name="corners_default">20dp</dimen>
-
-    <!--Nav menu todo remove-->
-    <dimen name="margin_top_toolbar">20dp</dimen>
-    <dimen name="margin_start_toolbar">10dp</dimen>
-    <dimen name="padding_start_item_menu">0dp</dimen>
-    <dimen name="padding_end_item_menu">5dp</dimen>
 
     <!--Header layout-->
     <dimen name="size_header_image">50dp</dimen>

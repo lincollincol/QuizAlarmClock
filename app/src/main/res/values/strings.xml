@@ -1,35 +1,68 @@
 <resources>
     <string name="app_name">AlarmClock for programmers</string>
 
-    <string name="settings_admin_activated">Activated</string>
-    <string name="settings_admin_not_activated">Not activated</string>
-
-    <!--Navigation drawer menu-->
+    <!--Widgets properties-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="animator_property_progress">progress</string>
 
-    <!--Menu items-->
+    <!-- "Dynamic" strings-->
+    <string name="day_monday_mark">Mn</string>
+    <string name="day_tuesday_mark">Tu</string>
+    <string name="day_wednesday_mark">We</string>
+    <string name="day_thursday_mark">Th</string>
+    <string name="day_friday_mark">Fr</string>
+    <string name="day_saturday_mark">Sa</string>
+    <string name="day_sunday_mark">Su</string>
+    <string name="time_default">00:00</string>
+
+    <!--XML layouts strings-->
     <string name="item_menu_alarms">Alarms</string>
     <string name="item_menu_timer">Timer</string>
     <string name="item_menu_stopwatch">Stopwatch</string>
     <string name="item_menu_achievements">Achievements</string>
     <string name="item_menu_settings">Settings</string>
     <string name="item_menu_about">About</string>
+    <string name="settings_dark_theme">Dark theme</string>
+    <string name="settings_device_admin">Device admin</string>
+    <string name="settings_rate">Rate Us</string>
+    <string name="settings_support">Support</string>
+    <string name="settings_uninstall">Uninstall application</string>
+    <string name="settings_admin_activated">Activated</string>
+    <string name="settings_admin_not_activated">Not activated</string>
+    <string name="bottom_dialog_alarm_enable">Enable</string>
+    <string name="alarm_settings_label_hint">alarm label</string>
+    <string name="alarm_settings_song">Song</string>
+    <string name="alarm_settings_alarm_enable">Enable</string>
+    <string name="alarm_settings_task">Task</string>
+    <string name="alarm_settings_difficult">Difficult</string>
+    <string name="alarm_settings_language">Language</string>
 
-    <!--Dialog version update-->
-    <string name="dialog_title_no_connection">Connection error</string>
-    <string name="dialog_title_updating">Updating</string>
-    <string name="dialog_message_no_connection">No internet connection! Please turn on internet&#8230;</string>
-    <string name="dialog_message_updating">Please wait&#8230;</string>
-
-    <!--AlarmSettings alert dialogs-->
+    <!--Dialog titles-->
     <string name="title_dialog_week_days">Select days</string>
     <string name="title_dialog_difficult_mode">Select difficult</string>
     <string name="title_dialog_programming_language">Select language</string>
+    <string name="title_dialog_skip_question">Skip</string>
+    <string name="title_dialog_task">Finished!</string>
+    <string name="title_dialog_time_out">Time out</string>
+    <string name="title_dialog_no_connection">Connection error</string>
+    <string name="title_dialog_updating">Updating</string>
+    <string name="title_dialog_admin">Screen lock permission</string>
 
-    <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_confirm">Confirm</string>
+    <!--Dialog message-->
+    <string name="dialog_message_time_out">You only have 2 minutes to answer</string>
+    <string name="dismiss_message">DISMISS</string>
+    <string name="dialog_message_failed">Task failed! <br/>You didn"'"t answer the tasks correctly!</string>
+    <string name="dialog_message_pay">Are you sure? Pay %1$d</string>
+    <string name="dialog_message_completed">Task completed!
+        <br/>You answered the tasks correctly!</string>
+    <string name="dialog_message_no_connection">No internet connection! Please turn on internet&#8230;</string>
+    <string name="dialog_message_updating">Please wait&#8230;</string>
+    <string name="dialog_message_enable_admin">Provide admin permission for the alarm clock to work properly?</string>
+    <string name="dialog_message_disable_admin">Disable admin permission for this application?</string>
+    <string name="dialog_message_admin_description">We need to lock or unlock screen</string>
 
+    <!--Dialog radio buttons and checkbox-->
     <string name="dialog_day_monday">Monday</string>
     <string name="dialog_day_tuesday">Tuesday</string>
     <string name="dialog_day_wednesday">Wednesday</string>
@@ -37,38 +70,20 @@
     <string name="dialog_day_friday">Friday</string>
     <string name="dialog_day_saturday">Saturday</string>
     <string name="dialog_day_sunday">Sunday</string>
-
     <string name="dialog_difficult_easy">easy</string>
     <string name="dialog_difficult_medium">medium</string>
     <string name="dialog_difficult_hard">hard</string>
 
-    <string name="dialog_day_monday_mark">Mn</string>
-    <string name="dialog_day_tuesday_mark">Tu</string>
-    <string name="dialog_day_wednesday_mark">We</string>
-    <string name="dialog_day_thursday_mark">Th</string>
-    <string name="dialog_day_friday_mark">Fr</string>
-    <string name="dialog_day_saturday_mark">Sa</string>
-    <string name="dialog_day_sunday_mark">Su</string>
+    <!--Dialog positive and negative buttons-->
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+    <string name="dialog_got_it">GOT IT!</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_confirm">Confirm</string>
 
-    <!--Stopwatch/Timer-->
-    <string name="time_default">00:00</string>
-    <string name="animator_property_progress">progress</string>
-
-    <!--Wake -->
-    <string name="dialog_message_pay">Are you sure? Pay %1$d</string>
-    <string name="dialog_message_completed">Task completed!
-        <br/>You answered the tasks correctly!</string>
-    <string name="dialog_message_failed">Task failed! <br/>You didn"'"t answer the tasks correctly!</string>
-    <string name="title_dialog_skip_question">Skip</string>
-    <string name="dialog_yes_positive">Yes</string>
-    <string name="dialog_no_negative">No</string>
-    <string name="dialog_got_it_positive">GOT IT!</string>
-    <string name="title_dialog_task">Finished!</string>
-    <string name="title_dialog_time_out">Time out</string>
-    <string name="dialog_message_time_out">You only have 2 minutes to answer</string>
-    <string name="dismiss_message">DISMISS</string>
-
-    <!--Achievements-->
-
+    <!--Intents and transactions-->
+    <string name="data_support_mail">linc.apps.sup@gmail.com</string>
+    <string name="data_support_reason">Reason: </string>
+    <string name="data_support_content">Content: </string>
 
 </resources>

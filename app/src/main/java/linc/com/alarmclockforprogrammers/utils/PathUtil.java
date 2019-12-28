@@ -135,6 +135,32 @@ public class PathUtil {
 
     private boolean isSDCard(Uri uri) {
         // Final set of paths
+        final String docId = DocumentsContract.getDocumentId(uri);
+        final String[] split = docId.split(":");
+
+        //Get primary & secondary external device storage (internal storage & micro SDCARD slot...)
+        File[]  listExternalDirs = ContextCompat.getExternalFilesDirs(context, null);
+
+        for (File listExternalDir : listExternalDirs) {
+            if (listExternalDir != null) {
+                String path = listExternalDir.getAbsolutePath();
+                int indexMountRoot = path.indexOf("/Android/data/");
+                if (indexMountRoot >= 0 && indexMountRoot <= path.length()) {
+                    //Get the root path for the external directory
+                    if(split[0].equals(path.substring(0, indexMountRoot))) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /*
+    private boolean isSDCard(Uri uri) {
+        // Final set of paths
         final Set<String> rv = new HashSet<>();
         final String docId = DocumentsContract.getDocumentId(uri);
         final String[] split = docId.split(":");
@@ -152,8 +178,6 @@ public class PathUtil {
                 }
             }
         }
-        // todo refactor this
-
         for(String path : rv.toArray(new String[rv.size()])) {
             if(path.contains(split[0])) {
                 return true;
@@ -162,4 +186,6 @@ public class PathUtil {
 
         return false;
     }
+     */
+
 }

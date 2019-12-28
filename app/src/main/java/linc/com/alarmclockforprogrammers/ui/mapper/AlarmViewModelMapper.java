@@ -1,20 +1,14 @@
 package linc.com.alarmclockforprogrammers.ui.mapper;
 
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
-import linc.com.alarmclockforprogrammers.domain.model.Alarm;
+import linc.com.alarmclockforprogrammers.domain.models.Alarm;
 import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class AlarmViewModelMapper {
 
-    //todo map with resUtil
     public AlarmViewModel toAlarmViewModel(Alarm alarm) {
         final AlarmViewModel alarmViewModel = new AlarmViewModel();
         alarmViewModel.setId(alarm.getId());

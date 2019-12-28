@@ -1,6 +1,6 @@
 package linc.com.alarmclockforprogrammers.ui.mapper;
 
-import linc.com.alarmclockforprogrammers.domain.model.Lap;
+import linc.com.alarmclockforprogrammers.domain.models.Lap;
 import linc.com.alarmclockforprogrammers.ui.viewmodel.LapViewModel;
 import linc.com.alarmclockforprogrammers.utils.TimeConverter;
 

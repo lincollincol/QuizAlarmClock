@@ -20,7 +20,6 @@
             android:id="@+id/item_achievement__language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="C++"
             android:textSize="@dimen/text_medium"
             android:textColor="?attr/text_default_color"
             android:fontFamily="sans-serif-black"
@@ -35,7 +34,6 @@
             android:id="@+id/item_achievement__task_condition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Complete 20 easy tasks "
             android:textSize="@dimen/text_small"
             android:textColor="?attr/text_default_color"
             android:maxLines="3"
@@ -64,7 +62,6 @@
             android:id="@+id/item_achievement__completed_tasks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="21/50"
             android:textColor="?attr/text_default_color"
             app:layout_constraintTop_toTopOf="@id/item_achievement__progress"
             app:layout_constraintBottom_toBottomOf="@id/item_achievement__progress"
@@ -95,8 +92,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_small"
                 android:textColor="?attr/text_achieve_color"
-                android:fontFamily="sans-serif-medium"
-                android:text="20"/>
+                android:fontFamily="sans-serif-medium"/>
 
             <ImageView
                 android:id="@+id/item_achievement_receive__icon"

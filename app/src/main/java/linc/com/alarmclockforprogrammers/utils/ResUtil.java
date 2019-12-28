@@ -1,11 +1,7 @@
 package linc.com.alarmclockforprogrammers.utils;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintSet;
 import android.util.TypedValue;
 
@@ -75,10 +71,11 @@ public class ResUtil {
      * Text
      */
     public enum Message {
+        TIME_DEFAULT(R.string.time_default),
         ADMIN_ACTIVATED(R.string.settings_admin_activated),
         ADMIN_NOT_ACTIVATED(R.string.settings_admin_not_activated),
-        TITLE_CONNECTION(R.string.dialog_title_no_connection),
-        TITLE_UPDATING(R.string.dialog_title_updating),
+        TITLE_CONNECTION(R.string.title_dialog_no_connection),
+        TITLE_UPDATING(R.string.title_dialog_updating),
         NO_CONNECTION(R.string.dialog_message_no_connection),
         UPDATING(R.string.dialog_message_updating),
         TASK_SUCCESS(R.string.dialog_message_completed),

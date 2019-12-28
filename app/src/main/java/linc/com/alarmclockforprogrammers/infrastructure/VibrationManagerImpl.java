@@ -5,12 +5,12 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 
-import linc.com.alarmclockforprogrammers.domain.interactor.alarmdismiss.VibrationManager;
+import linc.com.alarmclockforprogrammers.domain.device.VibrationManager;
 
 public class VibrationManagerImpl implements VibrationManager {
 
     private Vibrator vibrator;
-    private static final long[] VIBRATE_PATTERN = { 300, 1500 };
+    private static final long[] VIBRATE_PATTERN = { 500, 500 };
 
     public VibrationManagerImpl(Context context) {
         this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);

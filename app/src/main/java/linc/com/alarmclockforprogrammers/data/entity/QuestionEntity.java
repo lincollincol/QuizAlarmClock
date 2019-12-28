@@ -2,10 +2,7 @@ package linc.com.alarmclockforprogrammers.data.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-
-import java.util.List;
 
 import static android.arch.persistence.room.ColumnInfo.INTEGER;
 import static android.arch.persistence.room.ColumnInfo.TEXT;
@@ -32,26 +29,25 @@ public class QuestionEntity {
     @ColumnInfo(name = "post_question", typeAffinity = TEXT)
     private String postQuestion;
 
-    // todo rename to options
     @ColumnInfo(name = "answers", typeAffinity = TEXT)
-    private String jsonAnswers;
+    private String jsonAnswerOptions;
 
     @ColumnInfo(name = "code_snippet", typeAffinity = TEXT)
-    private String htmlCodeSnippet;
+    private String codeSnippet;
 
     @ColumnInfo(name = "completed", typeAffinity = INTEGER)
     private boolean completed;
 
     public QuestionEntity(int id, int difficult, int correctAnswer, String programmingLanguage,
-                          String preQuestion, String postQuestion, String jsonAnswers, String htmlCodeSnippet, boolean completed) {
+                          String preQuestion, String postQuestion, String jsonAnswerOptions, String codeSnippet, boolean completed) {
         this.id = id;
         this.difficult = difficult;
         this.correctAnswer = correctAnswer;
         this.programmingLanguage = programmingLanguage;
         this.preQuestion = preQuestion;
         this.postQuestion = postQuestion;
-        this.jsonAnswers = jsonAnswers;
-        this.htmlCodeSnippet = htmlCodeSnippet;
+        this.jsonAnswerOptions = jsonAnswerOptions;
+        this.codeSnippet = codeSnippet;
         this.completed = completed;
     }
 
@@ -103,20 +99,20 @@ public class QuestionEntity {
         this.postQuestion = postQuestion;
     }
 
-    public String getJsonAnswers() {
-        return jsonAnswers;
+    public String getJsonAnswerOptions() {
+        return jsonAnswerOptions;
     }
 
-    public void setJsonAnswers(String jsonAnswers) {
-        this.jsonAnswers = jsonAnswers;
+    public void setJsonAnswerOptions(String jsonAnswerOptions) {
+        this.jsonAnswerOptions = jsonAnswerOptions;
     }
 
-    public String getHtmlCodeSnippet() {
-        return htmlCodeSnippet;
+    public String getCodeSnippet() {
+        return codeSnippet;
     }
 
-    public void setHtmlCodeSnippet(String htmlCodeSnippet) {
-        this.htmlCodeSnippet = htmlCodeSnippet;
+    public void setCodeSnippet(String codeSnippet) {
+        this.codeSnippet = codeSnippet;
     }
 
     public boolean isCompleted() {

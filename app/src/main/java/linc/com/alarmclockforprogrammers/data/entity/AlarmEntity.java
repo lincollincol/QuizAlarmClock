@@ -140,7 +140,6 @@ public class AlarmEntity {
         this.enable = enable;
     }
 
-    //todo to const
     /** Return default empty alarm object*/
     @Ignore
     public static AlarmEntity createInstance(int id) {

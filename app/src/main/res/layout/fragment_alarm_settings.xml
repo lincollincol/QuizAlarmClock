@@ -10,7 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!--todo guide as a toolbar-->
+        <android.support.constraint.Guideline
+            android:id="@+id/alarm_settings__left_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05"/>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/alarm_settings__right_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95"/>
 
         <NumberPicker
             android:id="@+id/alarm_settings__hour_picker"
@@ -41,7 +53,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="@dimen/margin_medium"
             android:gravity="center"
-            android:hint="LABEL"
+            android:hint="@string/alarm_settings_label_hint"
             android:textColor="?attr/text_default_color"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -52,7 +64,6 @@
             android:id="@+id/alarm_settings__days"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:text="Mn-Fr"
             android:textSize="@dimen/text_medium"
             android:gravity="center"
             android:background="?attr/selectableItemBackground"
@@ -83,7 +94,7 @@
                 android:layout_marginBottom="5dp"
                 android:gravity="center|start"
                 android:layout_weight="60"
-                android:text="Song"
+                android:text="@string/alarm_settings_song"
                 android:textSize="@dimen/text_medium"
                 android:textColor="?attr/text_default_color"/>
 
@@ -98,7 +109,6 @@
                 android:layout_weight="40"
                 android:fontFamily="sans-serif-black"
                 android:textColor="?attr/text_default_color"
-                android:text="default"
                 android:maxLines="1"
                 android:textSize="@dimen/text_medium" />
         </LinearLayout>
@@ -108,14 +118,12 @@
             android:id="@+id/alarm_settings__alarm_enable_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_medium"
-            android:text="Enable"
+            android:text="@string/alarm_settings_alarm_enable"
             android:textSize="@dimen/text_medium"
             android:textColor="?attr/text_default_color"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/alarm_settings__left_margin"
             app:layout_constraintRight_toLeftOf="@id/alarm_settings__toggle_alarm_enable"
             app:layout_constraintTop_toBottomOf="@id/alarm_settings__song_layout" />
 
@@ -124,12 +132,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_medium"
-            android:layout_marginEnd="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_medium"
             android:thumb="@drawable/switch_thumb"
             app:track="@drawable/switch_track"
             app:layout_constraintLeft_toRightOf="@id/alarm_settings__alarm_enable_title"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="@id/alarm_settings__right_margin"
             app:layout_constraintTop_toTopOf="@id/alarm_settings__alarm_enable_title"
             app:layout_constraintBottom_toBottomOf="@+id/alarm_settings__alarm_enable_title"/>
 
@@ -138,32 +145,28 @@
             android:id="@+id/alarm_settings__task_enable_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_medium"
-            android:text="Task"
+            android:text="@string/alarm_settings_task"
             android:textSize="@dimen/text_medium"
             android:textColor="?attr/text_default_color"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/alarm_settings__left_margin"
             app:layout_constraintRight_toLeftOf="@id/alarm_settings__toggle_task_enable"
             app:layout_constraintTop_toBottomOf="@id/alarm_settings__alarm_enable_title" />
 
-        <!--todo change margins to guidelines-->
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/alarm_settings__toggle_task_enable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_medium"
-            android:layout_marginEnd="@dimen/margin_medium"
             android:thumb="@drawable/switch_thumb"
             app:track="@drawable/switch_track"
             app:layout_constraintLeft_toRightOf="@id/alarm_settings__task_enable_title"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="@id/alarm_settings__right_margin"
             app:layout_constraintTop_toTopOf="@id/alarm_settings__task_enable_title"
             app:layout_constraintBottom_toBottomOf="@id/alarm_settings__task_enable_title"/>
-
 
         <!--Expand achievementCondition settings-->
         <android.support.constraint.Group
@@ -173,7 +176,6 @@
             android:visibility="gone"
             app:constraint_referenced_ids="alarm_settings_task_settings__difficult_layout,
                 alarm_settings_task_settings__language_layout" />
-
 
         <!--Difficult-->
         <LinearLayout
@@ -196,7 +198,7 @@
                 android:layout_marginBottom="5dp"
                 android:gravity="center|start"
                 android:layout_weight="60"
-                android:text="Difficult"
+                android:text="@string/alarm_settings_difficult"
                 android:textSize="@dimen/text_medium"
                 android:textColor="?attr/text_default_color"/>
 
@@ -210,7 +212,6 @@
                 android:gravity="center|end"
                 android:layout_weight="40"
                 android:fontFamily="sans-serif-black"
-                android:text="medium"
                 android:textSize="@dimen/text_medium"
                 android:textColor="?attr/text_default_color"/>
         </LinearLayout>
@@ -236,7 +237,7 @@
                 android:layout_marginBottom="5dp"
                 android:gravity="center|start"
                 android:layout_weight="60"
-                android:text="Language"
+                android:text="@string/alarm_settings_language"
                 android:textSize="@dimen/text_medium"
                 android:textColor="?attr/text_default_color"/>
 
@@ -250,7 +251,6 @@
                 android:gravity="center|end"
                 android:layout_weight="40"
                 android:fontFamily="sans-serif-black"
-                android:text="Javascript"
                 android:maxLines="1"
                 android:textSize="@dimen/text_medium"
                 android:textColor="?attr/text_default_color"/>

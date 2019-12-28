@@ -1,13 +1,11 @@
 package linc.com.alarmclockforprogrammers.infrastructure;
 
-import android.util.Log;
-
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.domain.interactor.timer.Timer;
+import linc.com.alarmclockforprogrammers.domain.device.Timer;
 
 public class TimerManager implements Timer {
 

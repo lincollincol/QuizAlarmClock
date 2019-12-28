@@ -1,7 +1,5 @@
 package linc.com.alarmclockforprogrammers.data.repository;
 
-import android.util.Log;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -18,10 +16,10 @@ import linc.com.alarmclockforprogrammers.data.mapper.QuestionEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.data.database.achievements.AchievementsDao;
 import linc.com.alarmclockforprogrammers.data.database.questions.QuestionsDao;
-import linc.com.alarmclockforprogrammers.domain.interactor.alarmtest.RepositoryTest;
-import linc.com.alarmclockforprogrammers.domain.model.Achievement;
-import linc.com.alarmclockforprogrammers.domain.model.Alarm;
-import linc.com.alarmclockforprogrammers.domain.model.Question;
+import linc.com.alarmclockforprogrammers.domain.repositories.RepositoryTest;
+import linc.com.alarmclockforprogrammers.domain.models.Achievement;
+import linc.com.alarmclockforprogrammers.domain.models.Alarm;
+import linc.com.alarmclockforprogrammers.domain.models.Question;
 import linc.com.alarmclockforprogrammers.utils.Consts;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.BALANCE;
@@ -66,7 +64,6 @@ public class RepositoryTestImpl implements RepositoryTest {
         return Single.create((SingleOnSubscribe<List<Question>>)  emitter -> {
             List<QuestionEntity> questionEntities = questionsDao.getByParams(language, difficult);
             Collections.shuffle(questionEntities);
-            Log.d("SIZE", "getQuestions: " + questionEntities.size());
             emitter.onSuccess(questionMapper.toQuestionsList(questionEntities));
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -100,4 +97,5 @@ public class RepositoryTestImpl implements RepositoryTest {
     public void saveBalance(int balance) {
         preferences.saveInteger(balance, BALANCE);
     }
+
 }

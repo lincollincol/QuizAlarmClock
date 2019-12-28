@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import linc.com.alarmclockforprogrammers.data.entity.QuestionEntity;
-import linc.com.alarmclockforprogrammers.domain.model.Question;
+import linc.com.alarmclockforprogrammers.domain.models.Question;
 import linc.com.alarmclockforprogrammers.utils.JsonUtil;
 
 public class QuestionEntityMapper {
@@ -40,8 +40,8 @@ public class QuestionEntityMapper {
                 (String) (dataSnapshot.child("programmingLanguage").getValue()),
                 (String) (dataSnapshot.child("preQuestion").getValue()),
                 (String) (dataSnapshot.child("postQuestion").getValue()),
-                jsonUtil.listToJson((ArrayList<String>) (dataSnapshot.child("answers").getValue())),
-                (String) (dataSnapshot.child("compressedCodeSnippet").getValue()),
+                jsonUtil.listToJson((ArrayList<String>) (dataSnapshot.child("answerOptions").getValue())),
+                (String) (dataSnapshot.child("codeSnippet").getValue()),
                 ((Boolean) (dataSnapshot.child("completed").getValue())));
     }
 
@@ -53,8 +53,8 @@ public class QuestionEntityMapper {
         question.setProgrammingLanguage(questionEntity.getProgrammingLanguage());
         question.setPreQuestion(questionEntity.getPreQuestion());
         question.setPostQuestion(questionEntity.getPostQuestion());
-        question.setAnswerOptions(jsonUtil.jsonToList(questionEntity.getJsonAnswers()));
-        question.setHtmlCodeSnippet(questionEntity.getHtmlCodeSnippet());
+        question.setAnswerOptions(jsonUtil.jsonToList(questionEntity.getJsonAnswerOptions()));
+        question.setHtmlCodeSnippet(questionEntity.getCodeSnippet());
         question.setCompleted(questionEntity.isCompleted());
         return question;
     }

@@ -12,13 +12,13 @@
     </array>
 
     <array name="week_days_marks">
-        <item>@string/dialog_day_monday_mark</item>
-        <item>@string/dialog_day_tuesday_mark</item>
-        <item>@string/dialog_day_wednesday_mark</item>
-        <item>@string/dialog_day_thursday_mark</item>
-        <item>@string/dialog_day_friday_mark</item>
-        <item>@string/dialog_day_saturday_mark</item>
-        <item>@string/dialog_day_sunday_mark</item>
+        <item>@string/day_monday_mark</item>
+        <item>@string/day_tuesday_mark</item>
+        <item>@string/day_wednesday_mark</item>
+        <item>@string/day_thursday_mark</item>
+        <item>@string/day_friday_mark</item>
+        <item>@string/day_saturday_mark</item>
+        <item>@string/day_sunday_mark</item>
     </array>
 
     <array name="difficult_modes">

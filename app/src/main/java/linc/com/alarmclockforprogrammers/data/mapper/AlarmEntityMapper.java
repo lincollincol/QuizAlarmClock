@@ -1,9 +1,6 @@
 package linc.com.alarmclockforprogrammers.data.mapper;
 
 
-import android.util.Log;
-
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -11,8 +8,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
-import linc.com.alarmclockforprogrammers.domain.model.Alarm;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
+import linc.com.alarmclockforprogrammers.domain.models.Alarm;
+import linc.com.alarmclockforprogrammers.utils.Consts;
 
 public class AlarmEntityMapper {
 
@@ -78,8 +75,7 @@ public class AlarmEntityMapper {
     }
 
     private boolean[] getCheckedDays(String days) {
-        //todo 7 to const DAYS_IN_WEEK
-        boolean[] checkedDays = new boolean[7];
+        boolean[] checkedDays = new boolean[Consts.WEEK_DAYS];
         if(days.isEmpty()) {
             return checkedDays;
         }

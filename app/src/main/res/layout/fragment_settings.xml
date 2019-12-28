@@ -5,10 +5,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--todo text, labels to res/values/strings -->
-    <!--todo text, labels to res/values/strings -->
-    <!--todo text, labels to res/values/strings -->
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/settings__toolbar"
         android:layout_width="wrap_content"
@@ -27,7 +23,7 @@
         android:paddingStart="@dimen/margin_medium"
         android:paddingEnd="@dimen/margin_medium"
         android:gravity="center_vertical"
-        android:text="Dark theme"
+        android:text="@string/settings_dark_theme"
         android:background="?attr/selectableItemBackground"
         android:textSize="@dimen/text_medium"
         android:textColor="?attr/text_default_color"
@@ -53,7 +49,7 @@
         android:paddingStart="@dimen/margin_medium"
         android:paddingEnd="@dimen/margin_medium"
         android:gravity="center_vertical"
-        android:text="Device admin"
+        android:text="@string/settings_device_admin"
         android:background="?attr/selectableItemBackground"
         android:textSize="@dimen/text_medium"
         android:textColor="?attr/text_default_color"
@@ -84,7 +80,7 @@
         android:paddingStart="@dimen/margin_medium"
         android:paddingEnd="@dimen/margin_medium"
         android:gravity="center_vertical"
-        android:text="Rate us"
+        android:text="@string/settings_rate"
         android:background="?attr/selectableItemBackground"
         android:textSize="@dimen/text_medium"
         android:textColor="?attr/text_default_color"
@@ -99,7 +95,7 @@
         android:paddingStart="@dimen/margin_medium"
         android:paddingEnd="@dimen/margin_medium"
         android:gravity="center_vertical"
-        android:text="Support"
+        android:text="@string/settings_support"
         android:background="?attr/selectableItemBackground"
         android:textSize="@dimen/text_medium"
         android:textColor="?attr/text_default_color"
@@ -114,10 +110,10 @@
         android:paddingStart="@dimen/margin_medium"
         android:paddingEnd="@dimen/margin_medium"
         android:textSize="@dimen/text_medium"
-        android:textColor="#FF0000"
+        android:textColor="?attr/incorrect_color"
         android:gravity="center_vertical"
         android:background="?attr/selectableItemBackground"
-        android:text="Uninstall application"
+        android:text="@string/settings_uninstall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>

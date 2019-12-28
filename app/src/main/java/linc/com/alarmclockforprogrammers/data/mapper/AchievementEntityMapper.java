@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import linc.com.alarmclockforprogrammers.data.entity.AchievementEntity;
-import linc.com.alarmclockforprogrammers.domain.model.Achievement;
+import linc.com.alarmclockforprogrammers.domain.models.Achievement;
 
 public class AchievementEntityMapper {
 

@@ -1,6 +1,6 @@
 package linc.com.alarmclockforprogrammers.ui.mapper;
 
-import linc.com.alarmclockforprogrammers.domain.model.Question;
+import linc.com.alarmclockforprogrammers.domain.models.Question;
 import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
 
 public class QuestionViewModelMapper {

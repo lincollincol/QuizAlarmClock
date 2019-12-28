@@ -10,20 +10,18 @@ import com.google.gson.Gson;
 
 import java.util.Calendar;
 
-import linc.com.alarmclockforprogrammers.data.entity.AlarmEntity;
-import linc.com.alarmclockforprogrammers.domain.model.Alarm;
+import linc.com.alarmclockforprogrammers.domain.models.Alarm;
 import linc.com.alarmclockforprogrammers.infrastructure.service.AlarmReceiver;
+import linc.com.alarmclockforprogrammers.utils.Consts;
 
 public class AlarmHandler {
 
-    // todo refactor class, add constants !
     private Context context;
 
     public AlarmHandler(Context context) {
         this.context = context;
     }
 
-    // todo Completable rx
     public void setReminderAlarm(Alarm alarm) {
         //Check whether the alarm is set to run on any days
         if(!alarm.isEnable()) {
@@ -35,7 +33,7 @@ public class AlarmHandler {
         final Calendar nextAlarmTime = getTimeToNextAlarm(alarm);
         final String json = new Gson().toJson(alarm);
         final Intent intent = new Intent(this.context, AlarmReceiver.class);
-        intent.putExtra("ALARM_JSON", json);
+        intent.putExtra(Consts.ALARM_JSON, json);
 
         final PendingIntent pIntent = PendingIntent.getBroadcast(
                 this.context,
@@ -59,20 +57,18 @@ public class AlarmHandler {
 
         final AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         manager.cancel(pIntent);
+        pIntent.cancel();
         Log.d("ALARM_CANCEL_CANCEL", "cancelReminderAlarm: ");
-//        todo pIntent.cancel();
     }
 
     private Calendar getTimeToNextAlarm(Alarm alarm) {
+        int count = 0;
         final Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, alarm.getHour());
         calendar.set(Calendar.MINUTE, alarm.getMinute());
         final long currentTime = System.currentTimeMillis();
         final int startIndex = getStartIndexFromTime(calendar);
-
-        int count = 0;
         boolean isAlarmSetForDay;
-
         final boolean[] selectedDays = alarm.getSelectedDays();
 
         do {
@@ -90,18 +86,15 @@ public class AlarmHandler {
 
     private int getStartIndexFromTime(Calendar calendar) {
         final int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        // todo replace breaks with return (value)
-        int startIndex = 0;
         switch (dayOfWeek) {
-            case Calendar.MONDAY: startIndex = 0; break;
-            case Calendar.TUESDAY: startIndex = 1; break;
-            case Calendar.WEDNESDAY: startIndex = 2; break;
-            case Calendar.THURSDAY: startIndex = 3; break;
-            case Calendar.FRIDAY: startIndex = 4; break;
-            case Calendar.SATURDAY: startIndex = 5; break;
-            case Calendar.SUNDAY: startIndex = 6; break;
+            case Calendar.MONDAY: return 0;
+            case Calendar.TUESDAY: return 1;
+            case Calendar.WEDNESDAY: return 2;
+            case Calendar.THURSDAY: return 3;
+            case Calendar.FRIDAY: return 4;
+            case Calendar.SATURDAY: return 5;
+            case Calendar.SUNDAY: return 6;
+            default: return 0;
         }
-
-        return startIndex;
     }
 }

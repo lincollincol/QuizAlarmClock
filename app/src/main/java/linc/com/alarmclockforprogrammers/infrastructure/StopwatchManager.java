@@ -1,13 +1,11 @@
 package linc.com.alarmclockforprogrammers.infrastructure;
 
-import android.util.Log;
-
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import linc.com.alarmclockforprogrammers.domain.interactor.stopwatch.Stopwatch;
+import linc.com.alarmclockforprogrammers.domain.device.Stopwatch;
 
 public class StopwatchManager implements Stopwatch {
 
@@ -18,18 +16,13 @@ public class StopwatchManager implements Stopwatch {
 
     @Override
     public Observable<Long> start() {
-
         this.isRunning = true;
         return Observable.create(emitter ->
                 this.stopwatch = Observable.interval(0, 1, TimeUnit.MILLISECONDS)
                     .map(tick -> lastTick.getAndIncrement())
-//                    .delaySubscription(100, TimeUnit.MILLISECONDS)
                     .doOnNext(emitter::onNext)
                     .doOnComplete(emitter::onComplete)
-                    .subscribe(aLong -> {
-                        currentTime = aLong;
-//                        Log.d("STOPWATCH", "start: "+aLong);
-                    })
+                    .subscribe(aLong -> currentTime = aLong)
         );
     }
 

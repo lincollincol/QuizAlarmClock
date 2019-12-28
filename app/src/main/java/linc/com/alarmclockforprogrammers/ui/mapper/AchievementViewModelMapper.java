@@ -1,10 +1,9 @@
 package linc.com.alarmclockforprogrammers.ui.mapper;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import linc.com.alarmclockforprogrammers.domain.model.Achievement;
+import linc.com.alarmclockforprogrammers.domain.models.Achievement;
 import linc.com.alarmclockforprogrammers.ui.viewmodel.AchievementViewModel;
 
 public class AchievementViewModelMapper {

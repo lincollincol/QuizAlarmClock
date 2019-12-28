@@ -19,7 +19,6 @@
             android:layout_marginStart="@dimen/margin_small"
             android:fontFamily="sans-serif-black"
             android:textSize="@dimen/text_medium"
-            android:text="Title"
             android:textColor="?attr/text_default_color"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
@@ -31,7 +30,6 @@
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginStart="@dimen/margin_small"
             android:textSize="@dimen/text_small"
-            android:text="Message"
             android:textColor="?attr/text_default_color"
             app:layout_constraintTop_toBottomOf="@id/update_dialog__title"
             app:layout_constraintLeft_toLeftOf="parent" />
