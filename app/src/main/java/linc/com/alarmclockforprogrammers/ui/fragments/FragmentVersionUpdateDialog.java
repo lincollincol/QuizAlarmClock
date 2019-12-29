@@ -7,10 +7,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -30,7 +32,7 @@ import linc.com.alarmclockforprogrammers.ui.views.ViewVersionUpdate;
 import linc.com.alarmclockforprogrammers.ui.presenters.PresenterVersionUpdate;
 import linc.com.alarmclockforprogrammers.utils.JsonUtil;
 
-public class FragmentVersionUpdateDialog extends DialogFragment implements ViewVersionUpdate {
+public class FragmentVersionUpdateDialog extends BottomSheetDialogFragment implements ViewVersionUpdate {
 
     private TextView dialogTitle;
     private TextView dialogMessage;
@@ -41,9 +43,7 @@ public class FragmentVersionUpdateDialog extends DialogFragment implements ViewV
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         LocalDatabase database = AlarmApp.getInstance().getDatabase();
-
 
         if(presenter == null) {
             this.presenter = new PresenterVersionUpdate(
@@ -59,35 +59,24 @@ public class FragmentVersionUpdateDialog extends DialogFragment implements ViewV
                     )
             );
         }
-
-
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = inflater.inflate(R.layout.fragment_version_update_dialog, null);
-        this.dialogTitle = view.findViewById(R.id.update_dialog__title);
-        this.dialogMessage = view.findViewById(R.id.update_dialog__message);
-        this.connectionErrorAnimation = view.findViewById(R.id.update_dialog__no_connection);
-        this.presenter.bind(this);
-        builder.setView(view);
-        return builder.create();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_version_update_dialog, container, false);
+        View view = inflater.inflate(R.layout.fragment_version_update_dialog, container, false);
+        this.dialogTitle = view.findViewById(R.id.update_dialog__title);
+        this.dialogMessage = view.findViewById(R.id.update_dialog__message);
+        this.connectionErrorAnimation = view.findViewById(R.id.update_dialog__no_connection);
+        this.presenter.bind(this);
+        return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        setCancelable(false);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ((View) getView().getParent()).setBackgroundColor(Color.TRANSPARENT);
+//        setCancelable(false);
     }
 
     @Override

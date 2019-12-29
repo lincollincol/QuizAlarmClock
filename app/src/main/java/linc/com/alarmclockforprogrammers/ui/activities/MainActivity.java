@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,8 +62,7 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
                     )
             );
         }
-
-        this.presenter.bind();
+        presenter.bind();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
         this.drawer.addDrawerListener(toggle);
         this.toggle.syncState();
 
-        this.enterAnimation = new TransitionSet()
+        /*this.enterAnimation = new TransitionSet()
                 .addTransition(new Fade(Fade.IN)
                         .addTarget(R.id.alarms__list_of_alarms)
                         .setInterpolator(new FastOutSlowInInterpolator())
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
                 .addTransition(new Slide(Gravity.BOTTOM)
                         .addTarget(R.id.alarms__add_alarm)
                         .setInterpolator(new FastOutSlowInInterpolator())
-                        .setDuration(NORMAL_SPEED));
+                        .setDuration(NORMAL_SPEED));*/
 
     }
 
@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
                 .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         win.setStatusBarColor(Color.TRANSPARENT);
+
     }
 
     @Override

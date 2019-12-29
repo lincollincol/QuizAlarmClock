@@ -55,24 +55,20 @@ public class RepositoryVersionUpdateImpl implements RepositoryVersionUpdate {
                         String achievementsRemoveVersion = ((String) achieveDS.getValue());
                         String questionsRemoveVersion = ((String) questionDS.getValue());
 
-                        if (!preferences.getString(ACHIEVEMENTS_LOCAL_VERSION).equals(achievementsRemoveVersion)
-                                || achievementsDao.getItemCount() == 0) {
-                            Disposable achieveLocal = updateAchievements()
+                        if (!preferences.getString(ACHIEVEMENTS_LOCAL_VERSION).equals(achievementsRemoveVersion) ||
+                            !preferences.getString(QUESTIONS_LOCAL_VERSION).equals(questionsRemoveVersion) ||
+                            achievementsDao.getItemCount() == 0 || questionsDao.getItemCount() == 0) {
+
+                            Disposable localUpdate = updateAchievements()
+                                    .andThen(updateQuestions())
                                     .subscribe(() -> {
                                         preferences.saveString(achievementsRemoveVersion, ACHIEVEMENTS_LOCAL_VERSION);
-                                    });
-                            disposeUtil.addDisposable(achieveLocal);
-                        }
-
-                        if(!preferences.getString(QUESTIONS_LOCAL_VERSION).equals(questionsRemoveVersion)
-                                || questionsDao.getItemCount() == 0) {
-                            Disposable questionLocal = updateQuestions()
-                                    .subscribe(() -> {
                                         preferences.saveString(questionsRemoveVersion, QUESTIONS_LOCAL_VERSION);
+                                        emitter.onComplete();
                                     });
-                            disposeUtil.addDisposable(questionLocal);
+                            disposeUtil.addDisposable(localUpdate);
+                            return achieveDS;
                         }
-
                         emitter.onComplete();
                         return achieveDS;
                     }).subscribe();
