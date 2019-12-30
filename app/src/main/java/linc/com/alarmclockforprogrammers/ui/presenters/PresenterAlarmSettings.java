@@ -1,6 +1,7 @@
 package linc.com.alarmclockforprogrammers.ui.presenters;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 
 import java.io.File;
@@ -144,7 +145,10 @@ public class PresenterAlarmSettings {
     }
 
     private void setAlarmData(Alarm alarm) {
+        Log.d("SET_DATA", "setAlarmData: " + alarm.getLanguage());
         this.alarmViewModel = mapper.toAlarmViewModel(alarm);
+        Log.d("SET_DATA", "setAlarmData: position lang = " + ResUtil.Array.LANGUAGES.getItem(alarmViewModel.getLanguagePosition()));
+        Log.d("SET_DATA", "setAlarmData: position = " + alarmViewModel.getLanguagePosition());
         this.view.showTime(alarmViewModel.getHour(), alarmViewModel.getMinute());
         this.view.showLabel(alarmViewModel.getLabel());
         this.view.showTaskState(alarmViewModel.isContainsTask());

@@ -46,7 +46,6 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
     }
 
     public void updateAlarm(AlarmViewModel alarmViewModel) {
-        Log.d("SIZES", "updateAlarm: " + keys.size() + " alarms " +alarms.size());
         alarms.put(alarmViewModel.getId(), alarmViewModel);
         notifyItemChanged(keys.indexOf(alarmViewModel.getId()));
     }
@@ -69,7 +68,6 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
     }
 
     class AlarmsHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        private TextView programmingLanguage;
         private TextView time;
         private TextView days;
         private View enableIndicator;
@@ -77,7 +75,6 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
 
         public AlarmsHolder(@NonNull View itemView, OnAlarmClicked alarmClicked) {
             super(itemView);
-//            this.programmingLanguage = itemView.findViewById(R.id.item_alarm__programming_language);
             this.time = itemView.findViewById(R.id.item_alarm__time);
             this.days = itemView.findViewById(R.id.item_alarm__days);
             this.enableIndicator = itemView.findViewById(R.id.item_alarm__enable_indicator);
@@ -101,14 +98,8 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
             GradientDrawable background = (GradientDrawable) enableIndicator.getBackground();
             background.setColor(alarm.isEnable() ?
                     ResUtil.Color.ACTIVE.getColor() : ResUtil.Color.NOT_ACTIVE.getColor());
-
-            String language = ResUtil.Array.LANGUAGES.getItem(alarm.getLanguagePosition());
-
-//            this.programmingLanguage.setText(ResUtil.Array.LANGUAGES.getItem(alarm.getLanguagePosition()));
             this.time.setText(alarm.getTime());
             this.days.setText(alarm.getWeekdayMarks(ResUtil.Array.WEEKDAYS_MARKS.getArray()));
-//            this.programmingLanguage.setVisibility(language.isEmpty() ? View.GONE : View.VISIBLE);
-
         }
 
     }

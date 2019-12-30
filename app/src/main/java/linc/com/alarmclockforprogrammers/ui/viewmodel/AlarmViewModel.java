@@ -66,9 +66,10 @@ public class AlarmViewModel {
 
     public void setContainsTask(boolean containsTask) {
         this.containsTask = containsTask;
-        int taskChecked = containsTask ? 0 : -1;
-        languagePosition = taskChecked;
-        difficultPosition = taskChecked;
+        if(!containsTask) {
+            languagePosition = -1;
+            difficultPosition = -1;
+        }
     }
 
     public boolean isEnable() {

@@ -1,5 +1,7 @@
 package linc.com.alarmclockforprogrammers.ui.mapper;
 
+import android.util.Log;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -25,6 +27,8 @@ public class AlarmViewModelMapper {
     }
 
     public Alarm toAlarm(AlarmViewModel alarmViewModel) {
+        Log.d("MAPPER", "toAlarm: lang pos" + ResUtil.Array.LANGUAGES.getItem(alarmViewModel.getLanguagePosition()));
+        Log.d("MAPPER", "toAlarm: lang diff" + alarmViewModel.getDifficultPosition());
         final Alarm alarm = new Alarm();
         alarm.setId(alarmViewModel.getId());
         alarm.setHour(alarmViewModel.getHour());

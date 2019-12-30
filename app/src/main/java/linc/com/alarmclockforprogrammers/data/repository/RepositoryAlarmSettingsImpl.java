@@ -1,5 +1,7 @@
 package linc.com.alarmclockforprogrammers.data.repository;
 
+import android.util.Log;
+
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
@@ -29,6 +31,7 @@ public class RepositoryAlarmSettingsImpl implements RepositoryAlarmSettings {
                         AlarmEntity.createInstance(alarmDao.getNumberOfAlarms()+1);
 
                 Alarm alarm = mapper.toAlarm(alarmEntity);
+                Log.d("GETTER", "getAlarmById: " + alarm.getLanguage());
                 emitter.onSuccess(alarm);
             }catch (Exception e){
                 emitter.onError(e);
@@ -39,6 +42,10 @@ public class RepositoryAlarmSettingsImpl implements RepositoryAlarmSettings {
 
     @Override
     public Completable saveAlarm(Alarm alarm) {
+        AlarmEntity a = mapper.toAlarmEntity(alarm);
+        Log.d("ALENT", "saveAlarm: lang = " + a.getLanguage());
+        Log.d("ALARM", "saveAlarm: lang = " + alarm.getLanguage());
+
         return Completable.fromAction(() ->
                     alarmDao.insertAlarm(mapper.toAlarmEntity(alarm))
         ).subscribeOn(Schedulers.io())
