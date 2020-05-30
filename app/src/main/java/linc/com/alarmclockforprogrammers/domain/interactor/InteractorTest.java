@@ -5,7 +5,6 @@ import io.reactivex.Single;
 import linc.com.alarmclockforprogrammers.domain.models.Question;
 
 public interface InteractorTest {
-
     Single<Question> execute(int alarmId);
     Observable<Boolean> checkAnswer(int answerPosition);
     Single<Integer> calculatePaymentPrice();

@@ -1,6 +1,6 @@
 package linc.com.alarmclockforprogrammers.ui.views;
 
-import linc.com.alarmclockforprogrammers.ui.viewmodel.LapViewModel;
+import linc.com.alarmclockforprogrammers.ui.uimodels.LapUiModel;
 
 public interface ViewStopwatch {
 
@@ -15,7 +15,7 @@ public interface ViewStopwatch {
     void updateTime(String time);
 
     // laps
-    void showLap(LapViewModel lap);
+    void showLap(LapUiModel lap);
     void clearLaps();
 
     // Widgets state

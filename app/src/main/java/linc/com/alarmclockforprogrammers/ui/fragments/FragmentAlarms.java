@@ -13,7 +13,6 @@ import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.TextView;
 
 import java.util.Map;
@@ -26,14 +25,14 @@ import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
 import linc.com.alarmclockforprogrammers.data.preferences.LocalPreferencesManager;
 import linc.com.alarmclockforprogrammers.domain.interactor.implementation.InteractorAlarmsImpl;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarmsImpl;
-import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
+import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandlerImpl;
 import linc.com.alarmclockforprogrammers.infrastructure.SideFixSnapHelper;
 import linc.com.alarmclockforprogrammers.ui.activities.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.views.ViewAlarms;
 import linc.com.alarmclockforprogrammers.ui.adapters.AdapterAlarms;
 import linc.com.alarmclockforprogrammers.ui.mapper.AlarmViewModelMapper;
 import linc.com.alarmclockforprogrammers.ui.presenters.PresenterAlarms;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
+import linc.com.alarmclockforprogrammers.ui.uimodels.AlarmUiModel;
 import linc.com.alarmclockforprogrammers.utils.Consts;
 
 
@@ -60,7 +59,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
                             database.alarmDao(),
                             new LocalPreferencesManager(getActivity()),
                             new AlarmEntityMapper()),
-                    new AlarmHandler(getActivity())
+                    new AlarmHandlerImpl(getActivity())
             ), new AlarmViewModelMapper());
         }
 
@@ -111,7 +110,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     }
 
     @Override
-    public void setAlarmsData(Map<Integer, AlarmViewModel> alarms) {
+    public void setAlarmsData(Map<Integer, AlarmUiModel> alarms) {
         this.adapterAlarms.setAlarms(alarms);
     }
 
@@ -143,7 +142,7 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     }
 
     @Override
-    public void openBottomSheetDialog(AlarmViewModel alarm) {
+    public void openBottomSheetDialog(AlarmUiModel alarm) {
         FragmentBottomDialog bottomDialog = new FragmentBottomDialog();
         bottomDialog.setBottomDialogClickListener(this);
         bottomDialog.setAlarm(alarm);
@@ -163,8 +162,8 @@ public class FragmentAlarms extends BaseFragment implements AdapterAlarms.OnAlar
     }
 
     @Override
-    public void highlightEnableAlarm(AlarmViewModel alarmViewModel) {
-        adapterAlarms.updateAlarm(alarmViewModel);
+    public void highlightEnableAlarm(AlarmUiModel alarmUiModel) {
+        adapterAlarms.updateAlarm(alarmUiModel);
     }
 
     @Override

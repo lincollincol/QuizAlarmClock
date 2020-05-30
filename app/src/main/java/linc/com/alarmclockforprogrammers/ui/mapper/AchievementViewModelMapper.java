@@ -4,27 +4,27 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import linc.com.alarmclockforprogrammers.domain.models.Achievement;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.AchievementViewModel;
+import linc.com.alarmclockforprogrammers.ui.uimodels.AchievementUiModel;
 
 public class AchievementViewModelMapper {
 
-    public AchievementViewModel toAchievementViewModel(Achievement achievement) {
-        final AchievementViewModel achievementViewModel = new AchievementViewModel();
-        achievementViewModel.setId(achievement.getId());
-        achievementViewModel.setAward(String.valueOf(achievement.getAward()));
-        achievementViewModel.setCompletedPercent(calculatePercent(
+    public AchievementUiModel toAchievementViewModel(Achievement achievement) {
+        final AchievementUiModel achievementUiModel = new AchievementUiModel();
+        achievementUiModel.setId(achievement.getId());
+        achievementUiModel.setAward(String.valueOf(achievement.getAward()));
+        achievementUiModel.setCompletedPercent(calculatePercent(
                 achievement.getCompletedTasks(), achievement.getTasksToComplete()));
-        achievementViewModel.setAchievementCondition(achievement.getAchievementCondition());
-        achievementViewModel.setCompletedTasks(
+        achievementUiModel.setAchievementCondition(achievement.getAchievementCondition());
+        achievementUiModel.setCompletedTasks(
                 achievement.getCompletedTasks()+"/"+achievement.getTasksToComplete());
-        achievementViewModel.setCompleted(achievement.isCompleted());
-        achievementViewModel.setAwardReceived(achievement.isAwardReceived());
-        achievementViewModel.setProgrammingLanguage(achievement.getProgrammingLanguage());
-        return achievementViewModel;
+        achievementUiModel.setCompleted(achievement.isCompleted());
+        achievementUiModel.setAwardReceived(achievement.isAwardReceived());
+        achievementUiModel.setProgrammingLanguage(achievement.getProgrammingLanguage());
+        return achievementUiModel;
     }
 
-    public Map<Integer, AchievementViewModel> toAchievementViewModelMap(Map<Integer, Achievement> achievements) {
-        Map<Integer, AchievementViewModel> AchievementViewModels = new LinkedHashMap<>();
+    public Map<Integer, AchievementUiModel> toAchievementViewModelMap(Map<Integer, Achievement> achievements) {
+        Map<Integer, AchievementUiModel> AchievementViewModels = new LinkedHashMap<>();
         for(Map.Entry<Integer, Achievement> alarm : achievements.entrySet()) {
             AchievementViewModels.put(alarm.getKey(), toAchievementViewModel(alarm.getValue()));
         }

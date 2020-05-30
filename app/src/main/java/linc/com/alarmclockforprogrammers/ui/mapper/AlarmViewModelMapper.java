@@ -6,45 +6,45 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import linc.com.alarmclockforprogrammers.domain.models.Alarm;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
+import linc.com.alarmclockforprogrammers.ui.uimodels.AlarmUiModel;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class AlarmViewModelMapper {
 
-    public AlarmViewModel toAlarmViewModel(Alarm alarm) {
-        final AlarmViewModel alarmViewModel = new AlarmViewModel();
-        alarmViewModel.setId(alarm.getId());
-        alarmViewModel.setHour(alarm.getHour());
-        alarmViewModel.setMinute(alarm.getMinute());
-        alarmViewModel.setLanguagePosition(ResUtil.Array.LANGUAGES.getItemPosition(alarm.getLanguage()));
-        alarmViewModel.setDifficultPosition(alarm.getDifficult());
-        alarmViewModel.setContainsTask(alarm.isContainsTask());
-        alarmViewModel.setEnable(alarm.isEnable());
-        alarmViewModel.setSelectedDays(alarm.getSelectedDays());
-        alarmViewModel.setLabel(alarm.getLabel());
-        alarmViewModel.setSongPath(alarm.getSongPath());
-        return alarmViewModel;
+    public AlarmUiModel toAlarmViewModel(Alarm alarm) {
+        final AlarmUiModel alarmUiModel = new AlarmUiModel();
+        alarmUiModel.setId(alarm.getId());
+        alarmUiModel.setHour(alarm.getHour());
+        alarmUiModel.setMinute(alarm.getMinute());
+        alarmUiModel.setLanguagePosition(ResUtil.Array.LANGUAGES.getItemPosition(alarm.getLanguage()));
+        alarmUiModel.setDifficultPosition(alarm.getDifficult());
+        alarmUiModel.setContainsTask(alarm.isContainsTask());
+        alarmUiModel.setEnable(alarm.isEnable());
+        alarmUiModel.setSelectedDays(alarm.getSelectedDays());
+        alarmUiModel.setLabel(alarm.getLabel());
+        alarmUiModel.setSongPath(alarm.getSongPath());
+        return alarmUiModel;
     }
 
-    public Alarm toAlarm(AlarmViewModel alarmViewModel) {
-        Log.d("MAPPER", "toAlarm: lang pos" + ResUtil.Array.LANGUAGES.getItem(alarmViewModel.getLanguagePosition()));
-        Log.d("MAPPER", "toAlarm: lang diff" + alarmViewModel.getDifficultPosition());
+    public Alarm toAlarm(AlarmUiModel alarmUiModel) {
+        Log.d("MAPPER", "toAlarm: lang pos" + ResUtil.Array.LANGUAGES.getItem(alarmUiModel.getLanguagePosition()));
+        Log.d("MAPPER", "toAlarm: lang diff" + alarmUiModel.getDifficultPosition());
         final Alarm alarm = new Alarm();
-        alarm.setId(alarmViewModel.getId());
-        alarm.setHour(alarmViewModel.getHour());
-        alarm.setMinute(alarmViewModel.getMinute());
-        alarm.setDifficult(alarmViewModel.getDifficultPosition());
-        alarm.setContainsTask(alarmViewModel.isContainsTask());
-        alarm.setEnable(alarmViewModel.isEnable());
-        alarm.setLanguage(ResUtil.Array.LANGUAGES.getItem(alarmViewModel.getLanguagePosition()));
-        alarm.setLabel(alarmViewModel.getLabel());
-        alarm.setSongPath(alarmViewModel.getSongPath());
-        alarm.setSelectedDays(alarmViewModel.getSelectedDays());
+        alarm.setId(alarmUiModel.getId());
+        alarm.setHour(alarmUiModel.getHour());
+        alarm.setMinute(alarmUiModel.getMinute());
+        alarm.setDifficult(alarmUiModel.getDifficultPosition());
+        alarm.setContainsTask(alarmUiModel.isContainsTask());
+        alarm.setEnable(alarmUiModel.isEnable());
+        alarm.setLanguage(ResUtil.Array.LANGUAGES.getItem(alarmUiModel.getLanguagePosition()));
+        alarm.setLabel(alarmUiModel.getLabel());
+        alarm.setSongPath(alarmUiModel.getSongPath());
+        alarm.setSelectedDays(alarmUiModel.getSelectedDays());
         return alarm;
     }
 
-    public Map<Integer, AlarmViewModel> toAlarmViewModelMap(Map<Integer, Alarm> alarms) {
-        Map<Integer, AlarmViewModel> alarmViewModels = new LinkedHashMap<>();
+    public Map<Integer, AlarmUiModel> toAlarmViewModelMap(Map<Integer, Alarm> alarms) {
+        Map<Integer, AlarmUiModel> alarmViewModels = new LinkedHashMap<>();
         for(Map.Entry<Integer, Alarm> alarm : alarms.entrySet()) {
             alarmViewModels.put(alarm.getKey(), toAlarmViewModel(alarm.getValue()));
         }

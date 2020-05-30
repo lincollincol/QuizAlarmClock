@@ -1,12 +1,12 @@
 package linc.com.alarmclockforprogrammers.ui.mapper;
 
 import linc.com.alarmclockforprogrammers.domain.models.Question;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
+import linc.com.alarmclockforprogrammers.ui.uimodels.QuestionUiModel;
 
 public class QuestionViewModelMapper {
 
-    public QuestionViewModel toQuestionViewModel(Question question) {
-        final QuestionViewModel viewModel = new QuestionViewModel();
+    public QuestionUiModel toQuestionViewModel(Question question) {
+        final QuestionUiModel viewModel = new QuestionUiModel();
         viewModel.setAnswerOptions(question.getAnswerOptions());
         viewModel.setHtmlCodeSnippet(question.getHtmlCodeSnippet());
         viewModel.setPreQuestion(question.getPreQuestion());

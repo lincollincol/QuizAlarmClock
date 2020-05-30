@@ -26,9 +26,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public abstract View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
-
     public void onBackPressed() {
-
         FragmentAlarms fragment = new FragmentAlarms();
 
         Transition enterAnimation = new TransitionSet()

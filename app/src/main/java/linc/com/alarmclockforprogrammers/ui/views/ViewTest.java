@@ -3,12 +3,12 @@ package linc.com.alarmclockforprogrammers.ui.views;
 import android.support.annotation.ColorInt;
 
 import io.github.kbiakov.codeview.highlight.ColorTheme;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
+import linc.com.alarmclockforprogrammers.ui.uimodels.QuestionUiModel;
 
 public interface ViewTest {
 
     void setCodeTheme(ColorTheme theme, String language);
-    void showQuestion(QuestionViewModel question);
+    void showQuestion(QuestionUiModel question);
     void showBalance(int balance);
     void showCompletedTasks(String completedTasks);
     void highlightAnswers(int position, @ColorInt int color);

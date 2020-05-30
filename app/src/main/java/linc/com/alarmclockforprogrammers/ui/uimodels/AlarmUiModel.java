@@ -1,8 +1,8 @@
-package linc.com.alarmclockforprogrammers.ui.viewmodel;
+package linc.com.alarmclockforprogrammers.ui.uimodels;
 
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
-public class AlarmViewModel {
+public class AlarmUiModel {
 
     private int id;
     private int hour;

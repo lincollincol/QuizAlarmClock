@@ -10,18 +10,20 @@ import com.google.gson.Gson;
 
 import java.util.Calendar;
 
+import linc.com.alarmclockforprogrammers.domain.device.AlarmHandler;
 import linc.com.alarmclockforprogrammers.domain.models.Alarm;
 import linc.com.alarmclockforprogrammers.infrastructure.service.AlarmReceiver;
 import linc.com.alarmclockforprogrammers.utils.Consts;
 
-public class AlarmHandler {
+public class AlarmHandlerImpl implements AlarmHandler {
 
     private Context context;
 
-    public AlarmHandler(Context context) {
+    public AlarmHandlerImpl(Context context) {
         this.context = context;
     }
 
+    @Override
     public void setReminderAlarm(Alarm alarm) {
         //Check whether the alarm is set to run on any days
         if(!alarm.isEnable()) {
@@ -46,6 +48,7 @@ public class AlarmHandler {
         am.setExact(AlarmManager.RTC_WAKEUP, nextAlarmTime.getTimeInMillis(), pIntent);
     }
 
+    @Override
     public void cancelReminderAlarm(Alarm alarm) {
         final Intent intent = new Intent(this.context, AlarmReceiver.class);
         final PendingIntent pIntent = PendingIntent.getBroadcast(

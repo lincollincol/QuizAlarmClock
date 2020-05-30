@@ -2,6 +2,7 @@ package linc.com.alarmclockforprogrammers.ui.activities;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 
 import android.support.transition.Fade;
@@ -87,25 +88,6 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
         this.drawer.addDrawerListener(toggle);
         this.toggle.syncState();
 
-        /*this.enterAnimation = new TransitionSet()
-                .addTransition(new Fade(Fade.IN)
-                        .addTarget(R.id.alarms__list_of_alarms)
-                        .setInterpolator(new FastOutSlowInInterpolator())
-                        .setDuration(NORMAL_SPEED))
-                .addTransition(new Slide(Gravity.BOTTOM)
-                        .addTarget(R.id.alarms__add_alarm)
-                        .setInterpolator(new FastOutSlowInInterpolator())
-                        .setDuration(NORMAL_SPEED));
-
-        this.exitAnimation = new TransitionSet()
-                .addTransition(new Fade(Fade.OUT)
-                        .addTarget(R.id.alarms__list_of_alarms)
-                        .setInterpolator(new FastOutSlowInInterpolator())
-                        .setDuration(FAST_SPEED))
-                .addTransition(new Slide(Gravity.BOTTOM)
-                        .addTarget(R.id.alarms__add_alarm)
-                        .setInterpolator(new FastOutSlowInInterpolator())
-                        .setDuration(NORMAL_SPEED));*/
 
     }
 
@@ -190,11 +172,6 @@ public class MainActivity extends AppCompatActivity implements ViewMainActivity,
 
     @Override
     public void showFragment(BaseFragment fragment) {
-        /*
-        fragment.setExitTransition(exitAnimation);
-        fragment.setReenterTransition(enterAnimation);
-        fragment.setEnterTransition(enterAnimation);
-        */
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.alarms_container, fragment)

@@ -7,7 +7,6 @@ import io.reactivex.Single;
 import linc.com.alarmclockforprogrammers.domain.models.Alarm;
 
 public interface InteractorAlarms {
-
     Single<Map<Integer, Alarm>> execute();
     Single<Alarm> getAlarmByMapKey(int id);
     Completable deleteAlarm(int id);

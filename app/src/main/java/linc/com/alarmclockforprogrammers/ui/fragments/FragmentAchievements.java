@@ -26,7 +26,7 @@ import linc.com.alarmclockforprogrammers.ui.activities.MainActivity;
 import linc.com.alarmclockforprogrammers.ui.adapters.AdapterAchievements;
 import linc.com.alarmclockforprogrammers.ui.mapper.AchievementViewModelMapper;
 import linc.com.alarmclockforprogrammers.ui.presenters.PresenterAchievements;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.AchievementViewModel;
+import linc.com.alarmclockforprogrammers.ui.uimodels.AchievementUiModel;
 import linc.com.alarmclockforprogrammers.infrastructure.SideFixSnapHelper;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.DISABLE;
@@ -93,7 +93,7 @@ public class FragmentAchievements extends BaseFragment implements
     }
 
     @Override
-    public void setAchievements(Map<Integer, AchievementViewModel> achievements) {
+    public void setAchievements(Map<Integer, AchievementUiModel> achievements) {
         this.adapter.setAchievements(achievements);
     }
 

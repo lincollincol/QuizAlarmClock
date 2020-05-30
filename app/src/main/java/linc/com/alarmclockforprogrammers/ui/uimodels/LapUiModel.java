@@ -1,6 +1,6 @@
-package linc.com.alarmclockforprogrammers.ui.viewmodel;
+package linc.com.alarmclockforprogrammers.ui.uimodels;
 
-public class LapViewModel {
+public class LapUiModel {
 
     private int id;
     private String time;

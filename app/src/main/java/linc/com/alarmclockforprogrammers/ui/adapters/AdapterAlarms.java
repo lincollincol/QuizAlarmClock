@@ -3,7 +3,6 @@ package linc.com.alarmclockforprogrammers.ui.adapters;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,12 @@ import java.util.List;
 import java.util.Map;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
+import linc.com.alarmclockforprogrammers.ui.uimodels.AlarmUiModel;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHolder> {
 
-    private Map<Integer, AlarmViewModel> alarms;
+    private Map<Integer, AlarmUiModel> alarms;
     private List<Integer> keys;
     private OnAlarmClicked onAlarmClicked;
 
@@ -30,7 +29,7 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
         keys = new ArrayList<>();
     }
 
-    public void setAlarms(Map<Integer, AlarmViewModel> alarms) {
+    public void setAlarms(Map<Integer, AlarmUiModel> alarms) {
         this.alarms.clear();
         this.keys.clear();
         this.alarms.putAll(alarms);
@@ -45,9 +44,9 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
         notifyItemRemoved(keyPosition);
     }
 
-    public void updateAlarm(AlarmViewModel alarmViewModel) {
-        alarms.put(alarmViewModel.getId(), alarmViewModel);
-        notifyItemChanged(keys.indexOf(alarmViewModel.getId()));
+    public void updateAlarm(AlarmUiModel alarmUiModel) {
+        alarms.put(alarmUiModel.getId(), alarmUiModel);
+        notifyItemChanged(keys.indexOf(alarmUiModel.getId()));
     }
 
     @NonNull
@@ -94,7 +93,7 @@ public class AdapterAlarms extends RecyclerView.Adapter<AdapterAlarms.AlarmsHold
             return false;
         }
 
-        public void setAlarm(AlarmViewModel alarm) {
+        public void setAlarm(AlarmUiModel alarm) {
             GradientDrawable background = (GradientDrawable) enableIndicator.getBackground();
             background.setColor(alarm.isEnable() ?
                     ResUtil.Color.ACTIVE.getColor() : ResUtil.Color.NOT_ACTIVE.getColor());

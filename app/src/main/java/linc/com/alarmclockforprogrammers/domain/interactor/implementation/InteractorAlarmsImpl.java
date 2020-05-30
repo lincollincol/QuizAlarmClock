@@ -7,10 +7,11 @@ import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import linc.com.alarmclockforprogrammers.domain.device.AlarmHandler;
 import linc.com.alarmclockforprogrammers.domain.interactor.InteractorAlarms;
 import linc.com.alarmclockforprogrammers.domain.models.Alarm;
 import linc.com.alarmclockforprogrammers.domain.repositories.RepositoryAlarms;
-import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
+import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandlerImpl;
 import linc.com.alarmclockforprogrammers.utils.RxDisposeUtil;
 
 public class InteractorAlarmsImpl implements InteractorAlarms {

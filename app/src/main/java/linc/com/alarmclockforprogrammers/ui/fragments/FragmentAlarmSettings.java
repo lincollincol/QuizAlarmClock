@@ -37,7 +37,7 @@ import linc.com.alarmclockforprogrammers.data.database.LocalDatabase;
 import linc.com.alarmclockforprogrammers.data.mapper.AlarmEntityMapper;
 import linc.com.alarmclockforprogrammers.domain.interactor.implementation.InteractorAlarmSettingsImpl;
 import linc.com.alarmclockforprogrammers.data.repository.RepositoryAlarmSettingsImpl;
-import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
+import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandlerImpl;
 import linc.com.alarmclockforprogrammers.infrastructure.DeviceAdminManager;
 import linc.com.alarmclockforprogrammers.infrastructure.service.AdminReceiver;
 import linc.com.alarmclockforprogrammers.ui.views.ViewAlarmSettings;
@@ -82,7 +82,7 @@ public class FragmentAlarmSettings extends BaseFragment implements ViewAlarmSett
                                     database.alarmDao(),
                                     new AlarmEntityMapper()
                             ),
-                            new AlarmHandler(getActivity())
+                            new AlarmHandlerImpl(getActivity())
                     ),
                     new AlarmViewModelMapper(),
                     new DeviceAdminManager(getActivity()),

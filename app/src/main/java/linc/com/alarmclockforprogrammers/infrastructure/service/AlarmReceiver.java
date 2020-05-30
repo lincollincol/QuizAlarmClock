@@ -14,7 +14,7 @@ import linc.com.alarmclockforprogrammers.R;
 import linc.com.alarmclockforprogrammers.domain.models.Alarm;
 import linc.com.alarmclockforprogrammers.infrastructure.DeviceAdminManager;
 import linc.com.alarmclockforprogrammers.ui.activities.WakeActivity;
-import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
+import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandlerImpl;
 import linc.com.alarmclockforprogrammers.utils.Consts;
 
 
@@ -26,7 +26,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Alarm alarm = new Gson().fromJson(alarmJson, Alarm.class);
 
         // Set new day for alarm clock repeat
-        AlarmHandler ah = new AlarmHandler(context);
+        AlarmHandlerImpl ah = new AlarmHandlerImpl(context);
         ah.setReminderAlarm(alarm);
 
         // Lock screen to
@@ -35,8 +35,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         showNotification(context, alarmJson);
     }
-
-
 
     private void showNotification(Context context, String alarmJson) {
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);

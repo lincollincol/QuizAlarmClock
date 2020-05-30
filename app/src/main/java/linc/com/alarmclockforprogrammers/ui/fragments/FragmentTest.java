@@ -38,7 +38,7 @@ import linc.com.alarmclockforprogrammers.ui.activities.WakeActivity;
 import linc.com.alarmclockforprogrammers.ui.views.ViewTest;
 import linc.com.alarmclockforprogrammers.ui.mapper.QuestionViewModelMapper;
 import linc.com.alarmclockforprogrammers.ui.presenters.PresenterTest;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.QuestionViewModel;
+import linc.com.alarmclockforprogrammers.ui.uimodels.QuestionUiModel;
 import linc.com.alarmclockforprogrammers.utils.Consts;
 import linc.com.alarmclockforprogrammers.utils.JsonUtil;
 
@@ -139,7 +139,7 @@ public class FragmentTest extends Fragment implements ViewTest, View.OnClickList
     }
 
     @Override
-    public void showQuestion(QuestionViewModel question) {
+    public void showQuestion(QuestionUiModel question) {
         this.preQuestion.setText(question.getPreQuestion());
         this.postQuestion.setText(question.getPostQuestion());
 

@@ -1,8 +1,8 @@
-package linc.com.alarmclockforprogrammers.ui.viewmodel;
+package linc.com.alarmclockforprogrammers.ui.uimodels;
 
 import java.util.List;
 
-public class QuestionViewModel {
+public class QuestionUiModel {
 
     private String preQuestion;
     private String postQuestion;

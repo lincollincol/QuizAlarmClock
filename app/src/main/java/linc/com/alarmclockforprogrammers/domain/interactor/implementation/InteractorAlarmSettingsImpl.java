@@ -2,10 +2,11 @@ package linc.com.alarmclockforprogrammers.domain.interactor.implementation;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import linc.com.alarmclockforprogrammers.domain.device.AlarmHandler;
 import linc.com.alarmclockforprogrammers.domain.interactor.InteractorAlarmSettings;
 import linc.com.alarmclockforprogrammers.domain.models.Alarm;
 import linc.com.alarmclockforprogrammers.domain.repositories.RepositoryAlarmSettings;
-import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandler;
+import linc.com.alarmclockforprogrammers.infrastructure.AlarmHandlerImpl;
 
 public class InteractorAlarmSettingsImpl implements InteractorAlarmSettings {
 

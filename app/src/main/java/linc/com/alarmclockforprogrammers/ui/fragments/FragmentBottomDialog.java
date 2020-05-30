@@ -14,20 +14,19 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.AlarmViewModel;
-import linc.com.alarmclockforprogrammers.utils.ResUtil;
+import linc.com.alarmclockforprogrammers.ui.uimodels.AlarmUiModel;
 
 public class FragmentBottomDialog extends BottomSheetDialogFragment implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
 
     private BottomDialogStateListener dialogStateListener;
-    private AlarmViewModel alarm;
+    private AlarmUiModel alarm;
 
     public void setBottomDialogClickListener(BottomDialogStateListener dialogClickListener) {
         this.dialogStateListener = dialogClickListener;
     }
 
-    public void setAlarm(AlarmViewModel alarm) {
+    public void setAlarm(AlarmUiModel alarm) {
         this.alarm = alarm;
     }
 

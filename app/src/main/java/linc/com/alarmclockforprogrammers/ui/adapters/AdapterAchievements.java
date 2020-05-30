@@ -16,12 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 import linc.com.alarmclockforprogrammers.R;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.AchievementViewModel;
+import linc.com.alarmclockforprogrammers.ui.uimodels.AchievementUiModel;
 import linc.com.alarmclockforprogrammers.utils.ResUtil;
 
 public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievements.AchievementHolder>{
 
-    private Map<Integer, AchievementViewModel> achievements;
+    private Map<Integer, AchievementUiModel> achievements;
     private OnReceiveClickListener onReceiveClickListener;
     private List<Integer> keys;
 
@@ -31,7 +31,7 @@ public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievement
         this.keys = new ArrayList<>();
     }
 
-    public void setAchievements(Map<Integer, AchievementViewModel> achievements) {
+    public void setAchievements(Map<Integer, AchievementUiModel> achievements) {
         this.achievements.clear();
         this.keys.clear();
         this.achievements.putAll(achievements);
@@ -89,7 +89,7 @@ public class AdapterAchievements extends RecyclerView.Adapter<AdapterAchievement
             this.onReceive = onReceive;
         }
 
-        void setAchievement(AchievementViewModel achievement) {
+        void setAchievement(AchievementUiModel achievement) {
             this.progLanguage.setText(achievement.getProgrammingLanguage());
             this.completedTasks.setText(achievement.getCompletedTasks());
             this.taskCondition.setText(achievement.getAchievementCondition());

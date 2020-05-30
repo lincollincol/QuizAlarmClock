@@ -31,7 +31,7 @@ import linc.com.alarmclockforprogrammers.ui.mapper.LapViewModelMapper;
 import linc.com.alarmclockforprogrammers.ui.presenters.PresenterStopwatch;
 import linc.com.alarmclockforprogrammers.ui.views.ViewStopwatch;
 import linc.com.alarmclockforprogrammers.ui.adapters.AdapterLaps;
-import linc.com.alarmclockforprogrammers.ui.viewmodel.LapViewModel;
+import linc.com.alarmclockforprogrammers.ui.uimodels.LapUiModel;
 
 import static linc.com.alarmclockforprogrammers.utils.Consts.*;
 
@@ -153,7 +153,7 @@ public class FragmentStopwatch extends BaseFragment implements ViewStopwatch, Vi
     }
 
     @Override
-    public void showLap(LapViewModel lap) {
+    public void showLap(LapUiModel lap) {
         this.adapter.addLap(lap);
         this.lapsInfo.scrollToPosition(adapter.getItemCount() - 1);
     }

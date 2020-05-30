@@ -1,6 +1,6 @@
-package linc.com.alarmclockforprogrammers.ui.viewmodel;
+package linc.com.alarmclockforprogrammers.ui.uimodels;
 
-public class AchievementViewModel {
+public class AchievementUiModel {
 
     private int id;
     private int completedPercent;
