@@ -46,5 +46,4 @@ public class RemoteDatabase {
                 .observeOn(Schedulers.io());
     }
 
-
 }

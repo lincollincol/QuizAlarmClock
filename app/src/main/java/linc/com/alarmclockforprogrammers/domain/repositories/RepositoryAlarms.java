@@ -7,7 +7,6 @@ import io.reactivex.Single;
 import linc.com.alarmclockforprogrammers.domain.models.Alarm;
 
 public interface RepositoryAlarms {
-
     Single<Map<Integer, Alarm>> getAlarms();
     Single<Alarm> getAlarmByMapKey(int id);
     Completable deleteAlarm(Alarm alarm);

@@ -9,7 +9,6 @@ import linc.com.alarmclockforprogrammers.domain.models.Alarm;
 import linc.com.alarmclockforprogrammers.domain.models.Question;
 
 public interface RepositoryTest {
-
     Single<Alarm> getAlarm(int alarmId);
     Single<List<Question>> getQuestions(String language, int difficult);
     Single<List<Achievement>> getAchievements(String language);

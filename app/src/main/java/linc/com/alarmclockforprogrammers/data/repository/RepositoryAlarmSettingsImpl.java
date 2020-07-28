@@ -29,9 +29,7 @@ public class RepositoryAlarmSettingsImpl implements RepositoryAlarmSettings {
             try{
                 AlarmEntity alarmEntity = id != 0 ? alarmDao.getAlarmById(id) :
                         AlarmEntity.createInstance(alarmDao.getNumberOfAlarms()+1);
-
                 Alarm alarm = mapper.toAlarm(alarmEntity);
-                Log.d("GETTER", "getAlarmById: " + alarm.getLanguage());
                 emitter.onSuccess(alarm);
             }catch (Exception e){
                 emitter.onError(e);
@@ -43,9 +41,6 @@ public class RepositoryAlarmSettingsImpl implements RepositoryAlarmSettings {
     @Override
     public Completable saveAlarm(Alarm alarm) {
         AlarmEntity a = mapper.toAlarmEntity(alarm);
-        Log.d("ALENT", "saveAlarm: lang = " + a.getLanguage());
-        Log.d("ALARM", "saveAlarm: lang = " + alarm.getLanguage());
-
         return Completable.fromAction(() ->
                     alarmDao.insertAlarm(mapper.toAlarmEntity(alarm))
         ).subscribeOn(Schedulers.io())

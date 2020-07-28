@@ -40,5 +40,4 @@ public class InteractorAchievementsImpl implements InteractorAchievements {
         return this.repository.getBalance();
     }
 
-
 }

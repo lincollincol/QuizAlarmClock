@@ -145,5 +145,4 @@ public class InteractorTestImpl implements InteractorTest {
         vibrationManager.stopVibration();
         disposeUtil.dispose();
     }
-
 }
