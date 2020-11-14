@@ -11,14 +11,15 @@ This project is the application of the learned technologies in practice:
 The idea behind the program is that the user must perform test tasks to turn off the alarm. The type of test tasks will be indicated when the alarm is created. The program also has an "Achievements" section that the user can complete and pick up a prize. Settings have theme change features, support links, and more.
 
 ## Screenshots
-<img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/alarms.png" width="200" height="450" hspace="40"><img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/alarm_settings.png" width="200" height="450" hspace="40"><img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/bottom_dialog.png" width="200" height="450" hspace="40">
-<br/>
-
-<img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/test.png" width="200" height="450" hspace="40"><img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/achievements.png" width="200" height="450" hspace="40"><img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/settings.png" width="200" height="450" hspace="40">
-<br/>
-
-<img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/timer.png" width="200" height="450" hspace="100"><img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/stopwatch.png" width="200" height="450" hspace="100">
-<br/>
+<p align="center">
+<img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/alarms.png" width="200" height="450">&#10240 &#10240 &#10240 &#10240<img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/alarm_settings.png" width="200" height="450">&#10240 &#10240 &#10240 &#10240<img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/bottom_dialog.png" width="200" height="450">
+</p>
+<p align="center">
+<img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/test.png" width="200" height="450">&#10240 &#10240 &#10240 &#10240<img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/achievements.png" width="200" height="450">&#10240 &#10240 &#10240 &#10240<img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/settings.png" width="200" height="450">
+</p>
+<p align="center">
+<img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/timer.png" width="200" height="450">&#10240 &#10240 &#10240 &#10240<img src="https://github.com/lincollincol/AlarmClock-for-programmers/blob/master/screenshots/stopwatch.png" width="200" height="450">
+</p>
 
 ## Feedback
 <a href="https://mail.google.com">linc.apps.sup@gmail.com</a>
